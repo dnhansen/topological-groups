@@ -89,6 +89,14 @@ In the sequel we will omit mentioning the multiplication and topology of a topol
 
 If $G$ is a topological group and $g \in G$, then we define maps $l_g, r_g \colon G \to G$ by $l_g(h) = gh$ and $r_g(h) = hg$; that is, $l_g$ and $r_g$ are left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $l_g\inv = l_{g\inv}$ and $r_g\inv = r_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $l_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
 
+It follows that if $U \subseteq G$ is open, then $gU$ and $Ug$ are also open for $g \in G$. If $A \subseteq G$ is any subset, the products $AU$ and $UA$ are also open, since e.g.
+%
+\begin{equation*}
+    AU = \bigunion_{g \in A} xU,
+\end{equation*}
+%
+so $AU$ is a union of open sets.
+
 We first remark that the assumption that $G$ be $T_1$ can be weakened:
 
 \begin{proposition}
@@ -110,6 +118,7 @@ If $G$ is a topological group and $A \subseteq G$, then we write
 A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota$ is a homeomorphism, $A$ is open (closed) if and only if $A\inv$ is open (closed).
 
 \begin{lemma}
+    \label{thm:symmetric_nhood_of_e}
     Let $G$ be a topological group. If $U$ is a neighbourhood of the identity $e$, then there is a symmetric neighbourhood $V$ of $e$ such that $V V\inv \subseteq U$.
 \end{lemma}
 
@@ -125,6 +134,7 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 
 
 \begin{proposition}[Regularity of topological groups]
+    \label{thm:T0_implies_T3}
     Every topological group is regular. In particular, every $T_0$ topological group is $T_3$.
 \end{proposition}
 
@@ -142,6 +152,50 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
     %
     so $\closure{V} \subseteq U$.
 \end{proof}
+
+
+\chapter{Coset spaces and quotient groups}
+
+\section{General properties of coset spaces}
+
+If $H$ is a subgroup of a topological group $G$, we denote by $G/H$ the set of left cosets of $H$. Let $q \colon G \to G/H$ be the quotient map and give $G/H$ the quotient topology. We call $G/H$ a \emph{coset space} of $G$.
+
+Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U)) = UH$ is also open, so $q(U)$ is open since $G/H$ has the quotient topology coinduced by $q$.
+
+
+\begin{proposition}
+    Let $G$ be a topological group and $H$ a subgroup.
+    %
+    \begin{enumprop}
+        \item \label{enum:coset_space_hausdorff} The coset space $G/H$ is Hausdorff if and only if $H$ is closed.
+        
+        \item \label{enum:coset_space_locally_compact} If $G$ is locally compact\footnotemark, then so is $G/H$.
+    \end{enumprop}
+\end{proposition}\footnotetext{We say that a topological space is locally compact if every point has a compact neighbourhood. There are many non-equivalent definitions of local compactness and this is the least restrictive one. If $H$ is closed then $G/H$ is Hausdorff, so all the usual definitions of local compactness are equivalent for $G/H$.}
+%
+Notice that \subcref{enum:coset_space_hausdorff} does not assume any separation properties of $G$. As far as I know, a general coset space $G/H$ with $H$ closed is not necessarily $T_3$, but of course this is the case of the coset space is in fact a topological quotient group.
+
+\begin{proof}
+    It is easy to show that $G/H$ is $T_1$ if and only if $H$ is closed.\footnote{If $G/H$ is a topological quotient group, then this is sufficient to show that $G/H$ is Hausdorff, since it is then even $T_3$ by \cref{thm:T0_implies_T3}.} Note that fibres of $q$ are cosets of $H$, and a coset $gH = l_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
+
+    Now assuming that $H$ is closed, we show that $G/H$ is Hausdorff. Let $xH$ and $yH$ be distinct (and hence disjoint) cosets. Then $xHy\inv$ is a closed set not containing $e$, so \cref{thm:symmetric_nhood_of_e} implies the existence of a symmetric neighbourhood $U$ of $e$ such that $UU \intersect xHy\inv = \emptyset$. It follows that
+    %
+    \begin{equation*}
+        e
+            \not\in U xHy\inv U
+            = Ux H (Uy)\inv
+            = (UxH)(UyH)\inv,
+    \end{equation*}
+    %
+    where we use that $U = U\inv$ and $H = HH$. That $e$ does not lie in the left-most set is easily proven e.g. by contraposition. It follows that $UxH$ and $UyH$ are disjoint, and since $q$ is open this implies that $q(Ux)$ and $q(Uy)$ are disjoint neighbourhoods of $xH$ and $yH$ in $G/H$. This proves \subcref{enum:coset_space_hausdorff}.
+
+    To prove \subcref{enum:coset_space_locally_compact}, notice that if $K$ is a compact neighbourhood of $e$ in $G$, then $q(Kx)$ is a compact neighbourhood of $xH$ in $G/H$.
+\end{proof}
+
+This proposition also furnishes a different proof that $T_1$ implies Hausdorff for topological groups: Simply let $H = \{e\}$, in which case $G \cong G/H$.
+
+
+\section{Topological quotient groups}
 
 
 \nocite{*}
