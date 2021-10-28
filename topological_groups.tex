@@ -1,0 +1,152 @@
+% Document setup
+\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+
+% Document info
+\newcommand\doctitle{Topological Groups}
+\newcommand\docauthor{Danny Nygård Hansen}
+
+% Formatting and layout
+\usepackage[autostyle]{csquotes}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\frenchspacing
+\usepackage{latex-sty/articlepagestyle}
+\usepackage{latex-sty/articlesectionstyle}
+
+% Fonts
+\usepackage[largesmallcaps]{kpfonts}
+\DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
+\linespread{1.06}
+\let\mathfrak\undefined
+\usepackage{eufrak}
+\usepackage{inconsolata}
+\usepackage{amssymb}
+
+% Hyperlinks
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{4f4fa3}
+\hypersetup{%
+	pdftitle=\doctitle,
+	pdfauthor=\docauthor,
+	colorlinks,
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
+	bookmarksnumbered=true
+}
+
+% Equation numbering
+\numberwithin{equation}{chapter}
+
+% Footnotes
+\footmarkstyle{\textsuperscript{#1}\hspace{0.25em}}
+
+% Mathematics
+\usepackage{latex-sty/basicmathcommands}
+\usepackage{latex-sty/framedtheorems}
+\usepackage{latex-sty/topologycommands}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+
+% Lists
+\usepackage{enumitem}
+\setenumerate[0]{label=\normalfont(\arabic*)}
+
+% Bibliography
+\usepackage[backend=biber, style=authoryear, maxcitenames=2, useprefix]{biblatex}
+\addbibresource{references.bib}
+
+% Title
+\title{\doctitle}
+\author{\docauthor}
+
+\newcommand{\calT}{\mathcal{T}}
+
+
+% Section style -- add to section style .sty?
+\setsubsecheadstyle{\normalfont\itshape}
+
+
+% Preimage -- to be added to mathcommands .sty
+\newcommand{\preim}{^{-1}}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Definitions and basic properties}
+
+\begin{definition}[Topological groups]
+    \label{def:topological_group}
+    A \emph{topological group} is a triple $(G, \mu, \calT)$ such that $(G, \mu)$ is a group, $(G, \calT)$ is a topological space, and both the multiplication $\mu \colon G \prod G \to G$ and the inversion map $\iota \colon G \to G$ given by $g \mapsto g\inv$ are continuous.
+\end{definition}
+%
+In the sequel we will omit mentioning the multiplication and topology of a topological group and simply write $G$. It is custom to assume that a topological group be $T_1$ (or Hausdorff, which is actually implied by it being $T_1$, as we will see), but we omit this assumption since our focus is precisely on the basic topological properties of topological groups.
+
+If $G$ is a topological group and $g \in G$, then we define maps $l_g, r_g \colon G \to G$ by $l_g(h) = gh$ and $r_g(h) = hg$; that is, $l_g$ and $r_g$ are left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $l_g\inv = l_{g\inv}$ and $r_g\inv = r_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $l_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
+
+We first remark that the assumption that $G$ be $T_1$ can be weakened:
+
+\begin{proposition}
+    Let $G$ be a topological group. If $G$ is $T_0$, then it is in fact $T_1$.
+\end{proposition}
+
+\begin{proof}
+    Assume that $G$ is $T_0$. By homogeneity it suffices to show that the singleton $\{e\}$ containing the identity $e \in G$ is closed. We show that $G \setminus \{e\}$ is a neighbourhood\footnote{If $X$ is a topological space and $x \in X$, then we say that a set $A \subseteq X$ is a neighbourhood if it has an \emph{open subset $U$} containing $x$, i.e. $x \in U \subseteq A$.} of all $g \neq e$ in $G$. Since $G$ is $T_0$, either $G \setminus \{e\}$ is a neighbourhood of $g$, or $G \setminus \{g\}$ is a neighbourhood of $e$. In the first case we are done, so assume the latter. The homeomorphism $l_{g\inv}$ maps $G \setminus \{g\}$ to $G \setminus \{e\}$, so the latter set is a neighbourhood of $g\inv$. But the inversion map $\iota$ is a homeomorphism that maps $G \setminus \{e\}$ to itself, so this is also a neighbourhood of $g$.
+\end{proof}
+
+Recall that a topological space $X$ is called \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets. Our next order of business is to show that any topological group is regular. Before proving this we need some terminology and a lemma:
+
+If $G$ is a topological group and $A \subseteq G$, then we write
+%
+\begin{equation*}
+    A\inv = \iota(A) = \set{a\inv}{a \in A}.
+\end{equation*}
+%
+A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota$ is a homeomorphism, $A$ is open (closed) if and only if $A\inv$ is open (closed).
+
+\begin{lemma}
+    Let $G$ be a topological group. If $U$ is a neighbourhood of the identity $e$, then there is a symmetric neighbourhood $V$ of $e$ such that $V V\inv \subseteq U$.
+\end{lemma}
+
+\begin{proof}
+    Since multiplication is continuous and $ee = e$, there are neighbourhoods $V_1$ and $V_2$ of $e$ such that $V_1 V_2 \subseteq U$. Letting
+    %
+    \begin{equation*}
+        V = V_1 \intersect V_2 \intersect V_1\inv \intersect V_2\inv,
+    \end{equation*}
+    %
+    then $V$ has the desired properties.
+\end{proof}
+
+
+\begin{proposition}[Regularity of topological groups]
+    Every topological group is regular. In particular, every $T_0$ topological group is $T_3$.
+\end{proposition}
+
+\begin{proof}
+    Let $G$ be a topological group. By homogeneity it is enough to show that if $U$ is a neighbourhood of $e$, then $e$ has a closed neighbourhood that lies in $U$.
+
+    Let $V$ be a symmetric neighbourhood of $e$ such that $V V\inv \subseteq U$. We claim that $\closure{V} \subseteq U$. Let $g \in \closure{V}$. Then every neighbourhood of $g$ intersects $V$, so in particular $gV \intersect V \neq \emptyset$. Choose points $v,w \in V$ such that $gv = w$. It follows that
+    %
+    \begin{equation*}
+        g
+            = w v\inv
+            \in V V\inv
+            \subseteq U,
+    \end{equation*}
+    %
+    so $\closure{V} \subseteq U$.
+\end{proof}
+
+
+\nocite{*}
+
+\printbibliography
+
+
+\end{document}
