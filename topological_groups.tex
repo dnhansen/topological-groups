@@ -197,6 +197,28 @@ This proposition also furnishes a different proof that $T_1$ implies Hausdorff f
 
 \section{Topological quotient groups}
 
+If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual group structure on the (algebraic) quotient group $G/N$ is compatible with the quotient topology. This is indeed the case:
+
+\begin{theorem}[Topological quotient groups]
+    If $N$ is a normal subgroup of a topological group $G$, then $G/N$ is a topological group.
+\end{theorem}
+
+\begin{proof}
+    If $x,y \in G$ and $U$ is a neighbourhood of $(xN)(yN) = xyN$ in $G/N$, then continuity of multiplication in $G$ at $(x,y)$ implies the existence of neighbourhoods $V$ and $W$ of $x$ and $y$ respectively, such that $VW \subseteq q\preim(U)$. Since $q$ is surjective it follows that $q(V) q(W) \subseteq U$, and because $q$ is also open $q(V)$ and $q(W)$ are neighbourhoods of $xN$ and $yH$. Hence multiplication is continuous.
+
+    Since the inversion map $\iota$ on $G/N$ is bijective, it suffices to show that it is open. Let $U \subseteq G/N$ be open and notice that, since $q$ is surjective,
+    %
+    \begin{equation*}
+        \iota(U)
+            = \iota \bigl( q(q\preim(U)) \bigr)
+            = q \bigl( \iota(q\preim(U)) \bigr).
+    \end{equation*}
+    %
+    Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open, since $q$ is open.
+\end{proof}
+
+We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup.
+
 
 \nocite{*}
 
