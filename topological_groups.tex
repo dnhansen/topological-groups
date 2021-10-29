@@ -78,6 +78,11 @@
 
 \maketitle
 
+\chapter{Introduction}
+
+These purpose of these notes is to clarify some of the basic properties of topological groups. The results below can be found in various forms in a variety of books, but I have not come across a resource that develops this theory in precisely this way. This is a shame, since the restrictions that the group structure puts on the topology can often be put in purely topological terms. One example is the $T_0$-identification of a topological group, as we will see below.
+
+
 \chapter{Definitions and basic properties}
 
 \begin{definition}[Topological groups]
@@ -87,7 +92,10 @@
 %
 In the sequel we will omit mentioning the multiplication and topology of a topological group and simply write $G$. It is custom to assume that a topological group be $T_1$ (or Hausdorff, which is actually implied by it being $T_1$, as we will see), but we omit this assumption since our focus is precisely on the basic topological properties of topological groups.
 
-If $G$ is a topological group and $g \in G$, then we define maps $l_g, r_g \colon G \to G$ by $l_g(h) = gh$ and $r_g(h) = hg$; that is, $l_g$ and $r_g$ are left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $l_g\inv = l_{g\inv}$ and $r_g\inv = r_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $l_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
+\newcommand{\leftmult}{\lambda}
+\newcommand{\rightmult}{\rho}
+
+Let $G$ be a topological group and let $g \in G$. We define maps $\leftmult_g, \rightmult_g \colon G \to G$ by $\leftmult_g(h) = gh$ and $\rightmult_g(h) = hg$; that is, $\leftmult_g$ and $\rightmult_g$ are given by left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $\leftmult_g\inv = \leftmult_{g\inv}$ and $\rightmult_g\inv = \rightmult_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $\leftmult_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
 
 We begin by collecting some basic properties of topological groups:
 
@@ -149,7 +157,7 @@ We next remark that the assumption that $G$ be $T_1$ can be weakened:
 \end{proposition}
 
 \begin{proof}
-    Assume that $G$ is $T_0$. By homogeneity it suffices to show that the singleton $\{e\}$ containing the identity $e \in G$ is closed. We show that $G \setminus \{e\}$ is a neighbourhood\footnote{If $X$ is a topological space and $x \in X$, then we say that a set $A \subseteq X$ is a neighbourhood if it has an \emph{open subset $U$} containing $x$, i.e. $x \in U \subseteq A$.} of all $g \neq e$ in $G$. Since $G$ is $T_0$, either $G \setminus \{e\}$ is a neighbourhood of $g$, or $G \setminus \{g\}$ is a neighbourhood of $e$. In the first case we are done, so assume the latter. The homeomorphism $l_{g\inv}$ maps $G \setminus \{g\}$ to $G \setminus \{e\}$, so the latter set is a neighbourhood of $g\inv$. But the inversion map $\iota$ is a homeomorphism that maps $G \setminus \{e\}$ to itself, so this is also a neighbourhood of $g$.
+    Assume that $G$ is $T_0$. By homogeneity it suffices to show that the singleton $\{e\}$ containing the identity $e \in G$ is closed. We show that $G \setminus \{e\}$ is a neighbourhood\footnote{If $X$ is a topological space and $x \in X$, then we say that a set $A \subseteq X$ is a neighbourhood if it has an \emph{open subset $U$} containing $x$, i.e. $x \in U \subseteq A$.} of all $g \neq e$ in $G$. Since $G$ is $T_0$, either $G \setminus \{e\}$ is a neighbourhood of $g$, or $G \setminus \{g\}$ is a neighbourhood of $e$. In the first case we are done, so assume the latter. The homeomorphism $\leftmult_{g\inv}$ maps $G \setminus \{g\}$ to $G \setminus \{e\}$, so the latter set is a neighbourhood of $g\inv$. But the inversion map $\iota$ is a homeomorphism that maps $G \setminus \{e\}$ to itself, so this is also a neighbourhood of $g$.
 \end{proof}
 
 Recall that a topological space $X$ is called \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets. Our next order of business is to show that any topological group is regular. Before proving this we need some terminology and a lemma:
@@ -221,7 +229,7 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
 Notice that \subcref{enum:coset_space_hausdorff} does not assume any separation properties of $G$. As far as I know, a general coset space $G/H$ with $H$ closed is not necessarily $T_3$, but of course this is the case of the coset space is in fact a topological quotient group.
 
 \begin{proof}
-    It is easy to show that $G/H$ is $T_1$ if and only if $H$ is closed.\footnote{If $G/H$ is a topological quotient group, then this is sufficient to show that $G/H$ is Hausdorff, since it is then even $T_3$ by \cref{thm:T0_implies_T3}.} Note that fibres of $q$ are cosets of $H$, and a coset $gH = l_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
+    It is easy to show that $G/H$ is $T_1$ if and only if $H$ is closed.\footnote{If $G/H$ is a topological quotient group, then this is sufficient to show that $G/H$ is Hausdorff, since it is then even $T_3$ by \cref{thm:T0_implies_T3}.} Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
 
     Now assuming that $H$ is closed, we show that $G/H$ is Hausdorff. Let $xH$ and $yH$ be distinct (and hence disjoint) cosets. Then $xHy\inv$ is a closed set not containing $e$, so \cref{thm:symmetric_nhood_of_e} implies the existence of a symmetric neighbourhood $U$ of $e$ such that $UU \intersect xHy\inv = \emptyset$. It follows that
     %
