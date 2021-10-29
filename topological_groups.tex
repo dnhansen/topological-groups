@@ -89,15 +89,60 @@ In the sequel we will omit mentioning the multiplication and topology of a topol
 
 If $G$ is a topological group and $g \in G$, then we define maps $l_g, r_g \colon G \to G$ by $l_g(h) = gh$ and $r_g(h) = hg$; that is, $l_g$ and $r_g$ are left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $l_g\inv = l_{g\inv}$ and $r_g\inv = r_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $l_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
 
-It follows that if $U \subseteq G$ is open, then $gU$ and $Ug$ are also open for $g \in G$. If $A \subseteq G$ is any subset, the products $AU$ and $UA$ are also open, since e.g.
-%
-\begin{equation*}
-    AU = \bigunion_{g \in A} xU,
-\end{equation*}
-%
-so $AU$ is a union of open sets.
+We begin by collecting some basic properties of topological groups:
 
-We first remark that the assumption that $G$ be $T_1$ can be weakened:
+\begin{proposition}
+    Let $G$ be a topological group.
+    %
+    \begin{enumprop}
+        \item \label{enum:closure_of_product} If $A,B \subseteq G$, then $\closure{A} \closure{B} \subseteq \closure{AB}$.
+        \item \label{enum:closure_of_subgroup} If $H$ is a subgroup of $G$, then so is $\closure{H}$.
+        \item \label{enum:open_subgroup_is_closed} Every open subgroup of $G$ is closed.
+        \item \label{enum:product_open_set} If $A,U \subseteq G$ with $U$ open, then $AU$ and $UA$ are open.
+    \end{enumprop}
+\end{proposition}
+
+\begin{proof}
+    We give two proofs of \subcref{enum:closure_of_product}. Since the multiplication $\mu \colon G \prod G \to G$ is continuous we get
+    %
+    \begin{equation*}
+        \mu(\closure{A}, \closure{B})
+            = \mu(\closure{A} \prod \closure{B})
+            = \mu(\closure{A \prod B})
+            \subseteq \closure{\mu(A \times B)}
+            = \closure{\mu(A, B)}
+            = \closure{AB}.
+    \end{equation*}
+    %
+    Alternatively, pick $a \in \closure{A}$ and $b \in \closure{B}$. If $U$ be a neighbourhood of $ab$, then by continuity of multiplication there are neighbourhoods $V_1$ and $V_2$ of $a$ and $b$ respectively such that $V_1 V_2 \subseteq U$. Picking $x \in A \intersect V_1$ and $y \in B \intersect V_2$ we find that $xy \in AB \intersect U$, so $ab \in \closure{AB}$.
+
+    Let $H$ be a subgroup of $G$. By \subcref{enum:closure_of_product} we get
+    %
+    \begin{equation*}
+        \closure{H} \closure{H} \subseteq \closure{HH} = \closure{H},
+    \end{equation*}
+    %
+    so $\closure{H}$ is closed under multiplication. It is also closed under taking inverses, since the inverse map $\iota$ is a homeomorphism. This proves \subcref{enum:closure_of_subgroup}. Alternatively, this claim is an easy consequence of basic properties of nets.
+
+    Now let $H$ be an open subgroup. Since $G$ is the disjoint union of the cosets of $H$, we have
+    %
+    \begin{equation*}
+        G \setminus H
+            = \bigunion_{g \in G \setminus H} gH.
+    \end{equation*}
+    %
+    Since the cosets $gH$ are open, $G \setminus H$ is also open. This proves \subcref{enum:open_subgroup_is_closed}.
+
+    To prove \subcref{enum:product_open_set}, notice that e.g.
+    %
+    \begin{equation*}
+        AU = \bigunion_{g \in A} gU,
+    \end{equation*}
+    %
+    so $AU$ is a union of open sets.
+\end{proof}
+
+We next remark that the assumption that $G$ be $T_1$ can be weakened:
 
 \begin{proposition}
     Let $G$ be a topological group. If $G$ is $T_0$, then it is in fact $T_1$.
@@ -239,7 +284,7 @@ We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made 
 Notice that a topological space is $T_0$ if and only if $\closure{\{x\}} \neq \closure{\{y\}}$ whenever $x \neq y$: This follows since, say, $x$ has a neighbourhood that doesn't contain $y$, so the closure of $\{y\}$ does not contain $x$. Hence if $X$ is already $T_0$, the identification leaves $X$ unchanged. [To do: show that the $T_0$-identification is the smallest equivalence relation on $X$ that makes it $T_0$.]
 
 \begin{proposition}
-    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. [We need that the closure of a subgroup is a subgroup.] Furthermore, if $\sim$ denotes the $T_0$-identification of $G$, then the $\sim$-equivalence classes are the cosets of $\closure{\{e\}}$.
+    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, if $\sim$ denotes the $T_0$-identification of $G$, then the $\sim$-equivalence classes are the cosets of $\closure{\{e\}}$.
 
     It follows that the quotient group $G / \closure{\{e\}}$ is precisely the $T_0$-identification $G/{\sim}$ of $G$.
 \end{proposition}
