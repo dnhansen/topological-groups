@@ -80,7 +80,7 @@
 
 \chapter{Introduction}
 
-These purpose of these notes is to clarify some of the basic properties of topological groups. The results below can be found in various forms in a variety of books, but I have not come across a resource that develops this theory in precisely this way. This is a shame, since the restrictions that the group structure puts on the topology can often be put in purely topological terms. One example is the $T_0$-identification of a topological group, as we will see below.
+These purpose of these notes is to clarify some of the basic properties of topological groups. Most of the results below can be found in various forms in a variety of books, but I have not come across a resource that develops this theory in precisely this way. This is a shame, since the restrictions that the group structure puts on the topology can often be put in purely topological terms. One example is the $T_0$-identification of a topological group, as we will see below.
 
 
 \chapter{Definitions and basic properties}
@@ -223,7 +223,7 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
 (The claim \subcref{enum:coset_space_regular} is the content of supplementary exercise 7(d) of \textcite[Chapter~2]{munkres}, except that in the exercise $H$ is assumed to be closed. I do not see where this assumption is used.)
 
 \begin{proof}
-    We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a balanced neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of cosets of $H$ we have $A = AH$, and a quick calculations shows that $VxH \intersect VA = \emptyset$. It follows by a similar calculation that $q(Vx)$ and $q(VA)$ are disjoint, and since $q$ is open these are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
+    We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, and a quick calculations shows that $VxH \intersect VA = \emptyset$. It follows by a similar calculation that $q(Vx)$ and $q(VA)$ are disjoint, and since $q$ is open these are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
 
     Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
 
@@ -266,40 +266,43 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
     Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open since $q$ is open.
 \end{proof}
 
-We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. First we recall the $T_0$-identification of a topological space $X$: Define an equivalence relation $\sim$ on $X$ by letting $x \sim y$ if $\closure{\{x\}} = \closure{\{y\}}$.
+We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. To do this justice we take a small detour:
+
+\subsection{The $T_0$-identification}
+
+Let $X$ be a topological space. We define an ordering on $X$ by letting $x \leq y$ if $x \in \closure{\{y\}}$ for $x,y \in X$. It is easy to show that $x \leq y$ if and only if $N_x \subseteq N_y$, where $N_x$ is the \emph{neighbourhood system} of $x$, i.e. the set of neighbourhoods of $x$. It is clear that $\leq$ is a preorder, and so it gives rise to an equivalence relation $\equiv$ defined such that $x \equiv y$ if $x \leq y$ and $y \leq x$. If $x \equiv y$, then we say that $x$ and $y$ are \emph{topologically indistinguishable} since then $x$ and $y$ have the same neighbourhoods.
+
+It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is just equality, or in other words if $x$ and $y$ are topologically indistinguishable precisely when $x = y$. The quotient space $X/{\equiv}$ is called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, and it is indeed $T_0$:
 
 \begin{lemma}[$T_0$-identification]
-    Let $\sim$ be the $T_0$-identification of a topological space $X$. Then the quotient space $X/{\sim}$ is $T_0$.
+    Let $X$ be a topological space, and let $q \colon X \to X/{\equiv}$ be the quotient map onto the $T_0$-identification of $X$. Then $q$ is an open map and $X/{\equiv}$ is $T_0$.
 \end{lemma}
 
 \begin{proof}
-    First notice that $q(x) \subseteq \closure{\{x\}}$ for $x \in X$, since if $x \sim x'$ then $x' \in \closure{\{x'\}} = \closure{\{x\}}$. It follows that
+    We first show that the quotient map $q \colon X \to X/{\equiv}$ is open. Let $U$ be an open set of $X$, and let $x \in U$. If $x \equiv x'$, then $U$ is also a neighbourhood of $x'$, so $x' \in U$. It follows that $q(x) \subseteq U$, and so
     %
     \begin{equation*}
-        \closure{\{x\}}
-            = \bigunion_{x' \in \closure{\{x\}}} q(x'),
+        U = \bigunion_{x \in U} q(x).
     \end{equation*}
     %
-    so $\closure{\{x\}}$ is saturated and so is its complement.
+    Hence $U$ is a union of $\equiv$-equivalence classes, and thus it is saturated. It follows that $q(U)$ is open, so $q$ is an open map.
 
-    Now assume that $q(x) \neq q(y)$. Without loss of generality we may assume that $x \not\in \closure{\{y\}}$, from which it follows that $q(x) \in q(\closure{\{y\}}^c)$. We furthermore have $q(y) \not\in q(\closure{\{y\}}^c)$, since $\closure{\{y\}}^c$ is a union of equivalence classes not containing $y$, and $q(\closure{\{y\}}^c)$ is the collection of these equivalence classes. Since $\closure{\{y\}}^c$ is an open saturated set, $q(\closure{\{y\}}^c)$ is a neighbourhood of $q(x)$ not containing $q(y)$.
+    Now assume that $x \not\equiv y$. Without loss of generality we may assume the existence of an element $U \in N_x \setminus N_y$. Since $q$ is open, $q(U)$ is a neighbourhood of $q(x)$ in $X/{\equiv}$. We claim that $q(y) \not\in q(U)$: If not, then since $U$ is a union of equivalence classes there is a $z \in U$ with $y \equiv z$. But then $y \in U$ which is a contradiction. Thus $X/{\equiv}$ is $T_0$.
 \end{proof}
 
-Notice that a topological space is $T_0$ if and only if $\closure{\{x\}} \neq \closure{\{y\}}$ whenever $x \neq y$: This follows since, say, $x$ has a neighbourhood that doesn't contain $y$, so the closure of $\{y\}$ does not contain $x$. Hence if $X$ is already $T_0$, the identification leaves $X$ unchanged. [To do: show that the $T_0$-identification is the smallest equivalence relation on $X$ that makes it $T_0$.]
+[To do: show that the $T_0$-identification is the smallest equivalence relation on $X$ that makes it $T_0$.]
 
 \begin{proposition}
-    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, if $\sim$ denotes the $T_0$-identification of $G$, then the $\sim$-equivalence classes are the cosets of $\closure{\{e\}}$.
-
-    It follows that the quotient group $G / \closure{\{e\}}$ is precisely the $T_0$-identification $G/{\sim}$ of $G$.
+    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, the $\equiv$-equivalence classes are precisely the left cosets of $\closure{\{e\}}$. It follows that the quotient group $G / \closure{\{e\}}$ is precisely the $T_0$-identification $G/{\equiv}$ of $G$.
 \end{proposition}
 
 \begin{proof}
     The subgroup $\closure{\{e\}}$ is the smallest closed subgroup of $G$, hence it is normal since otherwise intersecting it with one of its conjugates yields a strictly smaller closed subgroup.
 
-    It then suffices to show that, for $x,y \in G$, $x \sim y$ if and only if $x \closure{\{e\}} = y \closure{\{e\}}$. But this is clear since e.g. $x \closure{\{e\}} = \closure{\{x\}}$ by continuity of the multiplication on $G$.
+    It then suffices to show that, for $x,y \in G$, $x \equiv y$ if and only if $x \closure{\{e\}} = y \closure{\{e\}}$. But this is clear since e.g. $x \closure{\{e\}} = \closure{\{x\}}$ by continuity of multiplication on $G$.
 \end{proof}
 
-It is results like the above that lead to the general assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$.
+It is results like the above that lead to the general assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$. One might justify this on topological grounds by arguing that if the topology on $G$ is truly meant to respect the group structure on $G$, then elements of $G$ that are topologically indistinguishable should also be indistinguishable with respect to the group structure.
 
 
 \nocite{*}
