@@ -214,10 +214,43 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
             = q \bigl( \iota(q\preim(U)) \bigr).
     \end{equation*}
     %
-    Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open, since $q$ is open.
+    Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open since $q$ is open.
 \end{proof}
 
-We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup.
+We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. First we recall the $T_0$-identification of a topological space $X$: Define an equivalence relation $\sim$ on $X$ by letting $x \sim y$ if $\closure{\{x\}} = \closure{\{y\}}$.
+
+\begin{lemma}[$T_0$-identification]
+    Let $\sim$ be the $T_0$-identification of a topological space $X$. Then the quotient space $X/{\sim}$ is $T_0$.
+\end{lemma}
+
+\begin{proof}
+    First notice that $q(x) \subseteq \closure{\{x\}}$ for $x \in X$, since if $x \sim x'$ then $x' \in \closure{\{x'\}} = \closure{\{x\}}$. It follows that
+    %
+    \begin{equation*}
+        \closure{\{x\}}
+            = \bigunion_{x' \in \closure{\{x\}}} q(x'),
+    \end{equation*}
+    %
+    so $\closure{\{x\}}$ is saturated and so is its complement.
+
+    Now assume that $q(x) \neq q(y)$. Without loss of generality we may assume that $x \not\in \closure{\{y\}}$, from which it follows that $q(x) \in q(\closure{\{y\}}^c)$. We furthermore have $q(y) \not\in q(\closure{\{y\}}^c)$, since $\closure{\{y\}}^c$ is a union of equivalence classes not containing $y$, and $q(\closure{\{y\}}^c)$ is the collection of these equivalence classes. Since $\closure{\{y\}}^c$ is an open saturated set, $q(\closure{\{y\}}^c)$ is a neighbourhood of $q(x)$ not containing $q(y)$.
+\end{proof}
+
+Notice that a topological space is $T_0$ if and only if $\closure{\{x\}} \neq \closure{\{y\}}$ whenever $x \neq y$: This follows since, say, $x$ has a neighbourhood that doesn't contain $y$, so the closure of $\{y\}$ does not contain $x$. Hence if $X$ is already $T_0$, the identification leaves $X$ unchanged. [To do: show that the $T_0$-identification is the smallest equivalence relation on $X$ that makes it $T_0$.]
+
+\begin{proposition}
+    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. [We need that the closure of a subgroup is a subgroup.] Furthermore, if $\sim$ denotes the $T_0$-identification of $G$, then the $\sim$-equivalence classes are the cosets of $\closure{\{e\}}$.
+
+    It follows that the quotient group $G / \closure{\{e\}}$ is precisely the $T_0$-identification $G/{\sim}$ of $G$.
+\end{proposition}
+
+\begin{proof}
+    The subgroup $\closure{\{e\}}$ is the smallest closed subgroup of $G$, hence it is normal since otherwise intersecting it with one of its conjugates yields a strictly smaller closed subgroup.
+
+    It then suffices to show that, for $x,y \in G$, $x \sim y$ if and only if $x \closure{\{e\}} = y \closure{\{e\}}$. But this is clear since e.g. $x \closure{\{e\}} = \closure{\{x\}}$ by continuity of the multiplication on $G$.
+\end{proof}
+
+It is results like the above that lead to the general assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$.
 
 
 \nocite{*}
