@@ -80,7 +80,9 @@
 
 \chapter{Introduction}
 
-These purpose of these notes is to clarify some of the basic properties of topological groups. Most of the results below can be found in various forms in a variety of books, but I have not come across a resource that develops this theory in precisely this way. This is a shame, since the restrictions that the group structure puts on the topology can often be put in purely topological terms. One example is the $T_0$-identification of a topological group, as we will see below.
+These purpose of these notes is to clarify some of the basic properties of topological groups. We in particular hope to shed light on the reasonability of the common assumption that topological groups be Hausdorff.
+
+Most of the results below can be found in various forms in a variety of books (see the references), but I have not come across a resource that develops this theory in precisely this way. This is a shame, since the restrictions that the group structure puts on the topology can often be put in purely topological terms. One important example is the $T_0$-identification of a topological group, as we will see below.
 
 
 \chapter{Definitions and basic properties}
@@ -173,7 +175,7 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 
 \begin{lemma}
     \label{thm:symmetric_nhood_of_e}
-    Let $G$ be a topological group. If $U$ is a neighbourhood of the identity $e$, then there is a symmetric neighbourhood $V$ of $e$ such that $V V\inv \subseteq U$.
+    Let $G$ be a topological group. If $U$ is a neighbourhood of the identity $e$, then there is a symmetric neighbourhood $V$ of $e$ such that $VV \subseteq U$.
 \end{lemma}
 
 \begin{proof}
@@ -270,9 +272,11 @@ We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made 
 
 \subsection{The $T_0$-identification}
 
-Let $X$ be a topological space. We define an ordering on $X$ by letting $x \leq y$ if $x \in \closure{\{y\}}$ for $x,y \in X$. It is easy to show that $x \leq y$ if and only if $N_x \subseteq N_y$, where $N_x$ is the \emph{neighbourhood system} of $x$, i.e. the set of neighbourhoods of $x$. It is clear that $\leq$ is a preorder, and so it gives rise to an equivalence relation $\equiv$ defined such that $x \equiv y$ if $x \leq y$ and $y \leq x$. If $x \equiv y$, then we say that $x$ and $y$ are \emph{topologically indistinguishable} since then $x$ and $y$ have the same neighbourhoods.
+Let $X$ be a topological space. We define an ordering on $X$ called the \emph{specialisation preorder} by letting $x \leq y$ if $x \in \closure{\{y\}}$ for $x,y \in X$. It is clear that $\leq$ is in fact a preorder, and so it determines an equivalence relation $\equiv$; that is, $x \equiv y$ if and only if $x \leq y$ and $y \leq x$.
 
-It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is just equality, or in other words if $x$ and $y$ are topologically indistinguishable precisely when $x = y$. The quotient space $X/{\equiv}$ is called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, and it is indeed $T_0$:
+It is easy to show that $x \leq y$ if and only if $N_x \subseteq N_y$, where $N_x$ is the \emph{neighbourhood system} of $x$, i.e. the set of neighbourhoods of $x$.  If $x \equiv y$, then we say that $x$ and $y$ are \emph{topologically indistinguishable} since then $x$ and $y$ have the same neighbourhoods.
+
+It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, that is if $x$ and $y$ are topologically indistinguishable precisely when $x = y$. The quotient space $X/{\equiv}$ is called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, and it is indeed $T_0$:
 
 \begin{lemma}[$T_0$-identification]
     Let $X$ be a topological space, and let $q \colon X \to X/{\equiv}$ be the quotient map onto the $T_0$-identification of $X$. Then $q$ is an open map and $X/{\equiv}$ is $T_0$.
@@ -292,7 +296,7 @@ It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is just equal
 
 
 \begin{proposition}
-    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, the $\equiv$-equivalence classes are precisely the left cosets of $\closure{\{e\}}$. It follows that the quotient group $G / \closure{\{e\}}$ is precisely the $T_0$-identification $G/{\equiv}$ of $G$.
+    Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, the $\equiv$-equivalence classes are precisely the left cosets of $\closure{\{e\}}$. It follows that the quotient group $G / \closure{\{e\}}$ is just the $T_0$-identification $G/{\equiv}$ of $G$.
 \end{proposition}
 
 \begin{proof}
