@@ -169,7 +169,7 @@ We next remark that the assumption that $G$ be $T_1$ can be weakened:
 \end{proof}
 \footnotetext{If $X$ is a topological space and $A \subseteq X$, then we say that a set $N \subseteq X$ is a \emph{neighbourhood} of $A$ if there is an open set $U$ in $X$ such that $A \subseteq U \subseteq N$. The family of neighbourhoods of a set $A$ is called the \emph{neighbourhood filter of $A$} and is denoted $\nhoodfilter{A}$. If $A = \{x\}$ is a singleton we also write $\nhoodfilter{x}$ and call $N$ a neighbourhood of $x$.}
 
-Recall that a topological space $X$ is called \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets. Our next order of business is to show that any topological group is regular. Before proving this we need some terminology and a lemma:
+Recall that a topological space $X$ is called \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets.\footnote{In our terminology, a regular $T_1$-space would be called a \emph{$T_3$-space}.} Our next order of business is to show that any topological group is regular. Before proving this we need some terminology and a lemma:
 
 If $G$ is a topological group and $A \subseteq G$, then we write
 %
@@ -274,34 +274,13 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
     Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open since $q$ is open.
 \end{proof}
 
-We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. To do this justice we take a small detour:
+We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. To do this justice we first recall the \emph{$T_0$-identification} of a topological space $X$: The ordering $x \leq y$ defined by $x \in \closure{\{y\}}$ is called the \emph{specialisation preorder}, and it is easy to show that $x \leq y$ is equivalent to $\nhoodfilter{x} \subseteq \nhoodfilter{y}$. This order gives rise to an equivalence relation $\equiv$, and we say that two points $x,y \in X$ are \emph{topologically indistinguishable} if $x \equiv y$.
 
-\subsection{The $T_0$-identification}
+It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, and it is not difficult to show that the quotient space $X/{\equiv}$, called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, is indeed $T_0$. In fact, $\equiv$ is the most conservative equivalence relation $\sim$ such that $X/{\sim}$ is $T_0$, though we shall not need this fact. [reference to separation axiom notes]
 
-Let $X$ be a topological space. We define an ordering on $X$ called the \emph{specialisation preorder} by letting $x \leq y$ if $x \in \closure{\{y\}}$ for $x,y \in X$. It is clear that $\leq$ is in fact a preorder, and so it determines an equivalence relation $\equiv$; that is, $x \equiv y$ if and only if $x \leq y$ and $y \leq x$.
+When we apply this construction to the theory of topological groups, we see that the $T_0$-identification can be understood in terms of quotient groups:
 
-It is easy to show that $x \leq y$ if and only if $\nhoodfilter{x} \subseteq \nhoodfilter{y}$.  If $x \equiv y$, then we say that $x$ and $y$ are \emph{topologically indistinguishable} since then $x$ and $y$ have the same neighbourhoods.
-
-It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, that is if $x$ and $y$ are topologically indistinguishable precisely when $x = y$. The quotient space $X/{\equiv}$ is called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, and it is indeed $T_0$:
-
-\begin{lemma}[$T_0$-identification]
-    Let $X$ be a topological space, and let $q \colon X \to X/{\equiv}$ be the quotient map onto the $T_0$-identification of $X$. Then $q$ is an open map and $X/{\equiv}$ is $T_0$.
-\end{lemma}
-
-\begin{proof}
-    We first show that the quotient map $q \colon X \to X/{\equiv}$ is open. Let $U$ be an open set of $X$, and let $x \in U$. If $x \equiv x'$, then $U$ is also a neighbourhood of $x'$, so $x' \in U$. It follows that $q(x) \subseteq U$, and so
-    %
-    \begin{equation*}
-        U = \bigunion_{x \in U} q(x).
-    \end{equation*}
-    %
-    Hence $U$ is a union of $\equiv$-equivalence classes, and thus it is saturated. It follows that $q(U)$ is open, so $q$ is an open map.
-
-    Now assume that $x \not\equiv y$. Without loss of generality we may assume the existence of an element $U \in \nhoodfilter{x} \setminus \nhoodfilter{y}$. Since $q$ is open, $q(U)$ is a neighbourhood of $q(x)$ in $X/{\equiv}$. We claim that $q(y) \not\in q(U)$: If not, then since $U$ is a union of equivalence classes there is a $z \in U$ with $y \equiv z$. But then $y \in U$ which is a contradiction. Thus $X/{\equiv}$ is $T_0$.
-\end{proof}
-
-
-\begin{proposition}
+\begin{proposition}[$T_0$-identification of groups]
     Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, the $\equiv$-equivalence classes are precisely the left cosets of $\closure{\{e\}}$. It follows that the quotient group $G / \closure{\{e\}}$ is just the $T_0$-identification $G/{\equiv}$ of $G$.
 \end{proposition}
 
@@ -311,9 +290,13 @@ It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, t
     It then suffices to show that, for $x,y \in G$, $x \equiv y$ if and only if $x \closure{\{e\}} = y \closure{\{e\}}$. But this is clear since e.g. $x \closure{\{e\}} = \closure{\{x\}}$ by continuity of multiplication on $G$.
 \end{proof}
 
-It is results like the above that lead to the common assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$. One might justify this by arguing that if the topology and the group structure on $G$ are truly meant to be compatible, then elements of $G$ that are topologically indistinguishable should also be indistinguishable with respect to the group structure.
+It is results like the above that lead to the common assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$. One might justify this by arguing as follows: If a topology on a set $X$ is to respect the set structure, then there must be a difference between two distinct points that is captured by the topology. But this difference must lie in which neighbourhoods each points has; the topology simply carries no further information than this. So if $x \neq y$, then it must be the case that $x \not\equiv y$, i.e. that $X$ is $T_0$.
 
-There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}.
+On the other hand, a \emph{group} structure on a set $G$ certainly respects the set structure, in that different elements may give rise to different actions: just let $G$ act on itself by multiplication.
+
+Thus if the topology and group structure on a topological group are to be truly compatible, then the topology must respect the underlying set structure, i.e. be $T_0$.
+
+There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [And my own notes]
 
 
 \nocite{*}
