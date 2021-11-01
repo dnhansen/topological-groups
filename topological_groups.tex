@@ -257,11 +257,12 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
 If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual group structure on the (algebraic) quotient group $G/N$ is compatible with the quotient topology. This is indeed the case:
 
 \begin{theorem}[Topological quotient groups]
+    \label{thm:topological-quotient-group}
     If $N$ is a normal subgroup of a topological group $G$, then $G/N$ is a topological group.
 \end{theorem}
 
 \begin{proof}
-    If $x,y \in G$ and $U$ is a neighbourhood of $(xN)(yN) = xyN$ in $G/N$, then continuity of multiplication in $G$ at $(x,y)$ implies the existence of neighbourhoods $V$ and $W$ of $x$ and $y$ respectively, such that $VW \subseteq q\preim(U)$. Since $q$ is surjective it follows that $q(V) q(W) \subseteq U$, and because $q$ is also open $q(V)$ and $q(W)$ are neighbourhoods of $xN$ and $yH$. Hence multiplication is continuous.
+    If $x,y \in G$ and $U$ is a neighbourhood of $(xN)(yN) = xyN$ in $G/N$, then continuity of multiplication in $G$ at $(x,y)$ implies the existence of neighbourhoods $V$ and $W$ of $x$ and $y$ respectively, such that $VW \subseteq q\preim(U)$. Since $q$ is surjective it follows that $q(V) q(W) \subseteq U$, and because $q$ is also open $q(V)$ and $q(W)$ are neighbourhoods of $xN$ and $yN$. Hence multiplication is continuous.
 
     Since the inversion map $\iota$ on $G/N$ is bijective, it suffices to show that it is open. Let $U \subseteq G/N$ be open and notice that, since $q$ is surjective,
     %
@@ -294,9 +295,79 @@ It is results like the above that lead to the common assumption that topological
 
 On the other hand, a \emph{group} structure on a set $G$ certainly respects the set structure, in that different elements may give rise to different actions: just let $G$ act on itself by multiplication.
 
-Thus if the topology and group structure on a topological group are to be truly compatible, then the topology must respect the underlying set structure, i.e. be $T_0$.
+Thus if the topology and group structure on a topological group are to be truly compatible, then the topology must respect the underlying set structure, i.e. be $T_0$. In the sequel we shall, however, resist assuming that topological groups are $T_0$ as far as possible.
 
 There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [And my own notes]
+
+
+\chapter{Topological vector spaces}
+
+The purpose of these notes is not to give a complete discussion of either topological groups or vector spaces. In this section we will thus focus on the very basic aspect of topological vector spaces and refer the reader to the literature for further developments.
+
+[Definition of TVS.]
+
+\section{Quotient spaces}
+
+We begin by reviewing the basic construction and properties of quotients of general \emph{algebraic} vector spaces. So let $X$ be a vector space over a field $k$, and let $S$ be a subspace of $X$. Then $X$ is in particular an abelian group under addition, and $S$ is a subgroup. We may then construct the quotient \emph{group} $X/S$ whose elements are the cosets $x + S$ for $x \in X$.
+
+The equivalence relation defining the group is also compatible with the scalar multiplication on $X$: For if $x,y \in X$ and $x - y \in S$, then for $r \in k$ we have
+%
+\begin{equation*}
+    rx - ry
+        = r(x - y) \in S,
+\end{equation*}
+%
+since $S$ is a subspace. Thus $rx + S = ry + S$, and we may define multiplication by $r \in k$ in $X/S$ by $r(x + S) = rx + S$. It is routine to check that this makes $X/S$ into a $k$-vector space, called the \emph{quotient space} of $X$ by $S$. It is easy to see that the quotient map $\pi \colon X \to X/S$ is linear, and that $\ker \pi = S$.
+
+\newcommand{\setF}{\mathbb{F}}
+
+We now specialise to topological vector spaces. Let $X$ be a topological vector space over the field $\setF$. If $S$ is a subspace of $X$, then recall that we give $X/S$ the quotient topology coinduced by the quotient map $\pi$, and that $\pi$ is open.
+
+
+\begin{theorem}[Topological quotient spaces]
+    Let $X$ be a topological vector space, and let $S$ be a subspace. Then $X/S$ is a topological vector space.
+\end{theorem}
+
+\begin{proof}
+    By \cref{thm:topological-quotient-group} it suffices to show that scalar multiplication is continuous. Let $x \in X$ and $\alpha \in \setF$, and let $U$ be a neighbourhood of $\alpha x + S$ in $X/S$. Continuity of scalar multiplication in $S$ at $(\alpha, x)$ implies the existence of neighbourhoods $V \subseteq \setF$ and $W \subseteq X$ of $\alpha$ and $x$ respectively, such that $VW \subseteq \pi\preim(U)$. Since $\pi$ is surjective and linear, it follows that $V \pi(W) \subseteq U$, and since $\pi$ is also open $\pi(W)$ is a neighbourhood of $x + S$. Hence scalar multiplication in $X/S$ is continuous.
+\end{proof}
+%
+Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
+
+Next we consider metrics: A pseudo-metric $\rho$ on a vector space $X$ is called \emph{(translation) invariant} if $\rho(x+z,y+z) = \rho(x,y)$ for all $x,y,z \in X$. It is a theorem that for any metrisable (indeed any first-countable) topological vector space there exists an invariant metric compatible with the topology, see e.g. \textcite[Theorem~1.24]{rudinfunctional}.
+
+Assume that $X$ is metrisable by an invariant metric $\rho$. Define $\tilde{\rho} \colon X/S \times X/S \to [0,\infty)$ by
+%
+\begin{equation*}
+    \tilde{\rho}(x + S, y + S)
+        = \inf_{s \in S} \rho(x-y, s).
+\end{equation*}
+
+
+\begin{proposition}[Metric on quotient space]
+    The map $\tilde{\rho}$ is an invariant pseudo-metric on $X/S$ compatible with the quotient topology. Furthermore, $\tilde{\rho}$ is a metric if and only if $S$ is closed.
+\end{proposition}
+
+\begin{proof}
+    It is clear that $\tilde{\rho}$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in X$. For any $s \in S$ we find that
+    %
+    \begin{align*}
+        \rho(x-z, 2s)
+            &\leq \rho(x-z, s+y-z) + \rho(s+y-z,2s) \\
+            &= \rho(x-y, s) + \rho(x-z, s).
+    \end{align*}
+    %
+    Notice that as $s$ runs through $S$, so does $2s$ and vice-versa. By taking infima over $s \in S$ on both sides we thus get
+    %
+    \begin{equation*}
+        \tilde{\rho}(x,z)
+            \leq \tilde{\rho}(x,y) + \tilde{\rho}(y,z)
+    \end{equation*}
+    %
+    as desired. It is clear from the definition that $\tilde{\rho}$ is invariant.
+
+    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $S$ is closed.
+\end{proof}
 
 
 \nocite{*}
