@@ -334,7 +334,7 @@ We now specialise to topological vector spaces. Let $X$ be a topological vector 
 %
 Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
 
-Next we consider metrics: A pseudo-metric $\rho$ on a vector space $X$ is called \emph{(translation) invariant} if $\rho(x+z,y+z) = \rho(x,y)$ for all $x,y,z \in X$. It is a theorem that for any metrisable (indeed any first-countable) topological vector space there exists an invariant metric compatible with the topology, see e.g. \textcite[Theorem~1.24]{rudinfunctional}.
+Next we consider metrics: A pseudo-metric $\rho$ on a vector space $X$ is called \emph{(translation) invariant} if $\rho(x+z,y+z) = \rho(x,y)$ for all $x,y,z \in X$. It is obvious that the pseudo-metric induced by a semi-norm is invariant. It is a theorem that for any metrisable (indeed any first-countable) topological vector space there exists an invariant metric compatible with the topology, see e.g. \textcite[Theorem~1.24]{rudinfunctional}.
 
 Assume that $X$ is metrisable by an invariant metric $\rho$. Define $\tilde{\rho} \colon X/S \times X/S \to [0,\infty)$ by
 %
@@ -345,6 +345,7 @@ Assume that $X$ is metrisable by an invariant metric $\rho$. Define $\tilde{\rho
 
 
 \begin{proposition}[Metric on quotient space]
+    \label{thm:quotient-space-metric}
     The map $\tilde{\rho}$ is an invariant pseudo-metric on $X/S$ compatible with the quotient topology. Furthermore, $\tilde{\rho}$ is a metric if and only if $S$ is closed.
 \end{proposition}
 
@@ -366,7 +367,53 @@ Assume that $X$ is metrisable by an invariant metric $\rho$. Define $\tilde{\rho
     %
     as desired. It is clear from the definition that $\tilde{\rho}$ is invariant.
 
+    [Quotient topology -- Rudin uses local bases, perhaps add something about those for groups?]
+
     Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $S$ is closed.
+\end{proof}
+
+
+We next consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
+%
+\begin{equation*}
+    \norm{x + S}_S
+        = \inf_{s \in S} \norm{x - s}.
+\end{equation*}
+
+\begin{proposition}[Quotient norm]
+    The map $\norm{\,\cdot\,}_S$ is a semi-norm on $X/S$. If $\rho$ is the pseudo-metric induced by the semi-norm on $X$ and $\tilde{\rho}$ is the corresponding pseudo-metric on $X/S$, then
+    %
+    \begin{equation*}
+        \norm{x + S}_S = \tilde{\rho}(x + S, 0).
+    \end{equation*}
+    %
+    In particular, $\tilde{\rho}$ is the pseudo-metric induced by $\norm{\,\cdot\,}_S$, and $\norm{\,\cdot\,}_S$ is compatible with the quotient topology. Furthermore, it is a norm if and only if $S$ is closed.
+\end{proposition}
+
+\begin{proof}
+    It is clear that $\norm{\,\cdot\,}_S$ is positive and absolutely homogeneous. We next prove the triangle inequality:
+    
+    Let $\rho$ be the metric induced by the semi-norm on $X$, i.e. $\rho(y,z) = \norm{y - z}$ for $y,z \in X$. Notice that since $\rho$ is invariant, for $x \in X$,
+    %
+    \begin{align*}
+        \norm{x + S}_S
+            &= \inf_{s \in S} \norm{x - s}
+             = \inf_{s \in S} \rho(x - s, 0) \\
+            &= \inf_{s \in S} \rho(x - 0, s)
+             = \tilde{\rho}(x + S, 0).
+    \end{align*}
+    %
+    If also $y \in X$, then it follows that
+    %
+    \begin{align*}
+        \norm{(x + S) + (y + S)}_S
+            &= \tilde{\rho}((x + S) + (y + S), 0)
+             = \tilde{\rho}(x + S, -y + S) \\
+            &\leq \tilde{\rho}(x + S, 0) + \tilde{\rho}(0, -y + S)
+             = \norm{x + S}_S + \norm{y + S}_S,
+    \end{align*}
+    %
+    so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:quotient-space-metric}.
 \end{proof}
 
 
