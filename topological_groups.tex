@@ -300,6 +300,48 @@ Thus if the topology and group structure on a topological group are to be truly 
 There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [And my own notes]
 
 
+\section{Metrics}
+
+Next we consider metrics: A pseudo-metric $\rho$ on a group $G$ is called \emph{(translation) invariant} if $\rho(xz,yz) = \rho(x,y)$ for all $x,y,z \in G$.
+
+Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\tilde{\rho} \colon G/H \times G/H \to [0,\infty)$ by
+%
+\begin{equation*}
+    \tilde{\rho}(xH, yH)
+        = \inf_{h \in H} \rho(xy\inv, h).
+\end{equation*}
+
+
+\begin{proposition}[Metric on coset space]
+    \label{thm:quotient-space-metric}
+    The map $\tilde{\rho}$ is an pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\tilde{\rho}$ is invariant. Furthermore, $\tilde{\rho}$ is a metric if and only if $H$ is closed.
+\end{proposition}
+
+\begin{proof}
+    It is clear that $\tilde{\rho}$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
+    %
+    \begin{align*}
+        \tilde{\rho}(x,z)
+            &\leq \rho(xz\inv, hh') \\
+            &\leq \rho(xz\inv, hyz\inv) + \rho(hyz\inv, hh') \\
+            &= \rho(xy\inv, h) + \rho(xz\inv, h').
+    \end{align*}
+    %
+    By taking infima over $h,h' \in H$ on the right-hand side we thus get
+    %
+    \begin{equation*}
+        \tilde{\rho}(x,z)
+            \leq \tilde{\rho}(x,y) + \tilde{\rho}(y,z)
+    \end{equation*}
+    %
+    as desired. It is clear from the definition that $\tilde{\rho}$ is invariant if $H$ is normal.
+
+    [Quotient topology -- Rudin uses local bases, perhaps add something about those for groups?]
+
+    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $S$ is closed.
+\end{proof}
+
+
 \chapter{Topological vector spaces}
 
 The purpose of these notes is not to give a complete discussion of either topological groups or vector spaces. In this section we will thus focus on the very basic aspect of topological vector spaces and refer the reader to the literature for further developments.
@@ -334,43 +376,6 @@ We now specialise to topological vector spaces. Let $X$ be a topological vector 
 %
 Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
 
-Next we consider metrics: A pseudo-metric $\rho$ on a vector space $X$ is called \emph{(translation) invariant} if $\rho(x+z,y+z) = \rho(x,y)$ for all $x,y,z \in X$. It is obvious that the pseudo-metric induced by a semi-norm is invariant. It is a theorem that for any metrisable (indeed any first-countable) topological vector space there exists an invariant metric compatible with the topology, see e.g. \textcite[Theorem~1.24]{rudinfunctional}.
-
-Assume that $X$ is metrisable by an invariant metric $\rho$. Define $\tilde{\rho} \colon X/S \times X/S \to [0,\infty)$ by
-%
-\begin{equation*}
-    \tilde{\rho}(x + S, y + S)
-        = \inf_{s \in S} \rho(x-y, s).
-\end{equation*}
-
-
-\begin{proposition}[Metric on quotient space]
-    \label{thm:quotient-space-metric}
-    The map $\tilde{\rho}$ is an invariant pseudo-metric on $X/S$ compatible with the quotient topology. Furthermore, $\tilde{\rho}$ is a metric if and only if $S$ is closed.
-\end{proposition}
-
-\begin{proof}
-    It is clear that $\tilde{\rho}$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in X$. For any $s \in S$ we find that
-    %
-    \begin{align*}
-        \rho(x-z, 2s)
-            &\leq \rho(x-z, s+y-z) + \rho(s+y-z,2s) \\
-            &= \rho(x-y, s) + \rho(x-z, s).
-    \end{align*}
-    %
-    Notice that as $s$ runs through $S$, so does $2s$ and vice-versa. By taking infima over $s \in S$ on both sides we thus get
-    %
-    \begin{equation*}
-        \tilde{\rho}(x,z)
-            \leq \tilde{\rho}(x,y) + \tilde{\rho}(y,z)
-    \end{equation*}
-    %
-    as desired. It is clear from the definition that $\tilde{\rho}$ is invariant.
-
-    [Quotient topology -- Rudin uses local bases, perhaps add something about those for groups?]
-
-    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $S$ is closed.
-\end{proof}
 
 
 We next consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
