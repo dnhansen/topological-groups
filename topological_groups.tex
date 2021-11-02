@@ -307,38 +307,64 @@ Next we consider metrics: A pseudo-metric $\rho$ on a group $G$ is called \emph{
 Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\tilde{\rho} \colon G/H \times G/H \to [0,\infty)$ by
 %
 \begin{equation*}
-    \tilde{\rho}(xH, yH)
-        = \inf_{h \in H} \rho(xy\inv, h).
+    \tilde{\rho}(q(x), q(y))
+        = \inf_{h \in H} \rho(y\inv x, h).
 \end{equation*}
+%
+This is well-defined, since if $q(x) = q(x')$ and $q(y) = q(y')$, then $x\inv x' = h_1$ and $y\inv y' = h_2$ for appropriate choices of $h_1,h_2 \in H$, and so
+%
+\begin{equation*}
+    \rho(y\inv x, h)
+        = \rho((y')\inv x', h_2\inv h h_1).
+\end{equation*}
+%
+We show below that $\tilde{\rho}$ is a pseudo-metric, and we call it the \emph{quotient metric} on $G/H$.
+
+We can interpret the quotient metric as follows: We think of the elements of a group as invertible transformations. Since $H$ is the identity in $G/H$, $\inf_{h \in H} \rho(y\inv x, h)$ measures the distance from $y\inv x$ to the closest transformation that \textquote{does nothing}. If this number is small, then $y\inv x$ can be thought of \textquote{doing almost nothing}. That is, first performing the transformation $x$ and then undoing the transformation $y$ we do almost nothing, so $x$ and $y$ must be almost the same transformation.
+
+This kind of reasoning also shows why we are only interested in invariant metrics: Otherwise $y\inv x$ being close to $e$ would not immediately imply that $x$ and $y$ are close, so a non-invariant metric would not respect the interpretation of group elements as transformations.
 
 
-\begin{proposition}[Metric on coset space]
-    \label{thm:quotient-space-metric}
-    The map $\tilde{\rho}$ is an pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\tilde{\rho}$ is invariant. Furthermore, $\tilde{\rho}$ is a metric if and only if $H$ is closed.
+\begin{proposition}[Quotient metric]
+    \label{thm:coset-space-metric}
+    The map $\tilde{\rho}$ is a pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\tilde{\rho}$ is invariant. Furthermore, $\tilde{\rho}$ is a metric if and only if $H$ is closed.
 \end{proposition}
+
+\newcommand{\calB}{\mathcal{B}}
 
 \begin{proof}
     It is clear that $\tilde{\rho}$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
     %
     \begin{align*}
-        \tilde{\rho}(x,z)
-            &\leq \rho(xz\inv, hh') \\
-            &\leq \rho(xz\inv, hyz\inv) + \rho(hyz\inv, hh') \\
-            &= \rho(xy\inv, h) + \rho(xz\inv, h').
+        \tilde{\rho}(q(x), q(z))
+            &\leq \rho(z\inv x, hh') \\
+            &\leq \rho(z\inv x, z\inv yh') + \rho(z\inv yh', hh') \\
+            &= \rho(y\inv x, h') + \rho(z\inv y, h).
     \end{align*}
     %
     By taking infima over $h,h' \in H$ on the right-hand side we thus get
     %
     \begin{equation*}
-        \tilde{\rho}(x,z)
-            \leq \tilde{\rho}(x,y) + \tilde{\rho}(y,z)
+        \tilde{\rho}(q(x),q(z))
+            \leq \tilde{\rho}(q(x),q(y)) + \tilde{\rho}(q(y),q(z))
     \end{equation*}
     %
     as desired. It is clear from the definition that $\tilde{\rho}$ is invariant if $H$ is normal.
 
-    [Quotient topology -- Rudin uses local bases, perhaps add something about those for groups?]
+    Next we show that $\tilde{\rho}$ is compatible with the quotient topology on $G/H$. Let $\calB$ be a local basis at $x \in G$. We claim that $q(\calB)$ is a local basis at $q(x)$. If $U \subseteq G/H$ is a neighbourhood of $q(x)$, then $q\preim(U)$ is a neighbourhood of $x$. Thus there is a basic neighbourhood $B \in \calB$ such that $B \subseteq q\preim(U)$. Since $q$ is open, it follows that $q(B) \subseteq U$ is a neighbourhood of $q(x)$.
 
-    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $S$ is closed.
+    Now we claim that $\rho(x,y) < r$ if and only if $\tilde{\rho}(q(x),q(y)) < r$, for $r > 0$. The latter is true precisely when $\rho(xy\inv, h) < r$ for all $h \in H$, so in particular when $h = e$, i.e. when $\rho(x,y) < r$. Conversely, if $\rho(x,y) < r$ then
+    %
+    \begin{equation*}
+        \tilde{\rho}(q(x),q(y))
+            \leq \rho(xy\inv, e)
+            = \rho(x,y)
+            < r.
+    \end{equation*}
+    %
+    Fix $x \in G$ and notice that $\set{B_\rho(x,r)}{r > 0}$ is a local basis at $x$. Since $q(B_\rho(x,r)) = B_{\tilde{\rho}}(q(x),r)$ by the argument above, the set $\set{B_{\tilde{\rho}}(q(x),r)}{r > 0}$ is a local basis at $q(x)$. Hence $\tilde{\rho}$ is compatible with the topology on $G/H$.
+
+    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $H$ is closed.
 \end{proof}
 
 
@@ -418,7 +444,7 @@ We next consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define 
              = \norm{x + S}_S + \norm{y + S}_S,
     \end{align*}
     %
-    so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:quotient-space-metric}.
+    so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:coset-space-metric}.
 \end{proof}
 
 
