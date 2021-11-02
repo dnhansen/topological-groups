@@ -304,10 +304,10 @@ There is more to say about the $T_0$-identification that is not pertinent to thi
 
 Next we consider metrics: A pseudo-metric $\rho$ on a group $G$ is called \emph{(translation) invariant} if $\rho(xz,yz) = \rho(x,y)$ for all $x,y,z \in G$.
 
-Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\tilde{\rho} \colon G/H \times G/H \to [0,\infty)$ by
+Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\rho_H \colon G/H \times G/H \to [0,\infty)$ by
 %
 \begin{equation*}
-    \tilde{\rho}(q(x), q(y))
+    \rho_H(q(x), q(y))
         = \inf_{h \in H} \rho(y\inv x, h).
 \end{equation*}
 %
@@ -318,7 +318,7 @@ This is well-defined, since if $q(x) = q(x')$ and $q(y) = q(y')$, then $x\inv x'
         = \rho((y')\inv x', h_2\inv h h_1).
 \end{equation*}
 %
-We show below that $\tilde{\rho}$ is a pseudo-metric, and we call it the \emph{quotient metric} on $G/H$.
+We show below that $\rho_H$ is a pseudo-metric, and we call it the \emph{quotient metric} on $G/H$.
 
 We can interpret the quotient metric as follows: We think of the elements of a group as invertible transformations. Since $H$ is the identity in $G/H$, $\inf_{h \in H} \rho(y\inv x, h)$ measures the distance from $y\inv x$ to the closest transformation that \textquote{does nothing}. If this number is small, then $y\inv x$ can be thought of \textquote{doing almost nothing}. That is, first performing the transformation $x$ and then undoing the transformation $y$ we do almost nothing, so $x$ and $y$ must be almost the same transformation.
 
@@ -327,16 +327,16 @@ This kind of reasoning also shows why we are only interested in invariant metric
 
 \begin{proposition}[Quotient metric]
     \label{thm:coset-space-metric}
-    The map $\tilde{\rho}$ is a pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\tilde{\rho}$ is invariant. Furthermore, $\tilde{\rho}$ is a metric if and only if $H$ is closed.
+    The map $\rho_H$ is a pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\rho_H$ is invariant. Furthermore, $\rho_H$ is a metric if and only if $H$ is closed.
 \end{proposition}
 
 \newcommand{\calB}{\mathcal{B}}
 
 \begin{proof}
-    It is clear that $\tilde{\rho}$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
+    It is clear that $\rho_H$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
     %
     \begin{align*}
-        \tilde{\rho}(q(x), q(z))
+        \rho_H(q(x), q(z))
             &\leq \rho(z\inv x, hh') \\
             &\leq \rho(z\inv x, z\inv yh') + \rho(z\inv yh', hh') \\
             &= \rho(y\inv x, h') + \rho(z\inv y, h).
@@ -345,24 +345,24 @@ This kind of reasoning also shows why we are only interested in invariant metric
     By taking infima over $h,h' \in H$ on the right-hand side we thus get
     %
     \begin{equation*}
-        \tilde{\rho}(q(x),q(z))
-            \leq \tilde{\rho}(q(x),q(y)) + \tilde{\rho}(q(y),q(z))
+        \rho_H(q(x),q(z))
+            \leq \rho_H(q(x),q(y)) + \rho_H(q(y),q(z))
     \end{equation*}
     %
-    as desired. It is clear from the definition that $\tilde{\rho}$ is invariant if $H$ is normal.
+    as desired. It is clear from the definition that $\rho_H$ is invariant if $H$ is normal.
 
-    Next we show that $\tilde{\rho}$ is compatible with the quotient topology on $G/H$. Let $\calB$ be a local basis at $x \in G$. We claim that $q(\calB)$ is a local basis at $q(x)$. If $U \subseteq G/H$ is a neighbourhood of $q(x)$, then $q\preim(U)$ is a neighbourhood of $x$. Thus there is a basic neighbourhood $B \in \calB$ such that $B \subseteq q\preim(U)$. Since $q$ is open, it follows that $q(B) \subseteq U$ is a neighbourhood of $q(x)$.
+    Next we show that $\rho_H$ is compatible with the quotient topology on $G/H$. Let $\calB$ be a local basis at $x \in G$. We claim that $q(\calB)$ is a local basis at $q(x)$. If $U \subseteq G/H$ is a neighbourhood of $q(x)$, then $q\preim(U)$ is a neighbourhood of $x$. Thus there is a basic neighbourhood $B \in \calB$ such that $B \subseteq q\preim(U)$. Since $q$ is open, it follows that $q(B) \subseteq U$ is a neighbourhood of $q(x)$.
 
-    Now we claim that $\rho(x,y) < r$ if and only if $\tilde{\rho}(q(x),q(y)) < r$, for $r > 0$. The latter is true precisely when $\rho(xy\inv, h) < r$ for all $h \in H$, so in particular when $h = e$, i.e. when $\rho(x,y) < r$. Conversely, if $\rho(x,y) < r$ then
+    Now we claim that $\rho(x,y) < r$ if and only if $\rho_H(q(x),q(y)) < r$, for $r > 0$. The latter is true precisely when $\rho(xy\inv, h) < r$ for all $h \in H$, so in particular when $h = e$, i.e. when $\rho(x,y) < r$. Conversely, if $\rho(x,y) < r$ then
     %
     \begin{equation*}
-        \tilde{\rho}(q(x),q(y))
+        \rho_H(q(x),q(y))
             \leq \rho(xy\inv, e)
             = \rho(x,y)
             < r.
     \end{equation*}
     %
-    Fix $x \in G$ and notice that $\set{B_\rho(x,r)}{r > 0}$ is a local basis at $x$. Since $q(B_\rho(x,r)) = B_{\tilde{\rho}}(q(x),r)$ by the argument above, the set $\set{B_{\tilde{\rho}}(q(x),r)}{r > 0}$ is a local basis at $q(x)$. Hence $\tilde{\rho}$ is compatible with the topology on $G/H$.
+    Fix $x \in G$ and notice that $\set{B_\rho(x,r)}{r > 0}$ is a local basis at $x$. Since $q(B_\rho(x,r)) = B_{\rho_H}(q(x),r)$ by the argument above, the set $\set{B_{\rho_H}(q(x),r)}{r > 0}$ is a local basis at $q(x)$. Hence $\rho_H$ is compatible with the topology on $G/H$.
 
     Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $H$ is closed.
 \end{proof}
@@ -376,7 +376,7 @@ The purpose of these notes is not to give a complete discussion of either topolo
 
 \section{Quotient spaces}
 
-We begin by reviewing the basic construction and properties of quotients of general \emph{algebraic} vector spaces. So let $X$ be a vector space over a field $k$, and let $S$ be a subspace of $X$. Then $X$ is in particular an abelian group under addition, and $S$ is a subgroup. We may then construct the quotient \emph{group} $X/S$ whose elements are the cosets $x + S$ for $x \in X$.
+We begin by reviewing the basic construction and properties of quotients of general \emph{algebraic} vector spaces. So let $X$ be a vector space over a field $k$, and let $S$ be a subspace of $X$. Then $X$ is in particular an abelian group under addition, and $S$ is a subgroup. We may then construct the quotient \emph{group} $X/S$ whose elements are the cosets $x + S$ for $x \in X$. Let $\pi \colon X \to X/S$, so that $\pi(x) = x + S$.
 
 The equivalence relation defining the group is also compatible with the scalar multiplication on $X$: For if $x,y \in X$ and $x - y \in S$, then for $r \in k$ we have
 %
@@ -385,7 +385,7 @@ The equivalence relation defining the group is also compatible with the scalar m
         = r(x - y) \in S,
 \end{equation*}
 %
-since $S$ is a subspace. Thus $rx + S = ry + S$, and we may define multiplication by $r \in k$ in $X/S$ by $r(x + S) = rx + S$. It is routine to check that this makes $X/S$ into a $k$-vector space, called the \emph{quotient space} of $X$ by $S$. It is easy to see that the quotient map $\pi \colon X \to X/S$ is linear, and that $\ker \pi = S$.
+since $S$ is a subspace. Thus $\pi(rx) = \pi(ry)$, and we may define multiplication by $r \in k$ in $X/S$ by $r \pi(x) = \pi(rx)$. It is routine to check that this makes $X/S$ into a $k$-vector space, called the \emph{quotient space} of $X$ by $S$. It is easy to see that $\pi$ is linear, and that $\ker \pi = S$.
 
 \newcommand{\setF}{\mathbb{F}}
 
@@ -397,28 +397,27 @@ We now specialise to topological vector spaces. Let $X$ be a topological vector 
 \end{theorem}
 
 \begin{proof}
-    By \cref{thm:topological-quotient-group} it suffices to show that scalar multiplication is continuous. Let $x \in X$ and $\alpha \in \setF$, and let $U$ be a neighbourhood of $\alpha x + S$ in $X/S$. Continuity of scalar multiplication in $S$ at $(\alpha, x)$ implies the existence of neighbourhoods $V \subseteq \setF$ and $W \subseteq X$ of $\alpha$ and $x$ respectively, such that $VW \subseteq \pi\preim(U)$. Since $\pi$ is surjective and linear, it follows that $V \pi(W) \subseteq U$, and since $\pi$ is also open $\pi(W)$ is a neighbourhood of $x + S$. Hence scalar multiplication in $X/S$ is continuous.
+    By \cref{thm:topological-quotient-group} it suffices to show that scalar multiplication is continuous. Let $x \in X$ and $\alpha \in \setF$, and let $U$ be a neighbourhood of $\pi(\alpha x)$ in $X/S$. Continuity of scalar multiplication in $S$ at $(\alpha, x)$ implies the existence of neighbourhoods $V \subseteq \setF$ and $W \subseteq X$ of $\alpha$ and $x$ respectively, such that $VW \subseteq \pi\preim(U)$. Since $\pi$ is surjective and linear, it follows that $V \pi(W) \subseteq U$, and since $\pi$ is also open $\pi(W)$ is a neighbourhood of $\pi(x)$. Hence scalar multiplication in $X/S$ is continuous.
 \end{proof}
 %
 Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
 
 
-
-We next consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
+We have already considered quotient metrics on arbitrary topological groups. Next we consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
 %
 \begin{equation*}
-    \norm{x + S}_S
+    \norm{\pi(x)}_S
         = \inf_{s \in S} \norm{x - s}.
 \end{equation*}
 
 \begin{proposition}[Quotient norm]
-    The map $\norm{\,\cdot\,}_S$ is a semi-norm on $X/S$. If $\rho$ is the pseudo-metric induced by the semi-norm on $X$ and $\tilde{\rho}$ is the corresponding pseudo-metric on $X/S$, then
+    The map $\norm{\,\cdot\,}_S$ is a semi-norm on $X/S$. If $\rho$ is the pseudo-metric induced by the semi-norm on $X$ and $\rho_S$ is the corresponding quotient metric on $X/S$, then
     %
     \begin{equation*}
-        \norm{x + S}_S = \tilde{\rho}(x + S, 0).
+        \norm{\pi(x)}_S = \rho_S(\pi(x), 0).
     \end{equation*}
     %
-    In particular, $\tilde{\rho}$ is the pseudo-metric induced by $\norm{\,\cdot\,}_S$, and $\norm{\,\cdot\,}_S$ is compatible with the quotient topology. Furthermore, it is a norm if and only if $S$ is closed.
+    In particular, $\rho_S$ is the pseudo-metric induced by $\norm{\,\cdot\,}_S$, and $\norm{\,\cdot\,}_S$ is compatible with the quotient topology. Furthermore, it is a norm if and only if $S$ is closed.
 \end{proposition}
 
 \begin{proof}
@@ -427,21 +426,21 @@ We next consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define 
     Let $\rho$ be the metric induced by the semi-norm on $X$, i.e. $\rho(y,z) = \norm{y - z}$ for $y,z \in X$. Notice that since $\rho$ is invariant, for $x \in X$,
     %
     \begin{align*}
-        \norm{x + S}_S
+        \norm{\pi(x)}_S
             &= \inf_{s \in S} \norm{x - s}
              = \inf_{s \in S} \rho(x - s, 0) \\
             &= \inf_{s \in S} \rho(x - 0, s)
-             = \tilde{\rho}(x + S, 0).
+             = \rho_S(\pi(x), 0).
     \end{align*}
     %
     If also $y \in X$, then it follows that
     %
     \begin{align*}
-        \norm{(x + S) + (y + S)}_S
-            &= \tilde{\rho}((x + S) + (y + S), 0)
-             = \tilde{\rho}(x + S, -y + S) \\
-            &\leq \tilde{\rho}(x + S, 0) + \tilde{\rho}(0, -y + S)
-             = \norm{x + S}_S + \norm{y + S}_S,
+        \norm{\pi(x) + \pi(y)}_S
+            &= \rho_S(\pi(x) + \pi(y), 0)
+             = \rho_S(\pi(x), \pi(-y)) \\
+            &\leq \rho_S(\pi(x), 0) + \rho_S(0, \pi(-y))
+             = \norm{\pi(x)}_S + \norm{\pi(y)}_S,
     \end{align*}
     %
     so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:coset-space-metric}.
