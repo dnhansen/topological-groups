@@ -113,7 +113,7 @@ We begin by collecting some basic properties of topological groups:
     \end{enumprop}
 \end{proposition}
 %
-As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption in \subcref{enum:elements-of-closure-commute} can be weakened to just $T_0$. However, the assumption cannot be dropped: Any nonabelian group is a topological group in the trivial topology, but then the closure of the trivial subgroup is the whole group and hence not abelian.
+As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption in \subcref{enum:elements-of-closure-commute} can be weakened to just $T_0$. However, this assumption cannot be dropped: Any non-trivial, nonabelian group is a topological group in the trivial topology, but then the closure of the trivial subgroup is the whole group and hence not abelian.
 
 \begin{proof}
     We give two proofs of \subcref{enum:closure_of_product}. Since the multiplication $\mu \colon G \prod G \to G$ is continuous we get
@@ -236,7 +236,7 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 
 \section{General properties of coset spaces}
 
-If $H$ is a subgroup of a topological group $G$, we denote by $G/H$ the set of left cosets of $H$. Let $q \colon G \to G/H$ be the quotient map and equip $G/H$ with the quotient topology. We call $G/H$ a \emph{coset space} of $G$.
+If $H$ is a subgroup of a topological group $G$, we denote by $G/H$ the set of left cosets of $H$. Let $q \colon G \to G/H$ be the quotient map and equip $G/H$ with the quotient topology. We call $G/H$ a \emph{(left) coset space} of $G$ by $H$.
 
 Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U)) = UH$ is also open, so $q(U)$ is open since $G/H$ has the quotient topology coinduced by $q$.
 
@@ -246,6 +246,8 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
     %
     \begin{enumprop}
         \item \label{enum:coset_space_regular} The coset space $G/H$ is regular.
+
+        \item The topology on $G/H$ is homogeneous.
         
         \item \label{enum:coset_space_T1} $G/H$ is $T_1$ (and hence $T_3$) if and only if $H$ is closed.
 
@@ -261,6 +263,23 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
 
 \begin{proof}
     We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, and a quick calculations shows that $VxH \intersect VA = \emptyset$. It follows by a similar calculation that $q(Vx)$ and $q(VA)$ are disjoint, and since $q$ is open these are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
+
+    Next we show that $G/H$ is homogeneous. For $g \in G$ define a map $\theta_g \colon G/H \to G/H$ by $\theta(q(x)) = q(gx)$. This is well-defined, since if $xH = yH$, then $gxH = gyH$. Furthermore, the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}
+            G
+                \ar[r, "\leftmult_g"]
+                \ar[d, "q", swap]
+            & G
+                \ar[d, "q"] \\
+            G/H
+                \ar[r, "\theta_g", swap]
+            & G/H
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes, so $\theta_g \circ q$ is continuous. But by the characteristic property of the quotient topology on $G/H$, $\theta_g$ is also continuous. Since $\theta_g\inv = \theta_{g\inv}$ it is in fact a homeomorphism, and $\theta_{yx\inv}$ takes $q(x)$ to $q(y)$, which shows homogeneity.
 
     Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$. Similarly, $H$ (and hence $gH$) is \emph{open} in $G$ if and only if $\{gH\}$ is open in $G/H$, i.e. if and only if $G/H$ is discrete.
 
@@ -311,6 +330,7 @@ It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, a
 When we apply this construction to the theory of topological groups, we see that the $T_0$-identification can be understood in terms of quotient groups:
 
 \begin{proposition}[$T_0$-identification of groups]
+    \label{thm:quotient-group-T0-identification}
     Let $G$ be a topological group. The subgroup $\closure{\{e\}}$ of $G$ is normal. Furthermore, the $\equiv$-equivalence classes are precisely the left cosets of $\closure{\{e\}}$. It follows that the quotient group $G / \closure{\{e\}}$ is just the $T_0$-identification $G/{\equiv}$ of $G$.
 \end{proposition}
 
@@ -396,6 +416,8 @@ This kind of reasoning also shows why we are only interested in invariant metric
     Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $H$ is closed.
 \end{proof}
 
+[Metric identification]
+
 
 \chapter{Topological vector spaces}
 
@@ -431,8 +453,23 @@ We now specialise to topological vector spaces. Let $X$ be a topological vector 
 %
 Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
 
+We have already considered quotient metrics on arbitrary topological groups. Here is an important example of a quotient metric:
 
-We have already considered quotient metrics on arbitrary topological groups. Next we consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calE}{\mathcal{E}}
+
+\begin{example}[$\calL^p(\mu)$- and $L^p(\mu)$-spaces]
+    Let $(X, \calE, \mu)$ be a measure space, and consider the Lebesgue space $\calL^p(\mu)$ of $p$-integrable functions for some $p \in (0,\infty)$. This is given the metric topology induced by the pseudo-metric
+    %
+    \begin{equation*}
+        \rho(f,g)
+            = \int_X \abs{f-g}^p \dif\mu.
+    \end{equation*}
+    %
+    Since $\calL^p(\mu)$ is not $T_0$, we wish to consider its $T_0$-identification. By \cref{thm:quotient-group-T0-identification} we can find this by computing the closure $N$ of the zero function. This is easily seen to be precisely the space of functions that are zero $\mu$-a.e. We denote the quotient space by $L^p(\mu) = \calL^p(\mu)/N$. We easily see that the quotient metric is simply given by $\rho_N([f],[g]) = \rho(f,g)$, which is the same metric as in the metric identification.
+\end{example}
+
+Next we consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
 %
 \begin{equation*}
     \norm{\pi(x)}_S
