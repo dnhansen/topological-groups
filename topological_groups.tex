@@ -102,15 +102,18 @@ Let $G$ be a topological group and let $g \in G$. We define maps $\leftmult_g, \
 We begin by collecting some basic properties of topological groups:
 
 \begin{proposition}[Properties of topological groups]
-    Let $G$ be a topological group.
+    Let $G$ be a topological group, and let $A, B \subseteq G$.
     %
     \begin{enumprop}
-        \item \label{enum:closure_of_product} If $A,B \subseteq G$, then $\closure{A} \closure{B} \subseteq \closure{AB}$.
-        \item \label{enum:closure_of_subgroup} If $H$ is a subgroup of $G$, then so is $\closure{H}$.
-        \item \label{enum:open_subgroup_is_closed} Every open subgroup of $G$ is closed.
-        \item \label{enum:product_open_set} If $A,U \subseteq G$ with $U$ open, then $AU$ and $UA$ are open.
+        \item \label{enum:closure_of_product} $\closure{A} \closure{B} \subseteq \closure{AB}$.
+
+        \item \label{enum:product_open_set} If $U \subseteq G$ is open, then $AU$ and $UA$ are open.
+        
+        \item \label{enum:elements-of-closure-commute} Assume that $G$ is Hausdorff. If $ab = ba$ for all $a \in A$, $b \in B$, then $ab = ba$ for all $a \in \closure{A}$, $b \in \closure{B}$.
     \end{enumprop}
 \end{proposition}
+%
+As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption in \subcref{enum:elements-of-closure-commute} can be weakened to just $T_0$. However, the assumption cannot be dropped: Any nonabelian group is a topological group in the trivial topology, but then the closure of the trivial subgroup is the whole group and hence not abelian.
 
 \begin{proof}
     We give two proofs of \subcref{enum:closure_of_product}. Since the multiplication $\mu \colon G \prod G \to G$ is continuous we get
@@ -126,23 +129,6 @@ We begin by collecting some basic properties of topological groups:
     %
     Alternatively, consider $a \in \closure{A}$ and $b \in \closure{B}$. If $U$ is a neighbourhood of $ab$, then by continuity of multiplication there are neighbourhoods $V_1$ and $V_2$ of $a$ and $b$ respectively such that $V_1 V_2 \subseteq U$. Picking $x \in A \intersect V_1$ and $y \in B \intersect V_2$ we find that $xy \in AB \intersect U$, so $ab \in \closure{AB}$.
 
-    Let $H$ be a subgroup of $G$. By \subcref{enum:closure_of_product} we get
-    %
-    \begin{equation*}
-        \closure{H} \closure{H} \subseteq \closure{HH} = \closure{H},
-    \end{equation*}
-    %
-    so $\closure{H}$ is closed under multiplication. It is also closed under taking inverses, since the inverse map $\iota$ is a homeomorphism. This proves \subcref{enum:closure_of_subgroup}. Alternatively, this claim is an easy consequence of basic properties of nets.
-
-    Now let $H$ be an open subgroup. Since $G$ is the disjoint union of the left cosets of $H$, we have
-    %
-    \begin{equation*}
-        G \setminus H
-            = \bigunion_{g \in G \setminus H} gH.
-    \end{equation*}
-    %
-    Since the cosets $gH$ are open, $G \setminus H$ is also open. This proves \subcref{enum:open_subgroup_is_closed}.
-
     To prove \subcref{enum:product_open_set}, notice that e.g.
     %
     \begin{equation*}
@@ -150,6 +136,8 @@ We begin by collecting some basic properties of topological groups:
     \end{equation*}
     %
     so $AU$ is a union of open sets.
+
+    Let $c_a \colon G \to G$ be conjugation by $a$, i.e. $c_a(g) = aga\inv$. Then \subcref{enum:elements-of-closure-commute} says that if $c_a$ is the identity on $B$, then it is the identity on $\closure{B}$. But since $G$ is Hausdorff, this follows.
 \end{proof}
 
 We next remark that the assumption that $G$ be $T_1$ can be weakened:
@@ -205,6 +193,45 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 \end{proof}
 
 
+\chapter{Subgroups}
+
+[Algebraic subgroup is topological group in subspace topology.]
+
+\begin{proposition}[Properties of subgroups]
+    Let $G$ be a topological group.
+    %
+    \begin{enumprop}
+        \item \label{enum:closure_of_subgroup} If $H$ is a subgroup of $G$, then so is $\closure{H}$. If $H$ is normal, then so is $\closure{H}$. If $G$ is $T_0$ and $H$ is abelian, then so is $\closure{H}$.
+        
+        \item \label{enum:open_subgroup_is_closed} Every open subgroup of $G$ is closed.
+    \end{enumprop}
+\end{proposition}
+
+\begin{proof}
+    Let $H$ be a subgroup of $G$. By \cref{enum:closure_of_product} we get
+    %
+    \begin{equation*}
+        \closure{H} \closure{H} \subseteq \closure{HH} = \closure{H},
+    \end{equation*}
+    %
+    so $\closure{H}$ is closed under multiplication. It is also closed under taking inverses, since the inverse map $\iota$ is a homeomorphism. Hence it is a subgroup. Alternatively, this claim is an easy consequence of basic properties of nets.
+
+    Clearly $\closure{H}$ is the smallest closed subgroup that contains $H$. Hence if $H$ is normal and $\closure{H}$ is not, then intersecting $\closure{H}$ with one of its conjugates yields a strictly smaller closed subgroup containing $H$.
+
+    If $G$ is $T_0$ and $H$ is abelian, then it follows from \cref{enum:elements-of-closure-commute} with $A = B = H$ that $\closure{H}$ is abelian. This proves \subcref{enum:closure_of_subgroup}.
+
+    Finally let $H$ be an open subgroup. Since $G$ is the disjoint union of the left cosets of $H$, we have
+    %
+    \begin{equation*}
+        G \setminus H
+            = \bigunion_{g \in G \setminus H} gH.
+    \end{equation*}
+    %
+    Since the cosets $gH$ are open, $G \setminus H$ is also open. This proves \subcref{enum:open_subgroup_is_closed}.
+\end{proof}
+
+
+
 \chapter{Coset spaces and quotient groups}
 
 \section{General properties of coset spaces}
@@ -221,6 +248,8 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
         \item \label{enum:coset_space_regular} The coset space $G/H$ is regular.
         
         \item \label{enum:coset_space_T1} $G/H$ is $T_1$ (and hence $T_3$) if and only if $H$ is closed.
+
+        \item $G/H$ is discrete if and only if $H$ is open.
         
         \item \label{enum:coset_space_locally_compact} If $G$ is locally compact\footnotemark, then so is $G/H$.
     \end{enumprop}
@@ -233,7 +262,7 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
 \begin{proof}
     We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, and a quick calculations shows that $VxH \intersect VA = \emptyset$. It follows by a similar calculation that $q(Vx)$ and $q(VA)$ are disjoint, and since $q$ is open these are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
 
-    Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
+    Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$. Similarly, $H$ (and hence $gH$) is \emph{open} in $G$ if and only if $\{gH\}$ is open in $G/H$, i.e. if and only if $G/H$ is discrete.
 
     % Now assuming that $H$ is closed, we show that $G/H$ is Hausdorff. Let $xH$ and $yH$ be distinct (and hence disjoint) cosets. Then $xHy\inv$ is a closed set not containing $e$, so \cref{thm:symmetric_nhood_of_e} implies the existence of a symmetric neighbourhood $U$ of $e$ such that $UU \intersect xHy\inv = \emptyset$. It follows that
     % %
@@ -370,7 +399,7 @@ This kind of reasoning also shows why we are only interested in invariant metric
 
 \chapter{Topological vector spaces}
 
-The purpose of these notes is not to give a complete discussion of either topological groups or vector spaces. In this section we will thus focus on the very basic aspect of topological vector spaces and refer the reader to the literature for further developments.
+The purpose of these notes is not to give a complete discussion of either topological groups or vector spaces. In this section we will thus focus on the very basic aspects of topological vector spaces and refer the reader to the literature for further developments.
 
 [Definition of TVS.]
 
