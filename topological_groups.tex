@@ -96,6 +96,7 @@ In the sequel we will simply write $G$, and it will be clear from context whethe
 
 \newcommand{\leftmult}{\lambda}
 \newcommand{\rightmult}{\rho}
+\newcommand{\conjmult}{\gamma}
 
 Let $G$ be a topological group and let $g \in G$. We define maps $\leftmult_g, \rightmult_g \colon G \to G$ by $\leftmult_g(h) = gh$ and $\rightmult_g(h) = hg$; that is, $\leftmult_g$ and $\rightmult_g$ are given by left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $\leftmult_g\inv = \leftmult_{g\inv}$ and $\rightmult_g\inv = \rightmult_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $\leftmult_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
 
@@ -137,7 +138,7 @@ As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption
     %
     so $AU$ is a union of open sets.
 
-    Let $c_a \colon G \to G$ be conjugation by $a$, i.e. $c_a(g) = aga\inv$. Then \subcref{enum:elements-of-closure-commute} says that if $c_a$ is the identity on $B$, then it is the identity on $\closure{B}$. But since $G$ is Hausdorff, this follows.
+    Let $\conjmult_a \colon G \to G$ be conjugation by $a$, i.e. $\conjmult_a(g) = aga\inv$. Then \subcref{enum:elements-of-closure-commute} says that if $\conjmult_a$ is the identity map on $B$, then it is the identity map on $\closure{B}$. But since $G$ is Hausdorff, this follows.
 \end{proof}
 
 We next remark that the assumption that $G$ be $T_1$ can be weakened:
@@ -238,7 +239,7 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 
 If $H$ is a subgroup of a topological group $G$, we denote by $G/H$ the set of left cosets of $H$. Let $q \colon G \to G/H$ be the quotient map and equip $G/H$ with the quotient topology. We call $G/H$ a \emph{(left) coset space} of $G$ by $H$.
 
-Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U)) = UH$ is also open, so $q(U)$ is open since $G/H$ has the quotient topology coinduced by $q$.
+Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U)) = UH$ is also open by \cref{enum:product_open_set}, so $q(U)$ is open since $G/H$ has the quotient topology coinduced by $q$.
 
 
 \begin{proposition}[Properties of coset spaces]
@@ -253,9 +254,9 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
 
         \item $G/H$ is discrete if and only if $H$ is open.
         
-        \item \label{enum:coset_space_locally_compact} If $G$ is locally compact\footnotemark, then so is $G/H$.
+        % \item \label{enum:coset_space_locally_compact} If $G$ is locally compact\footnotemark, then so is $G/H$.
     \end{enumprop}
-\end{proposition}\footnotetext{We say that a topological space is locally compact if every point has a compact neighbourhood. There are many non-equivalent definitions of local compactness and this is the least restrictive one. If $H$ is closed then $G/H$ is Hausdorff, so all the usual definitions of local compactness are equivalent for $G/H$.}
+\end{proposition}%\footnotetext{We say that a topological space is locally compact if every point has a compact neighbourhood. There are many non-equivalent definitions of local compactness and this is the least restrictive one. If $H$ is closed then $G/H$ is Hausdorff, so all the usual definitions of local compactness are equivalent for $G/H$.}
 %
 Notice that \subcref{enum:coset_space_T1} does not assume any separation properties of $G$.
 
@@ -294,7 +295,7 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
     % %
     % where we use that $U = U\inv$ and $H = HH$. That $e$ does not lie in the left-most set is easily proven e.g. by contraposition. It follows that $UxH$ and $UyH$ are disjoint, and since $q$ is open this implies that $q(Ux)$ and $q(Uy)$ are disjoint neighbourhoods of $xH$ and $yH$ in $G/H$. This proves \subcref{enum:coset_space_hausdorff}.
 
-    To prove \subcref{enum:coset_space_locally_compact}, notice that if $K$ is a compact neighbourhood of $e$ in $G$, then $q(Kx)$ is a compact neighbourhood of $xH$ in $G/H$.
+    % To prove \subcref{enum:coset_space_locally_compact}, notice that if $K$ is a compact neighbourhood of $e$ in $G$, then $q(Kx)$ is a compact neighbourhood of $xH$ in $G/H$.
 \end{proof}
 
 % This proposition also furnishes a different proof that $T_1$ implies Hausdorff for topological groups: Simply let $H = \{e\}$, in which case $G \cong G/H$.
