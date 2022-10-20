@@ -15,6 +15,7 @@
 \frenchspacing
 \usepackage{latex-sty/articlepagestyle}
 \usepackage{latex-sty/articlesectionstyle}
+% \usepackage{latex-sty/amalgsymbol}
 
 % Fonts
 \usepackage[largesmallcaps]{kpfonts}
@@ -23,7 +24,7 @@
 \let\mathfrak\undefined
 \usepackage{eufrak}
 \usepackage{inconsolata}
-\usepackage{amssymb}
+% \usepackage{amssymb}
 
 % Hyperlinks
 \usepackage{hyperref}
@@ -53,7 +54,11 @@
 
 % Lists
 \usepackage{enumitem}
-\setenumerate[0]{label=\normalfont(\arabic*)}
+\setenumerate[0]{label=\normalfont(\alph*)}
+\setlist{
+    listparindent=\parindent,
+    parsep=0pt,
+}
 
 % Bibliography
 \usepackage[backend=biber, style=authoryear, maxcitenames=2, useprefix]{biblatex}
@@ -64,14 +69,14 @@
 \author{\docauthor}
 
 \newcommand{\calT}{\mathcal{T}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calU}{\mathcal{U}}
 
 
 % Section style -- add to section style .sty?
 \setsubsecheadstyle{\normalfont\itshape}
-
-
-% Preimage -- to be added to mathcommands .sty
-\newcommand{\preim}{^{-1}}
 
 
 \begin{document}
@@ -85,20 +90,35 @@ The purpose of these notes is to clarify some of the basic properties of topolog
 Most of the results below can be found in various forms in a variety of books or articles (see the references), but I have not come across a resource that develops this theory in precisely this way. One example is the $T_0$-identification of a topological group, as we will see below.
 
 
-\chapter{Definitions and basic properties}
+\chapter{Topological groups}
+
+\section{Definitions and basic properties}
 
 \begin{definition}[Topological groups]
     \label{def:topological_group}
     A \emph{topological group} is a triple $(G, \mu, \calT)$ such that $(G, \mu)$ is a group, $(G, \calT)$ is a topological space, and both the multiplication $\mu \colon G \prod G \to G$ and the inversion map $\iota \colon G \to G$ given by $g \mapsto g\inv$ are continuous.
 \end{definition}
 %
-In the sequel we will simply write $G$, and it will be clear from context whether $G$ is to be thought of as a set, group, topological space or topological group. It is custom to assume that a topological group be $T_1$ (or Hausdorff, which is actually implied by it being $T_1$, as will follow from \cref{thm:topological_group_regular}), but we omit this assumption since our focus is precisely on the basic topological properties of topological groups.
+In the sequel we will simply write $G$, and it will be clear from context whether $G$ is to be thought of as a set, group, topological space or topological group. The identity on $G$ will be denoted $e_G$, or simply $e$. It is custom to assume that a topological group be $T_1$ (or Hausdorff, which is actually implied by it being $T_1$, as will follow from \cref{thm:topological_group_regular}), but we omit this assumption since our focus is precisely on the basic topological properties of topological groups.
 
 \newcommand{\leftmult}{\lambda}
 \newcommand{\rightmult}{\rho}
 \newcommand{\conjmult}{\gamma}
 
-Let $G$ be a topological group and let $g \in G$. We define maps $\leftmult_g, \rightmult_g \colon G \to G$ by $\leftmult_g(h) = gh$ and $\rightmult_g(h) = hg$; that is, $\leftmult_g$ and $\rightmult_g$ are given by left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $\leftmult_g\inv = \leftmult_{g\inv}$ and $\rightmult_g\inv = \rightmult_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $\leftmult_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space.
+\newcommand{\calN}{\mathcal{N}}
+\DeclarePairedDelimiter{\nhoodfilteraux}{(}{)}
+% \newcommand{\nhoodfilter}[1]{\calN\nhoodfilteraux{#1}}
+\newcommand{\nhoodfilter}[1]{\calN_{#1}}
+
+Let $G$ be a topological group and let $g \in G$. We define maps $\leftmult_g, \rightmult_g \colon G \to G$ by $\leftmult_g(h) = gh$ and $\rightmult_g(h) = hg$; that is, $\leftmult_g$ and $\rightmult_g$ are given by left- and right-multiplication by $g$, respectively. Both of these are homeomorphisms, with $\leftmult_g\inv = \leftmult_{g\inv}$ and $\rightmult_g\inv = \rightmult_{g\inv}$. Hence if $a, b \in G$, then there is a homeomorphism on $G$ that takes $a$ to $b$, namely $\leftmult_{ba\inv}$. Thus a topological group is \emph{homogeneous} as a topological space. In particular,\footnote{If $X$ is a topological space and $A \subseteq X$, then we say that a set $N \subseteq X$ is a \emph{neighbourhood} of $A$ if there is an open set $U$ in $X$ such that $A \subseteq U \subseteq N$. The family of neighbourhoods of a set $A$ is called the \emph{neighbourhood filter of $A$} and is denoted $\nhoodfilter{A}$. If $A = \{x\}$ is a singleton we also write $\nhoodfilter{x}$ and call $N$ a neighbourhood of $x$.} $\nhoodfilter{g} = \leftmult_g(\nhoodfilter{e}) = g\nhoodfilter{e}$ for all $g \in H$, so the topology on $G$ is determined by any neighbourhood basis at $e$. A neighbourhood basis at $e$ is called a \emph{local basis}.
+
+If $G$ is a topological group and $A \subseteq G$, then we write
+%
+\begin{equation*}
+    A\inv = \iota(A) = \set{a\inv}{a \in A}.
+\end{equation*}
+%
+A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota$ is a homeomorphism, $A$ is open (closed) if and only if $A\inv$ is open (closed).
 
 We begin by collecting some basic properties of topological groups:
 
@@ -109,6 +129,8 @@ We begin by collecting some basic properties of topological groups:
         \item \label{enum:closure_of_product} $\closure{A} \closure{B} \subseteq \closure{AB}$.
 
         \item \label{enum:product_open_set} If $U \subseteq G$ is open, then $AU$ and $UA$ are open.
+
+        \item \label{enum:closure-intersection-of-open-sets} $\closure{A} = \bigintersect_{U \in \nhoodfilter{0}} AU$.
         
         \item \label{enum:elements-of-closure-commute} Assume that $G$ is Hausdorff. If $ab = ba$ for all $a \in A$, $b \in B$, then $ab = ba$ for all $a \in \closure{A}$, $b \in \closure{B}$.
     \end{enumprop}
@@ -138,49 +160,40 @@ As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption
     %
     so $AU$ is a union of open sets.
 
+    To prove \subcref{enum:closure-intersection-of-open-sets}, notice that $g \in \closure{A}$ if and only if $A \intersect V \neq \emptyset$ for all $V \in \nhoodfilter{g}$, if and only if $A \intersect gU \neq \emptyset$ for all $U \in \nhoodfilter{0}$. Since $\nhoodfilter{0}$ is symmetric, this is the case just when $g \in AU$ for all $U \in \nhoodfilter{0}$.
+
     Let $\conjmult_a \colon G \to G$ be conjugation by $a$, i.e. $\conjmult_a(g) = aga\inv$. Then \subcref{enum:elements-of-closure-commute} says that if $\conjmult_a$ is the identity map on $B$, then it is the identity map on $\closure{B}$. But since $G$ is Hausdorff, this follows.
 \end{proof}
 
-We next remark that the assumption that $G$ be $T_1$ can be weakened:
 
-\begin{proposition}[$T_0$ implies $T_1$]
-    \label{thm:T0_implies_T1}
-    Let $G$ be a topological group. If $G$ is $T_0$, then it is in fact $T_1$.
-\end{proposition}
+\section{Separability in topological groups}
 
-\newcommand{\calN}{\mathcal{N}}
-\DeclarePairedDelimiter{\nhoodfilteraux}{(}{)}
-% \newcommand{\nhoodfilter}[1]{\calN\nhoodfilteraux{#1}}
-\newcommand{\nhoodfilter}[1]{\calN_{#1}}
+% We next remark that the assumption that $G$ be $T_1$ can be weakened:
 
-\begin{proof}
-    Assume that $G$ is $T_0$. By homogeneity it suffices to show that the singleton $\{e\}$ containing the identity $e \in G$ is closed. We show that $G \setminus \{e\}$ is a neighbourhood\footnotemark{} of all its points. Let $g \neq e$. Since $G$ is $T_0$, either $G \setminus \{e\}$ is a neighbourhood of $g$ or $G \setminus \{g\}$ is a neighbourhood of $e$. In the first case we are done, so assume the latter. The homeomorphism $\leftmult_{g\inv}$ maps $G \setminus \{g\}$ to $G \setminus \{e\}$, so the latter set is a neighbourhood of $g\inv$. But the inversion map $\iota$ is a homeomorphism that maps $G \setminus \{e\}$ to itself, so this is also a neighbourhood of $g$. This proves the claim.
-\end{proof}
-\footnotetext{If $X$ is a topological space and $A \subseteq X$, then we say that a set $N \subseteq X$ is a \emph{neighbourhood} of $A$ if there is an open set $U$ in $X$ such that $A \subseteq U \subseteq N$. The family of neighbourhoods of a set $A$ is called the \emph{neighbourhood filter of $A$} and is denoted $\nhoodfilter{A}$. If $A = \{x\}$ is a singleton we also write $\nhoodfilter{x}$ and call $N$ a neighbourhood of $x$.}
+% \begin{proposition}[$T_0$ implies $T_1$]
+%     \label{thm:T0_implies_T1}
+%     Let $G$ be a topological group. If $G$ is $T_0$, then it is in fact $T_1$.
+% \end{proposition}
 
-Recall that a topological space $X$ is called \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets.\footnote{In our terminology, a regular $T_1$-space would be called a \emph{$T_3$-space}.} Our next order of business is to show that any topological group is regular. Before proving this we need some terminology and a lemma:
+% \begin{proof}
+%     Assume that $G$ is $T_0$. By homogeneity it suffices to show that the singleton $\{e\}$ containing the identity $e \in G$ is closed. We show that $G \setminus \{e\}$ is a neighbourhood of all its points. Let $g \neq e$. Since $G$ is $T_0$, either $G \setminus \{e\}$ is a neighbourhood of $g$ or $G \setminus \{g\}$ is a neighbourhood of $e$. In the first case we are done, so assume the latter. The homeomorphism $\leftmult_{g\inv}$ maps $G \setminus \{g\}$ to $G \setminus \{e\}$, so the latter set is a neighbourhood of $g\inv$. But the inversion map $\iota$ is a homeomorphism that maps $G \setminus \{e\}$ to itself, so this is also a neighbourhood of $g$. This proves the claim.
+% \end{proof}
 
-If $G$ is a topological group and $A \subseteq G$, then we write
-%
-\begin{equation*}
-    A\inv = \iota(A) = \set{a\inv}{a \in A}.
-\end{equation*}
-%
-A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota$ is a homeomorphism, $A$ is open (closed) if and only if $A\inv$ is open (closed).
+Recall that a topological space $X$ is \emph{regular} if it is possible to separate any point from any closed set by disjoint open sets.\footnote{In our terminology, a regular Hausdorff space would be called a \emph{$T_3$-space}.} Our next order of business is to show that any topological group is regular.\footnote{In fact, topological groups are \emph{completely regular}. The proofs I know of this fact uses the theory of uniform spaces, so we do not cover it in these notes.} Before proving this we need a lemma:
 
 \begin{lemma}
     \label{thm:symmetric_nhood_of_e}
-    Let $G$ be a topological group. If $U$ is a neighbourhood of the identity $e$, then there is a symmetric neighbourhood $V$ of $e$ such that $VV \subseteq U$.
+    Let $G$ be a topological group. If $U$ is an open neighbourhood of the identity $e$, then there is a symmetric open neighbourhood $V$ of $e$ such that $VV \subseteq U$. In particular, $G$ has a local basis of symmetric open sets.
 \end{lemma}
 
 \begin{proof}
-    Since multiplication is continuous and $ee = e$, there are neighbourhoods $V_1$ and $V_2$ of $e$ such that $V_1 V_2 \subseteq U$. If we let
+    Since multiplication is continuous and $ee = e$, there are open neighbourhoods $V_1$ and $V_2$ of $e$ such that $V_1 V_2 \subseteq U$. If we let
     %
     \begin{equation*}
         V = V_1 \intersect V_2 \intersect V_1\inv \intersect V_2\inv,
     \end{equation*}
     %
-    then $V$ has the desired properties.
+    then $V$ has the desired properties. The final claim follows from the fact that $V \subseteq VV$ since $e \in V$.
 \end{proof}
 
 
@@ -190,19 +203,55 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 \end{proposition}
 
 \begin{proof}
-    Since $g \not\in A$ we also have $e \not\in Ag\inv$. But $Ag\inv$ is closed, so by \cref{thm:symmetric_nhood_of_e} there is a symmetric neighbourhood $V$ of $e$ such that $VV \intersect Ag\inv = \emptyset$. It follows that $Vg \intersect VA = \emptyset$ as desired. This shows that $G$ is regular, and the final claim follows by \cref{thm:T0_implies_T1}.
+    Since $g \not\in A$ we also have $e \not\in Ag\inv$. But $Ag\inv$ is closed, so by \cref{thm:symmetric_nhood_of_e} there is a symmetric neighbourhood $V$ of $e$ such that $VV \intersect Ag\inv = \emptyset$. It follows that $Vg \intersect VA = \emptyset$ as desired. This shows that $G$ is regular, and the final claim follows since a regular $T_0$-space is Hausdorff.
 \end{proof}
 
 
-\chapter{Subgroups}
+\section{Continuous group homomorphisms}
 
-[Algebraic subgroup is topological group in subspace topology.]
+% Let $G$ and $H$ be topological groups. A map $\phi \colon G \to H$ is called a \emph{topological (group) homomorphism} if it is a continuous group homomorphism. If $\phi$ is bijective and its inverse is continuous, then it is called a \emph{topological isomorphism}. That is, if $\phi$ is both a group homomorphism and a homeomorphism.
+
+We next explore the relationship between the topological and algebraic structure for maps. Let $A \subseteq G$. A map $f \colon A \to H$ is said to be \emph{uniformly continuous} if there for each neighbourhood $V$ of $e_H$ exists a neighbourhood $U$ of $e_G$ such that $x\inv y \in U$ implies $f(x)\inv f(y) \in V$, for all $x,y \in A$. Uniform continuity clearly implies continuity, since the above says that $f(yU) \subseteq f(y)V$, and every neighbourhood of $y$ and $f(y)$ are on the form $yU$ respectively $f(y)V$ by homogeneity.
+
+If $f$ is injective and both $f \colon A \to f(A)$ and $f\inv \colon f(A) \to A$ are uniformly continuous, then $f$ is called a \emph{unimorphism}. Notice that $f$ need not be surjective for it to be a unimorphism. Notice also that any restriction of a unimorphism is also a unimorphism, since the restriction of a uniformly continuous map is uniformly continuous.
+
+As expected from homogeneity, all topological homomorphisms are automatically uniformly continuous:
+
+\begin{proposition}
+    \label{thm:group-homomorphism-continuity}
+    Let $\phi \colon G \to H$ be a group homomorphism between topological groups that is continuous at some point $g \in G$. Then $\phi$ is uniformly continuous.
+\end{proposition}
+
+\begin{proof}
+    We may assume that $\phi$ is continuous at $e_G$, since
+    %
+    \begin{equation*}
+        \phi
+            = \phi \circ \leftmult_{g\inv} \circ \leftmult_{g}
+            = \leftmult_{\phi(g)\inv} \circ \phi \circ \leftmult_{g},
+    \end{equation*}
+    %
+    and the map on the right-hand side is continuous at $e_G$ iff $\phi$ is continuous at $g$.\footnote{This already shows that $\phi$ is continuous.} Thus let $V$ be a neighbourhood of $e_H$. By continuity of $\phi$ at $e_G$, there exists a neighbourhood $U$ of $e_G$ such that $f(U) \subseteq V$. For $x,y \in G$ such that $x\inv y \in U$ we thus have
+    %
+    \begin{equation*}
+        f(x)\inv f(y)
+            = f(x\inv y)
+            \in V,
+    \end{equation*}
+    %
+    as required for uniform continuity.
+\end{proof}
+
+
+\section{Subgroups}
+
+If $G$ is a topological group and $H$ is a subgroup of $G$, then $H$ is equipped with the subspace topology from $G$. Clearly the inherited group operations are still continuous, so $H$ is a topological group.
 
 \begin{proposition}[Properties of subgroups]
     Let $G$ be a topological group.
     %
     \begin{enumprop}
-        \item \label{enum:closure_of_subgroup} If $H$ is a subgroup of $G$, then so is $\closure{H}$. If $H$ is normal, then so is $\closure{H}$. If $G$ is $T_0$ and $H$ is abelian, then so is $\closure{H}$.
+        \item \label{enum:closure_of_subgroup} If $H$ is a subgroup of $G$, then so is $\closure{H}$. If $H$ is normal in $G$, then so is $\closure{H}$. If $G$ is $T_0$ and $H$ is abelian, then so is $\closure{H}$.
         
         \item \label{enum:open_subgroup_is_closed} Every open subgroup of $G$ is closed.
     \end{enumprop}
@@ -232,6 +281,58 @@ A subset $A$ is called \emph{symmetric} if $A = A\inv$. Notice that since $\iota
 \end{proof}
 
 
+\section{Convergence and completeness}
+
+% Overwrite \ball from topologycommands.sty
+\renewcommand{\ball}[3][]{B_{#1}(#2,#3)}
+\newcommand{\cball}[3][]{\overline{B}_{#1}(#2,#3)}
+\newcommand{\pball}[3][]{B'_{#1}(#2,#3)}
+
+If $P$ and $Q$ are preordered sets, recall that the product order on $P \prod Q$ is given by $(p,q) \leq (p',q')$ iff $p \leq p'$ and $q \leq q'$. If $P$ and $Q$ are directed, then this induces a direction on $P \prod Q$.
+
+Let $G$ be a topological group, and let $(g_i)_{i \in I}$ be a net in $G$. Recall that $g_i$ converges to $g \in G$ if for every neighbourhood $U$ of $e$, $g_i$ eventually lies in $U$. Furthermore, $(g_i)$ is called a \emph{Cauchy net} if the net $(g_i\inv g_j)_{(i,j) \in I \prod I}$ converges to $e$. That is, if for every neighbourhood $U$ of $0$ there is an $i_0 \in I$ such that $i,j \geq i_0$ implies that $g_i\inv g_j \in U$. It is easy to see that a convergent net is Cauchy since the group operations are continuous. Conversely, we say that a subset $A \subseteq G$ is \emph{complete} if every Cauchy net in $A$ converges (in $G$) to a point in $A$.
+
+Finally, we say that a metric $\rho$ on $G$ is \emph{left-invariant} if $\rho(ag,ah) = \rho(g,h)$ for all $a,g,h \in G$. Right-invariance is defined analogously.
+
+\begin{remark}
+    Assume that the topology on $(G,\calT)$ is generated by a pseudometric $\rho$. Then $\calT$-Cauchy nets do not necessarily correspond to $\rho$-Cauchy nets. For instance, consider the metric $\rho(x,y) = \abs{\arctan x - \arctan y}$ on $\reals$, i.e. the metric induced by the homeomorphism $\arctan \colon \reals \to (-\pi/2, \pi/2)$, where the latter interval is considered as a metric subspace of $\reals$ with the usual metric $d$. Then the net $(i)_{i \in \naturals}$ is Cauchy in $(\reals, \rho)$, but not Cauchy in $(\reals, d)$.
+
+    However, if $\rho$ is either left- or right-invariant then the two notions coincide: This follows easily from the observation that in this case $g\inv h \in \ball[\rho]{e}{\epsilon}$ if and only if $\rho(g,h) < \epsilon$, for all $g,h \in G$ and $\epsilon > 0$.
+\end{remark}
+
+
+\begin{proposition}[Complete implies closed]
+    \label{thm:complete-implies-closed}
+    Let $G$ be a Hausdorff topological group. Then every complete subset of $G$ is closed in $G$.
+\end{proposition}
+
+\begin{proof}
+    Let $A$ be a complete subset of $G$, and let $g \in \closure{A}$. Then there is a net $(g_i)_{i \in I}$ in $A$ that converges to $g$. This is then a Cauchy net in $A$, hence converges to some $g' \in A$. Since $G$ is Hausdorff limits are unique, so $g = g' \in A$.
+\end{proof}
+
+
+\begin{lemma}
+    Let $G$ and $H$ be topological groups, let $A \subseteq G$, and let $f \colon A \to H$ be uniformly continuous. If $(g_i)_{i \in I}$ is a Cauchy net in $A$, then $(f(g_i))_{i \in I}$ is a Cauchy net.
+\end{lemma}
+
+\begin{proof}
+    Let $V$ and $U$ be neighbourhoods as in the discussion above. Let $i_0 \in I$ be such that $i,j \geq i_0$ implies $g_i\inv g_j \in U$. Uniform continuity then implies that $f(g_i)\inv f(g_j) \in V$, and since $V$ was arbitrary the claim follows.
+\end{proof}
+
+
+\begin{theorem}
+    \label{thm:completeness-preserved-by-unimorphism}
+    Let $G$ and $H$ be topological groups, let $A \subseteq G$, and let $f \colon A \to H$ be a unimorphism. If $A$ is complete, then $B = f(A)$ is also complete.
+
+    In particular, completeness is preserved by topological group isomorphisms.
+\end{theorem}
+%
+We in fact only need $f$ to be continuous and to have a uniformly continuous right-inverse.
+
+\begin{proof}
+    Let $(h_i)_{i \in I}$ be a Cauchy net in $B$. Then since $f\inv \colon B \to A$ is uniformly continuous, $(f\inv(h_i))_{i \in I}$ is a Cauchy net in $A$, hence convergent to some $g \in A$ by completeness. Since $f$ is continuous, we have $h_i = f(f\inv(h_i)) \to f(g) \in B$, so $(h_i)$ converges to a point in $B$. Thus $B$ is complete.
+\end{proof}
+
 
 \chapter{Coset spaces and quotient groups}
 
@@ -253,17 +354,23 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
         \item \label{enum:coset_space_T1} $G/H$ is $T_1$ (and hence $T_3$) if and only if $H$ is closed.
 
         \item $G/H$ is discrete if and only if $H$ is open.
-        
-        % \item \label{enum:coset_space_locally_compact} If $G$ is locally compact\footnotemark, then so is $G/H$.
     \end{enumprop}
-\end{proposition}%\footnotetext{We say that a topological space is locally compact if every point has a compact neighbourhood. There are many non-equivalent definitions of local compactness and this is the least restrictive one. If $H$ is closed then $G/H$ is Hausdorff, so all the usual definitions of local compactness are equivalent for $G/H$.}
+\end{proposition}
 %
 Notice that \subcref{enum:coset_space_T1} does not assume any separation properties of $G$.
 
-(The claim \subcref{enum:coset_space_regular} is the content of supplementary exercise 7(d) of \textcite[Chapter~2]{munkres}, except that in the exercise $H$ is assumed to be closed. I do not see where this assumption is used.)
+% (The claim \subcref{enum:coset_space_regular} is the content of supplementary exercise 7(d) of \textcite[Chapter~2]{munkres}, except that in the exercise $H$ is assumed to be closed. I do not see where this assumption is used.)
 
 \begin{proof}
-    We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, and a quick calculations shows that $VxH \intersect VA = \emptyset$. It follows by a similar calculation that $q(Vx)$ and $q(VA)$ are disjoint, and since $q$ is open these are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
+    We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, so $Vx \intersect VAHH = \emptyset$. Since $H$ is symmetric, it follows that
+    %
+    \begin{equation*}
+        q(Vx) \intersect q(VA)
+            = VxH \intersect VAH
+            = \emptyset.
+    \end{equation*}
+    %
+    Since $q$ is open the sets $q(Vx)$ and $q(VA)$ are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
 
     Next we show that $G/H$ is homogeneous. For $g \in G$ define a map $\theta_g \colon G/H \to G/H$ by $\theta(q(x)) = q(gx)$. This is well-defined, since if $xH = yH$, then $gxH = gyH$. Furthermore, the diagram
     %
@@ -283,22 +390,7 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
     commutes, so $\theta_g \circ q$ is continuous. But by the characteristic property of the quotient topology on $G/H$, $\theta_g$ is also continuous. Since $\theta_g\inv = \theta_{g\inv}$ it is in fact a homeomorphism, and $\theta_{yx\inv}$ takes $q(x)$ to $q(y)$, which shows homogeneity.
 
     Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$. Similarly, $H$ (and hence $gH$) is \emph{open} in $G$ if and only if $\{gH\}$ is open in $G/H$, i.e. if and only if $G/H$ is discrete.
-
-    % Now assuming that $H$ is closed, we show that $G/H$ is Hausdorff. Let $xH$ and $yH$ be distinct (and hence disjoint) cosets. Then $xHy\inv$ is a closed set not containing $e$, so \cref{thm:symmetric_nhood_of_e} implies the existence of a symmetric neighbourhood $U$ of $e$ such that $UU \intersect xHy\inv = \emptyset$. It follows that
-    % %
-    % \begin{equation*}
-    %     e
-    %         \not\in U xHy\inv U
-    %         = Ux H (Uy)\inv
-    %         = (UxH)(UyH)\inv,
-    % \end{equation*}
-    % %
-    % where we use that $U = U\inv$ and $H = HH$. That $e$ does not lie in the left-most set is easily proven e.g. by contraposition. It follows that $UxH$ and $UyH$ are disjoint, and since $q$ is open this implies that $q(Ux)$ and $q(Uy)$ are disjoint neighbourhoods of $xH$ and $yH$ in $G/H$. This proves \subcref{enum:coset_space_hausdorff}.
-
-    % To prove \subcref{enum:coset_space_locally_compact}, notice that if $K$ is a compact neighbourhood of $e$ in $G$, then $q(Kx)$ is a compact neighbourhood of $xH$ in $G/H$.
 \end{proof}
-
-% This proposition also furnishes a different proof that $T_1$ implies Hausdorff for topological groups: Simply let $H = \{e\}$, in which case $G \cong G/H$.
 
 
 \section{Topological quotient groups}
@@ -311,22 +403,69 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
 \end{theorem}
 
 \begin{proof}
-    If $x,y \in G$ and $U$ is a neighbourhood of $(xN)(yN) = xyN$ in $G/N$, then continuity of multiplication in $G$ at $(x,y)$ implies the existence of neighbourhoods $V$ and $W$ of $x$ and $y$ respectively, such that $VW \subseteq q\preim(U)$. Since $q$ is surjective it follows that $q(V) q(W) \subseteq U$, and because $q$ is also open $q(V)$ and $q(W)$ are neighbourhoods of $xN$ and $yN$. Hence multiplication is continuous.
-
-    Since the inversion map $\iota$ on $G/N$ is bijective, it suffices to show that it is open. Let $U \subseteq G/N$ be open and notice that, since $q$ is surjective,
+    Let $\mu \colon G \prod G \to G$ and $M \colon G/N \prod G/N \to G/N$ denote multiplication on $G$ and $G/N$ respectively, let $q \colon G \to G/N$ be the quotient map and define a map $Q \colon G \prod G \to G/N \prod G/N$ by $Q = q \prod q$. Then $Q$ is surjective and open since $q$ is. Notice that the diagram
     %
     \begin{equation*}
-        \iota(U)
-            = \iota \bigl( q(q\preim(U)) \bigr)
-            = q \bigl( \iota(q\preim(U)) \bigr).
+        \begin{tikzcd}
+            G \prod G
+                \ar[r, "\mu"]
+                \ar[d, "Q", swap]
+            & G
+                \ar[d, "q"]
+            \\
+            G/N \prod G/N
+                \ar[r, "M", swap]
+            & G/N
+        \end{tikzcd}
     \end{equation*}
     %
-    Because $q\preim(U)$, and hence $\iota(q\preim(U))$, is open in $G$, it follows that $\iota(U)$ is open since $q$ is open.
+    commutes. If $V \subseteq G/N$ is open, then so is $Q\preim(M\preim(V)) = \mu\preim(q\preim(V))$, so applying $Q$ to both sides we find that $M\preim(V)$ is open. Hence $M$ is continuous.
+
+    Let $I \colon G/N \to G/N$ be the inversion map. Continuity of $I$ is proved similarly by noticing that the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}
+            G
+                \ar[r, "\iota"]
+                \ar[d, "q", swap]
+            & G
+                \ar[d, "q"]
+            \\
+            G/N
+                \ar[r, "I", swap]
+            & G/N
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes, where $\iota \colon G \to G$ is inversion in $G$.
+\end{proof}
+
+
+\begin{proposition}[Factorisation through quotient group]
+    Let $\phi \colon G \to H$ be a continuous group homomorphism between topological groups, and let $N$ be a normal subgroup of $G$. If $N \subseteq \ker\phi$, then there exists a unique set function $\tilde{\phi} \colon G/N \to H$ such that the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}[column sep=small]
+            G
+                \ar[rr, "\phi"]
+                \ar[dr, "q", swap]
+            && H
+            \\
+            & G/N
+                \ar[ur, "\tilde{\phi}", swap]
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes. Furthermore, $\tilde{\phi}$ is a continuous group homomorphism.
+\end{proposition}
+
+\begin{proof}
+    Existence and uniqueness of $\tilde{\phi}$ follows from the universal property of quotients in the category of sets. Continuity follows from the same property in the category of topological spaces, and $\tilde{\phi}$ is a group homomorphism by the same property in the category of groups.
 \end{proof}
 
 We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. To do this justice we first recall the \emph{$T_0$-identification} of a topological space $X$: The ordering $x \leq y$ defined by $x \in \closure{\{y\}}$ is called the \emph{specialisation preorder}, and it is easy to show that $x \leq y$ is equivalent to $\nhoodfilter{x} \subseteq \nhoodfilter{y}$. This order gives rise to an equivalence relation $\equiv$, and we say that two points $x,y \in X$ are \emph{topologically indistinguishable} if $x \equiv y$.
 
-It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, and it is not difficult to show that the quotient space $X/{\equiv}$, called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, is indeed $T_0$. In fact, $\equiv$ is the most conservative equivalence relation $\sim$ such that $X/{\sim}$ is $T_0$, though we shall not need this fact. [reference to separation axiom notes]
+It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, and it is not difficult to show that the quotient space $X/{\equiv}$, called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, is indeed $T_0$. In fact, $\equiv$ is the most conservative equivalence relation $\sim$ such that $X/{\sim}$ is $T_0$, though we shall not need this fact. [TODO: reference to separation axiom notes]
 
 When we apply this construction to the theory of topological groups, we see that the $T_0$-identification can be understood in terms of quotient groups:
 
@@ -347,171 +486,1026 @@ On the other hand, a \emph{group} structure on a set $G$ certainly respects the 
 
 Thus if the topology and group structure on a topological group are to be truly compatible, then the topology must respect the underlying set structure, i.e. be $T_0$. In the sequel we shall, however, resist assuming that topological groups are $T_0$ as far as possible.
 
-There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [And my own notes]
+There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [TODO: And my own notes]
 
 
-\section{Metrics}
+% \section{Metrics}
 
-Next we consider metrics: A pseudo-metric $\rho$ on a group $G$ is called \emph{(translation) invariant} if $\rho(xz,yz) = \rho(x,y)$ for all $x,y,z \in G$.
+% Next we consider metrics: A pseudo-metric $\rho$ on a group $G$ is called \emph{(translation) invariant} if $\rho(xz,yz) = \rho(x,y)$ for all $x,y,z \in G$.
 
-Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\rho_H \colon G/H \times G/H \to [0,\infty)$ by
-%
-\begin{equation*}
-    \rho_H(q(x), q(y))
-        = \inf_{h \in H} \rho(y\inv x, h).
-\end{equation*}
-%
-This is well-defined, since if $q(x) = q(x')$ and $q(y) = q(y')$, then $x\inv x' = h_1$ and $y\inv y' = h_2$ for appropriate choices of $h_1,h_2 \in H$, and so
-%
-\begin{equation*}
-    \rho(y\inv x, h)
-        = \rho((y')\inv x', h_2\inv h h_1).
-\end{equation*}
-%
-We show below that $\rho_H$ is a pseudo-metric, and we call it the \emph{quotient metric} on $G/H$.
+% Assume that $G$ is pseudo-metrisable by an invariant pseudo-metric $\rho$. Let $H$ be a subgroup of $G$ and define $\rho_H \colon G/H \times G/H \to [0,\infty)$ by
+% %
+% \begin{equation*}
+%     \rho_H(q(x), q(y))
+%         = \inf_{h \in H} \rho(y\inv x, h).
+% \end{equation*}
+% %
+% This is well-defined, since if $q(x) = q(x')$ and $q(y) = q(y')$, then $x\inv x' = h_1$ and $y\inv y' = h_2$ for appropriate choices of $h_1,h_2 \in H$, and so
+% %
+% \begin{equation*}
+%     \rho(y\inv x, h)
+%         = \rho((y')\inv x', h_2\inv h h_1).
+% \end{equation*}
+% %
+% We show below that $\rho_H$ is a pseudo-metric, and we call it the \emph{quotient metric} on $G/H$.
 
-We can interpret the quotient metric as follows: We think of the elements of a group as invertible transformations. Since $H$ is the identity in $G/H$, $\inf_{h \in H} \rho(y\inv x, h)$ measures the distance from $y\inv x$ to the closest transformation that \textquote{does nothing}. If this number is small, then $y\inv x$ can be thought of \textquote{doing almost nothing}. That is, first performing the transformation $x$ and then undoing the transformation $y$ we do almost nothing, so $x$ and $y$ must be almost the same transformation.
+% We can interpret the quotient metric as follows: We think of the elements of a group as invertible transformations. Since $H$ is the identity in $G/H$, $\inf_{h \in H} \rho(y\inv x, h)$ measures the distance from $y\inv x$ to the closest transformation that \textquote{does nothing}. If this number is small, then $y\inv x$ can be thought of \textquote{doing almost nothing}. That is, first performing the transformation $x$ and then undoing the transformation $y$ we do almost nothing, so $x$ and $y$ must be almost the same transformation.
 
-This kind of reasoning also shows why we are only interested in invariant metrics: Otherwise $y\inv x$ being close to $e$ would not immediately imply that $x$ and $y$ are close, so a non-invariant metric would not respect the interpretation of group elements as transformations.
+% This kind of reasoning also shows why we are only interested in invariant metrics: Otherwise $y\inv x$ being close to $e$ would not immediately imply that $x$ and $y$ are close, so a non-invariant metric would not respect the interpretation of group elements as transformations.
 
 
-\begin{proposition}[Quotient metric]
-    \label{thm:coset-space-metric}
-    The map $\rho_H$ is a pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\rho_H$ is invariant. Furthermore, $\rho_H$ is a metric if and only if $H$ is closed.
-\end{proposition}
+% \begin{proposition}[Quotient metric]
+%     \label{thm:coset-space-metric}
+%     The map $\rho_H$ is a pseudo-metric on $G/H$ compatible with the quotient topology. If $H$ is normal such that $G/H$ is a group, then $\rho_H$ is invariant. Furthermore, $\rho_H$ is a metric if and only if $H$ is closed.
+% \end{proposition}
 
-\newcommand{\calB}{\mathcal{B}}
+% \newcommand{\calB}{\mathcal{B}}
+
+% \begin{proof}
+%     It is clear that $\rho_H$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
+%     %
+%     \begin{align*}
+%         \rho_H(q(x), q(z))
+%             &\leq \rho(z\inv x, hh') \\
+%             &\leq \rho(z\inv x, z\inv yh') + \rho(z\inv yh', hh') \\
+%             &= \rho(y\inv x, h') + \rho(z\inv y, h).
+%     \end{align*}
+%     %
+%     By taking infima over $h,h' \in H$ on the right-hand side we thus get
+%     %
+%     \begin{equation*}
+%         \rho_H(q(x),q(z))
+%             \leq \rho_H(q(x),q(y)) + \rho_H(q(y),q(z))
+%     \end{equation*}
+%     %
+%     as desired. It is clear from the definition that $\rho_H$ is invariant if $H$ is normal.
+
+%     Next we show that $\rho_H$ is compatible with the quotient topology on $G/H$. Let $\calB$ be a neighbourhood basis at $x \in G$. We claim that $q(\calB)$ is a neighbourhood basis at $q(x)$. If $U \subseteq G/H$ is a neighbourhood of $q(x)$, then $q\preim(U)$ is a neighbourhood of $x$. Thus there is a basic neighbourhood $B \in \calB$ such that $B \subseteq q\preim(U)$. Since $q$ is open, it follows that $q(B) \subseteq U$ is a neighbourhood of $q(x)$.
+
+%     Now we claim that $\rho(x,y) < r$ if and only if $\rho_H(q(x),q(y)) < r$, for $r > 0$. The latter is true precisely when $\rho(xy\inv, h) < r$ for all $h \in H$, so in particular when $h = e$, i.e. when $\rho(x,y) < r$. Conversely, if $\rho(x,y) < r$ then
+%     %
+%     \begin{equation*}
+%         \rho_H(q(x),q(y))
+%             \leq \rho(xy\inv, e)
+%             = \rho(x,y)
+%             < r.
+%     \end{equation*}
+%     %
+%     Fix $x \in G$ and notice that $\set{B_\rho(x,r)}{r > 0}$ is a local basis at $x$. Since $q(B_\rho(x,r)) = B_{\rho_H}(q(x),r)$ by the argument above, the set $\set{B_{\rho_H}(q(x),r)}{r > 0}$ is a local basis at $q(x)$. Hence $\rho_H$ is compatible with the topology on $G/H$.
+
+%     Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:topological_group_regular} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $H$ is closed.
+% \end{proof}
+
+% [Metric identification]
+
+
+\chapter{Metrisation}
+
+\newcommand{\cat}[1]{\mathcal{#1}}
+\newcommand{\scat}[1]{\mathbf{#1}} % category supposed to be small
+\newcommand{\ncat}[1]{\mathbf{#1}} % named categories like Set, Top
+
+\newcommand{\scatC}{\scat{C}}
+
+\newcommand{\catNor}[1]{{#1\text{-}\scat{Nor}}}
+\newcommand{\catNorReal}{\catNor{\reals}}
+
+\newcommand{\field}{\mathbb{K}}
+
+If $X$ is a topological space, then we denote by $C(X)$ the space of continuous real-valued functions on $X$. Further denote by $C_b(X)$ the subspace of bounded functions. We equip $C_b(X)$ with the supremum norm. The category of normed spaces over the field $\field$ and linear maps with norm at most $1$ is denoted $\catNor{\field}_1$. The isomorphisms in $\catNor{\field}_1$ are precisely the surjective isometries.
+
+\begin{lemma}
+    \label{thm:birkhoff-kakutani-lemma}
+    Let $G$ be a Hausdorff topological group that is first countable. Then there exists a bounded continuous function $f \colon G \to [0,1]$ with the following properties:
+    %
+    \begin{enumlem}
+        \item \label{enum:birkhoff-kakutani-lemma-unique-maximum} $f(e) = 1$, and $f(x) < 1$ for all $x \neq e$.
+        \item \label{enum:birkhoff-kakutani-lemma-nhood-basis} The sets $V_n = \set{x \in G}{f(x) > 1-1/n}$ for $n \in \naturals$ form a local basis for $G$.
+        \item \label{enum:birkhoff-kakutani-lemma-uniform-continuity} For every $\epsilon > 0$ there exists an open neighbourhood $U$ of $e$ such that $\abs{f(gx) - f(x)} \leq \epsilon$ for all $g \in U$ and $x \in G$.
+    \end{enumlem}
+\end{lemma}
 
 \begin{proof}
-    It is clear that $\rho_H$ is positive and symmetric. We prove the triangle inequality: Let $x,y,z \in G$. For any $h, h' \in H$ we find that
-    %
-    \begin{align*}
-        \rho_H(q(x), q(z))
-            &\leq \rho(z\inv x, hh') \\
-            &\leq \rho(z\inv x, z\inv yh') + \rho(z\inv yh', hh') \\
-            &= \rho(y\inv x, h') + \rho(z\inv y, h).
-    \end{align*}
-    %
-    By taking infima over $h,h' \in H$ on the right-hand side we thus get
-    %
-    \begin{equation*}
-        \rho_H(q(x),q(z))
-            \leq \rho_H(q(x),q(y)) + \rho_H(q(y),q(z))
-    \end{equation*}
-    %
-    as desired. It is clear from the definition that $\rho_H$ is invariant if $H$ is normal.
-
-    Next we show that $\rho_H$ is compatible with the quotient topology on $G/H$. Let $\calB$ be a local basis at $x \in G$. We claim that $q(\calB)$ is a local basis at $q(x)$. If $U \subseteq G/H$ is a neighbourhood of $q(x)$, then $q\preim(U)$ is a neighbourhood of $x$. Thus there is a basic neighbourhood $B \in \calB$ such that $B \subseteq q\preim(U)$. Since $q$ is open, it follows that $q(B) \subseteq U$ is a neighbourhood of $q(x)$.
-
-    Now we claim that $\rho(x,y) < r$ if and only if $\rho_H(q(x),q(y)) < r$, for $r > 0$. The latter is true precisely when $\rho(xy\inv, h) < r$ for all $h \in H$, so in particular when $h = e$, i.e. when $\rho(x,y) < r$. Conversely, if $\rho(x,y) < r$ then
-    %
-    \begin{equation*}
-        \rho_H(q(x),q(y))
-            \leq \rho(xy\inv, e)
-            = \rho(x,y)
-            < r.
-    \end{equation*}
-    %
-    Fix $x \in G$ and notice that $\set{B_\rho(x,r)}{r > 0}$ is a local basis at $x$. Since $q(B_\rho(x,r)) = B_{\rho_H}(q(x),r)$ by the argument above, the set $\set{B_{\rho_H}(q(x),r)}{r > 0}$ is a local basis at $q(x)$. Hence $\rho_H$ is compatible with the topology on $G/H$.
-
-    Finally, recall that a pseudo-metric is a metric if and only if the metric topology is $T_0$. By \cref{thm:T0_implies_T1} this is equivalent to it being $T_1$, and \cref{enum:coset_space_T1} implies that this is the case if and only if $H$ is closed.
+    .[TODO] \href{https://terrytao.wordpress.com/2011/05/17/the-birkhoff-kakutani-theorem/}{See here.}
 \end{proof}
 
-[Metric identification]
+
+\begin{theorem}[The Birkhoff--Kakutani Theorem]
+    Let $G$ be a topological group. Then $G$ is metrisable if and only if it is Hausdorff and first countable. In this case $G$ is metrisable by a left-invariant metric.
+\end{theorem}
+
+\begin{proof}
+    The \enquote{only if} direction is obvious, so we prove the \enquote{if} direction.
+
+    Consider the map
+    %
+    \begin{align*}
+        \tau \colon G &\to \mathrm{Aut}_{\catNor{\reals}_1}(C_b(G)), \\
+        g &\mapsto \tau_g,
+    \end{align*}
+    %
+    where $\tau_g f(x) = f(g\inv x)$ for $f \in C_b(G)$ and $x \in G$. The map is well-defined: If $f,f' \in C_b(G)$ and $\alpha \in \reals$, then
+    %
+    \begin{align*}
+        \tau_g(\alpha f + f')(x)
+            &= (\alpha f + f')(g\inv x)
+             = \alpha f(g\inv x) + f'(g\inv x) \\
+            &= \alpha \tau_g f(x) + \tau_g f'(x)
+             = (\alpha \tau_g f + \tau_g f')(x)
+    \end{align*}
+    %
+    for all $x \in G$, i.e. $\tau_g$ is linear as claimed. Furthermore, notice that $\norm{\tau_g f}_{\sup} = \norm{f}_{\sup}$, since acting on $f$ with $\tau_g$ simply permutes the domain $G$ of $f$, so $f$ and $\tau_g f$ have the same image. Hence $\tau_g$ is indeed an automorphism in $\reals\text{-}\mathbf{Nor}_1$. Finally, it is easy to show that $\tau$ is a group homomorphism, i.e. a representation of $G$ on $C_b(G)$.
+    
+    Fixing a function $f \in C_b(G)$ yields a map $G \to C_b(G)$ given by $g \mapsto \tau_g f$, and this induces a pseudometric $\rho_f$ on $G$. This is more concretely given by
+    %
+    \begin{equation*}
+        \rho_f(g,h)
+            = \norm{\tau_g f - \tau_h f}_{\sup}
+            = \sup_{x \in G} \abs[\big]{f(g\inv x) - f(h\inv x)}.
+    \end{equation*}
+    %
+    Notice that $\rho_f$ is indeed left-invariant, since
+    %
+    \begin{align*}
+        \rho_f(xg,xh)
+            &= \norm{\tau_{xg} f - \tau_{xh} f}_{\sup}
+             = \norm{\tau_x(\tau_g f - \tau_h f)}_{\sup} \\
+            &= \norm{\tau_g f - \tau_h f}_{\sup}
+             = \rho_f(g,h),
+    \end{align*}
+    %
+    for all $x \in G$.
+
+    Now assume that $G$ is Hausdorff and first countable, and let $f$ be the function from \cref{thm:birkhoff-kakutani-lemma}. Since $f$ has a unique maximum, the map $g \mapsto \tau_g f$ is injective, so $\rho_f$ is a genuine metric. Furthermore notice that this map is continuous by \cref{enum:birkhoff-kakutani-lemma-uniform-continuity}.
+    
+    It remains to be shown that $\rho_f$ generates the topology on $G$. First notice that every $\rho_f$-ball is open in $G$ since it is the preimage of a ball under $g \mapsto \tau_g f$. Conversely, let $U$ be open in $G$, and let $g \in U$. There is an $n \in \naturals$ such that $g V_n \subseteq U$ by \cref{enum:birkhoff-kakutani-lemma-nhood-basis}. Now let $h \in G$ with $\rho_f(g,h) < 1/n$. Then
+    %
+    \begin{align*}
+        \frac{1}{n}
+            &> \rho_f(g,h)
+             = \sup_{x \in G} \abs{f(g\inv x) - f(h\inv x)} \\
+            &\geq \abs{f(g\inv h) - f(e)}
+             \geq 1 - f(g\inv h).
+    \end{align*}
+    %
+    Hence $h \in gV_n$, so $U$ is $\rho_f$-open. This proves the claim.
+\end{proof}
 
 
 \chapter{Topological vector spaces}
 
-The purpose of these notes is not to give a complete discussion of either topological groups or vector spaces. In this section we will thus focus on the very basic aspects of topological vector spaces and refer the reader to the literature for further developments.
+\section{Convexity}
 
-[Definition of TVS.]
+\newcommand{\conv}{\operatorname{Conv}}
 
-\section{Quotient spaces}
+Below we let $\field$ denote either field of real numbers or the field of complex numbers.
 
-We begin by reviewing the basic construction and properties of quotients of general \emph{algebraic} vector spaces. So let $X$ be a vector space over a field $k$, and let $S$ be a subspace of $X$. Then $X$ is in particular an abelian group under addition, and $S$ is a subgroup. We may then construct the quotient \emph{group} $X/S$ whose elements are the cosets $x + S$ for $x \in X$. Let $\pi \colon X \to X/S$, so that $\pi(x) = x + S$.
+Let $X$ be an $\field$-vector space. For $x,y \in X$ we denote by $[x,y]$ the line segment between $x$ and $y$, i.e. the set $\set{tx + (1-t)y}{t \in [0,1]}$. A subset $C \subseteq X$ is \emph{convex} if $[x,y] \subseteq C$ for all $x,y \in X$, or equivalently if $tC + (1-t)C \subseteq C$ for all $t \in [0,1]$. The intersection of all convex sets in $X$ containing a subset $A \subseteq X$ is called the \emph{convex hull} of $A$ and is denoted $\conv(A)$. This is clearly the smallest convex set containing $A$. Notice that $[x,y] = \conv(\{x,y\})$.
 
-The equivalence relation defining the group is also compatible with the scalar multiplication on $X$: For if $x,y \in X$ and $x - y \in S$, then for $r \in k$ we have
-%
-\begin{equation*}
-    rx - ry
-        = r(x - y) \in S,
-\end{equation*}
-%
-since $S$ is a subspace. Thus $\pi(rx) = \pi(ry)$, and we may define multiplication by $r \in k$ in $X/S$ by $r \pi(x) = \pi(rx)$. It is routine to check that this makes $X/S$ into a $k$-vector space, called the \emph{quotient space} of $X$ by $S$. It is easy to see that $\pi$ is linear, and that $\ker \pi = S$.
+Furthermore, a subset $S$ of $X$ is called \emph{star-shaped at $x \in S$} if $[x,y] \subseteq S$ for all $y \in S$. If there exists an $x \in S$ such that $S$ is star-shaped at $x$, then $S$ is simply called \emph{star-shaped}. Clearly every non-empty convex set is star-shaped.
 
-\newcommand{\setF}{\mathbb{F}}
-
-We now specialise to topological vector spaces. Let $X$ be a topological vector space over the field $\setF$. If $S$ is a subspace of $X$, then recall that we give $X/S$ the quotient topology coinduced by the quotient map $\pi$, and that $\pi$ is open.
-
-
-\begin{theorem}[Topological quotient spaces]
-    Let $X$ be a topological vector space, and let $S$ be a subspace. Then $X/S$ is a topological vector space.
-\end{theorem}
+\begin{lemma}
+    Let $X$ and $Y$ be $\field$-vector spaces, let $A, C \subseteq X$ with $C$ convex, and let $T \colon X \to Y$ be a linear map.
+    %
+    \begin{enumlem}
+        \item The image $T(C)$ is convex.
+        \item \label{enum:convex-hull-isomorphism} If $T$ is an isomorphism, then
+        %
+        \begin{equation*}
+            T(\conv(A)) = \conv(T(A)).
+        \end{equation*}
+    \end{enumlem}
+\end{lemma}
 
 \begin{proof}
-    By \cref{thm:topological-quotient-group} it suffices to show that scalar multiplication is continuous. Let $x \in X$ and $\alpha \in \setF$, and let $U$ be a neighbourhood of $\pi(\alpha x)$ in $X/S$. Continuity of scalar multiplication in $S$ at $(\alpha, x)$ implies the existence of neighbourhoods $V \subseteq \setF$ and $W \subseteq X$ of $\alpha$ and $x$ respectively, such that $VW \subseteq \pi\preim(U)$. Since $\pi$ is surjective and linear, it follows that $V \pi(W) \subseteq U$, and since $\pi$ is also open $\pi(W)$ is a neighbourhood of $\pi(x)$. Hence scalar multiplication in $X/S$ is continuous.
+\begin{proofsec}
+    \item[(i)]
+    This follows easily since
+    %
+    \begin{equation*}
+        t T(C) + (1-t) T(C)
+            = T(tC + (1-t)C)
+            \subseteq T(C)
+    \end{equation*}
+    %
+    by linearity.
+
+    \item[(ii)]
+    Clearly $T(A) \subseteq T(\conv(A))$, so by (i) and the minimality of the convex hull we have $\conv(T(A)) \subseteq T(\conv(A))$. Replacing $A$ by $T(A)$ and $T$ by $T\inv$ we get $\conv(A) \subseteq T\inv(\conv(T(A)))$, and applying $T$ to both sides yields the opposite inclusion.
+\end{proofsec}
 \end{proof}
+
+
+\section{Definitions and basic properties}
+
+\begin{definition}[Topological vector spaces]
+    A \emph{topological vector space} over $\field$ is a tuple $(X, +, \cdot, \calT)$ such that $(X, +, \cdot)$ is a $\field$-vector space, $(X, \calT)$ is a topological space, and both the addition $+ \colon X \prod X \to X$ and the scalar multiplication $\cdot \colon \field \prod X \to X$ are continuous.
+\end{definition}
 %
-Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
+Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ can be written $\iota(x) = (-1)x$, hence is continuous. Thus if $(X, +, \cdot, \calT)$ is a topological vector space, then $(X, +, \calT)$ is a topological group.
 
-We have already considered quotient metrics on arbitrary topological groups. Here is an important example of a quotient metric:
+\begin{definition}
+    Let $X$ be a $\field$-vector space, and let $A \subseteq X$. Then $A$ is said to be
+    %
+    \begin{enumdef}
+        \item \emph{balanced} if $\alpha A \subseteq A$ for all $\alpha \in \field$ with $\abs{\alpha} \leq 1$, and
+        \item \emph{absorbing} if for every $x \in X$ there exists a $t > 0$ such that $x \in tA$.
+    \end{enumdef}
+    %
+    Assume that $X$ is a topological vector space. Then $A$ is called
+    %
+    \begin{enumdef}[resume]
+        \item \emph{bounded} if for every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq tU$.
+    \end{enumdef}
+    %
+    Furthermore, $X$ is said to be
+    %
+    \begin{enumdef}[resume]
+        \item \emph{locally star-shaped} if it has a basis of star-shaped sets,
+        \item \emph{locally convex} if it has a basis of convex sets,
+        \item \emph{locally bounded} if each point has a bounded neighbourhood,
+        \item an \emph{$F$-space} if its topology is induced by a complete invariant metric, and
+        \item a \emph{Fréchet space} if it is a locally convex $F$-space.
+    \end{enumdef}
+\end{definition}
 
-\newcommand{\calL}{\mathcal{L}}
-\newcommand{\calE}{\mathcal{E}}
 
-\begin{example}[$\calL^p(\mu)$- and $L^p(\mu)$-spaces]
-    Let $(X, \calE, \mu)$ be a measure space, and consider the Lebesgue space $\calL^p(\mu)$ of $p$-integrable functions for some $p \in (0,\infty)$. This is given the metric topology induced by the pseudo-metric
+\begin{remark}
+    We collect a series of elementary results concerning the definitions above.
+    %
+    \begin{enumrem}
+        \item \label{rem:transformation-of-balanced-set} If $T \colon X \to Y$ is a linear map between (not necessarily topological) $\field$-vector spaces and $A \subseteq X$ is balanced, then $T(A)$ is also balanced.
+        
+        \item \label{enum:convex-hull-balanced} The convex hull of a balanced set is balanced: If $\alpha \in \field \setminus \{0\}$, then multiplication by $\alpha$ is a linear isomorphism. If $A$ is balanced, it follows from \cref{enum:convex-hull-isomorphism} that
+        %
+        \begin{equation*}
+            \alpha \conv(A)
+                = \conv(\alpha A)
+                \subseteq \conv(A),
+        \end{equation*}
+        %
+        so $\conv(A)$ is also balanced.
+        
+        \item If $A$ is balanced and $\alpha \in \field$ with $\abs{\alpha} = 1$, then both $\alpha A \subseteq A$ and $\alpha\inv A \subseteq A$. The latter implies that $A \subseteq \alpha A$, so $\alpha A = A$. Letting $\alpha = -1$ we get that balanced sets are symmetric. If $\field = \reals$ and $A$ is convex, then $A$ is symmetric iff it is balanced.
+        
+        \item Absorbing sets automatically contain $0$. So do nonempty balanced sets.
+
+        \item There is another common definition of boundedness that is slightly more complicated than the above but useful in some applications. In \cref{thm:boundedness-equivalent-definitions} we show that these definitions are equivalent.
+
+        Boundedness in the above sense, call it \enquote{$\calT$-boundedness}, does not generally agree with boundedness with respect to a metric $\rho$, call it \enquote{$\rho$-boundedness}: Assume that $X \neq 0$ is metrisable by an invariant metric $\rho$ (e.g. assume that $X$ is normable). Then the metric $\rho' = \rho/(1 + \rho)$ is also invariant and topologically equivalent to $\rho$, and every subset of $X$ is $\rho'$-bounded. However, in \cref{enum:Hausdorff-space-unbounded} we will see that no nontrivial Hausdorff TVS is $\calT$-bounded.
+
+        However, if $\norm{\,\cdot\,}$ is a norm on $X$, then $\calT$-boundedness \emph{does} coincide with $\norm{\,\cdot\,}$-boundedness.
+        
+        \item $X$ is locally star-shaped iff it has a local basis of star-shaped open sets. Similarly for local convexity, local path-connectedness and local connectedness. In \cref{enum:balanced-local-basis} we prove that all topological vector spaces are locally star-shaped, hence locally (path-)connected.
+
+        \item $X$ is locally bounded iff $0$ has a bounded neighbourhood. Notice that local boundedness is atypical since it does not assume a basis of bounded sets.
+    \end{enumrem}
+\end{remark}
+
+
+\begin{lemma}
+    Let $X$ be a topological vector space, and let $A \subseteq X$.
+    %
+    \begin{enumlem}
+        \item If $A$ is a subspace, then so is $\closure{A}$.
+        
+        \item \label{enum:convex-closure-interior} If $A$ is convex, then so are $\closure{A}$ and $\interior{A}$. In particular, the convex hull of an open set is open.
+        
+        \item If $A$ is balanced, then so is $\closure{A}$. If $0 \in A$, then $\interior{A}$ is also balanced.
+
+        \item \label{enum:balanced-implies-connected} If $A$ is balanced, then it is also star-shaped at $0$, and hence path-connected.
+        
+        \item If $A$ is bounded, then so are $\closure{A}$ and $\interior{A}$.
+    \end{enumlem}
+\end{lemma}
+
+\begin{proof}
+\begin{proofsec}
+    \item[(i)]
+    Assume that $A$ is a subspace, and let $\alpha \in \field$. Then
     %
     \begin{equation*}
-        \rho(f,g)
-            = \int_X \abs{f-g}^p \dif\mu.
+        \alpha \closure{A} + \closure{A}
+            = \closure{\alpha A} + \closure{A}
+            \subseteq \closure{\alpha A + A}
+            \subseteq \closure{A}.
     \end{equation*}
-    %
-    Since $\calL^p(\mu)$ is not $T_0$, we wish to consider its $T_0$-identification. By \cref{thm:quotient-group-T0-identification} we can find this by computing the closure $N$ of the zero function. This is easily seen to be precisely the space of functions that are zero $\mu$-a.e. We denote the quotient space by $L^p(\mu) = \calL^p(\mu)/N$. We easily see that the quotient metric is simply given by $\rho_N([f],[g]) = \rho(f,g)$, which is the same metric as in the metric identification.
-\end{example}
-
-Next we consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
-%
-\begin{equation*}
-    \norm{\pi(x)}_S
-        = \inf_{s \in S} \norm{x - s}.
-\end{equation*}
-
-\begin{proposition}[Quotient norm]
-    The map $\norm{\,\cdot\,}_S$ is a semi-norm on $X/S$. If $\rho$ is the pseudo-metric induced by the semi-norm on $X$ and $\rho_S$ is the corresponding quotient metric on $X/S$, then
+    
+    \item[(ii)]
+    Assume that $A$ is convex, and let $t \in [0,1]$. Then
     %
     \begin{equation*}
-        \norm{\pi(x)}_S = \rho_S(\pi(x), 0).
+        t \closure{A} + (1-t) \closure{A}
+            = \closure{tA} + \closure{(1-t)A}
+            \subseteq \closure{tA + (1-t)A}
+            \subseteq \closure{A},
     \end{equation*}
     %
-    In particular, $\rho_S$ is the pseudo-metric induced by $\norm{\,\cdot\,}_S$, and $\norm{\,\cdot\,}_S$ is compatible with the quotient topology. Furthermore, it is a norm if and only if $S$ is closed.
+    as desired. Since $\interior{A} \subseteq A$, for $t \in (0,1)$ we have
+    %
+    \begin{equation*}
+        t \interior{A} + (1-t) \interior{A}
+            \subseteq A,
+    \end{equation*}
+    %
+    and the set on the left-hand side is open by \cref{enum:product_open_set} (since both $t$ and $1-t$ are nonzero), hence contained in $\interior{A}$. The final claim follows since if $A$ is open, then $\interior{\conv(A)}$ is an open convex set containing $A$.
+
+    \item[(iii)]
+    Assume that $A$ is balanced, and let $\alpha \in \field$ with $\abs{A} \leq 1$. Then
+    %
+    \begin{equation*}
+        \alpha \closure{A}
+            = \closure{\alpha A}
+            \subseteq \closure{A}
+    \end{equation*}
+    %
+    as desired. If $\alpha \neq 0$, then
+    %
+    \begin{equation*}
+        \alpha \interior{A}
+            = \interior{(\alpha A)}
+            \subseteq \alpha A
+            \subseteq A.
+    \end{equation*}
+    %
+    The set of the left-hand side is open, so it is contained in $\interior{A}$. If $A$ contains $0$, then this also holds when $\alpha = 0$.
+
+    \item[(iv)]
+    This is obvious if $A$ is empty, so let $x \in A$. For $t \in [0,1]$ we have $tx \in tA \subseteq A$ since $A$ is balanced, so $[0,x] \subseteq A$. Hence $A$ is star-shaped at $0$.
+    
+    \item[(v)]
+    Assume that $A$ is bounded. Every subset of $A$ is also bounded, so in particular $\interior{A}$ is bounded. Let $U$ be a neighbourhood of $0$. By regularity of $X$ (cf. \cref{thm:topological_group_regular}) there is a neighbourhood $V$ of $0$ such that $\closure{V} \subseteq U$. Since $A$ is bounded there exists a $t > 0$ such that $A \subseteq tV$. We thus have
+    %
+    \begin{equation*}
+        \closure{A}
+            \subseteq \closure{tV}
+            = t \closure{V}
+            \subseteq tU,
+    \end{equation*}
+    %
+    as desired.
+\end{proofsec}
+\end{proof}
+
+
+\begin{proposition}[Balanced local basis]
+    Let $X$ be a topological vector space.
+    %
+    \begin{enumprop}
+        \item \label{enum:balanced-local-basis} Every open neighbourhood of $0$ contains an open balanced neighbourhood of $0$. In particular, $X$ has a local basis of balanced open sets. Thus $X$ is locally star-shaped, hence locally path-connected.
+
+        \item \label{enum:convex-balanced-local-basis} Every convex open neighbourhood of $0$ contains a convex open balanced neighbourhood of $0$. In particular, if $X$ is locally convex, it has a local basis of convex balanced open sets.
+    \end{enumprop}
 \end{proposition}
 
 \begin{proof}
-    It is clear that $\norm{\,\cdot\,}_S$ is positive and absolutely homogeneous. We next prove the triangle inequality:
-    
-    Let $\rho$ be the metric induced by the semi-norm on $X$, i.e. $\rho(y,z) = \norm{y - z}$ for $y,z \in X$. Notice that since $\rho$ is invariant, for $x \in X$,
+\begin{proofsec}
+    \item[(i)]
+    Let $U$ be an open neighbourhood of $0$. Since scalar multiplication is continuous at $(0,0) \in \field \prod X$, there exists a $\delta > 0$ and an open neighbourhood $V \subseteq X$ of $0$ such that $\ball{0}{\delta} V \subseteq U$. The set $\ball{0}{\delta} V$ is clearly balanced and contains $0$, and since
     %
-    \begin{align*}
-        \norm{\pi(x)}_S
-            &= \inf_{s \in S} \norm{x - s}
-             = \inf_{s \in S} \rho(x - s, 0) \\
-            &= \inf_{s \in S} \rho(x - 0, s)
-             = \rho_S(\pi(x), 0).
-    \end{align*}
+    \begin{equation*}
+        \ball{0}{\delta} V
+            = \bigunion_{\alpha \in \ball{0}{\delta}} \alpha V
+            = \bigunion_{\alpha \in \pball{0}{\delta}} \alpha V,
+    \end{equation*}
     %
-    If also $y \in X$, then it follows that
-    %
-    \begin{align*}
-        \norm{\pi(x) + \pi(y)}_S
-            &= \rho_S(\pi(x) + \pi(y), 0)
-             = \rho_S(\pi(x), \pi(-y)) \\
-            &\leq \rho_S(\pi(x), 0) + \rho_S(0, \pi(-y))
-             = \norm{\pi(x)}_S + \norm{\pi(y)}_S,
-    \end{align*}
-    %
-    so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:coset-space-metric}.
+    it is a union of open sets and hence itself open. The last claim follows from \cref{enum:balanced-implies-connected}.
+
+    \item[(ii)]
+    Let $U$ be an open convex neighbourhood of $0$. Part (i) furnishes a balanced open neighbourhood $V$ of $0$ contained in $U$. Its convex hull $\conv(V)$ is then balanced by \cref{enum:convex-hull-balanced} and open by \cref{enum:convex-closure-interior}. By minimality it is also contained in $U$, as desired.
+\end{proofsec}
 \end{proof}
+
+
+\begin{corollary}[Alternative characterisation of boundedness]
+    \label{thm:boundedness-equivalent-definitions}
+    Let $X$ be a topological vector space, and let $A \subseteq X$. Then the following are equivalent:
+    %
+    \begin{enumcor}
+        \item $A$ is bounded, i.e. for every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq tU$.
+        \item \label{enum:boundedness-equivalent-definition} For every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq \alpha U$ for all $\alpha \in \field$ with $\abs{\alpha} \geq t$.
+    \end{enumcor}
+\end{corollary}
+
+\begin{proof}
+\begin{proofsec}
+    \item[(i) $\implies$ (ii)]
+    By \cref{enum:balanced-local-basis} $U$ contains a balanced neighbourhood $V$ of $0$. If $A$ is bounded, then there is a $t > 0$ such that $A \subseteq tV$. Let $\alpha \in \field$ with $\abs{\alpha} \geq t$. Then $\alpha V$ is also balanced by \cref{rem:transformation-of-balanced-set}, so since $\abs{t/\alpha} \leq 1$ we have
+    %
+    \begin{equation*}
+        tV
+            = \frac{t}{\alpha} \alpha V
+            \subseteq \alpha V,
+    \end{equation*}
+    %
+    implying that $A \subseteq \alpha V \subseteq \alpha U$ as desired.
+
+    \item[(ii) $\implies$ (i)]
+    This is obvious.
+\end{proofsec}
+\end{proof}
+
+
+\begin{corollary}[Hausdorff spaces are unbounded]
+    \label{enum:Hausdorff-space-unbounded}
+    Let $X$ be a nontrivial Hausdorff topological vector space. Then $X$ is unbounded.
+\end{corollary}
+%
+If $X$ carries the trivial topology, then $X$ is bounded. Hence the Hausdorff assumption cannot simply be dropped.
+
+\begin{proof}
+    Let $x \in X$ be nonzero, and let $U$ be a neighbourhood of $0$ not containing $x$. Consider the set $A = \set{nx}{n \in \naturals}$. Assume towards a contradiction that $A$ is bounded, and choose $t > 0$ in accordance with \cref{enum:boundedness-equivalent-definition}. If $n \in \naturals$ with $n \geq t$, then $A \subseteq nU$. But since $x \not\in U$ we have $nx \not\in nU$, a contradiction. Hence $A$ is unbounded, so $X$ itself is unbounded.
+\end{proof}
+
+
+\begin{proposition}
+    Let $X$ be a topological vector space, and let $U$ be a neighbourhood of $0$.
+    %
+    \begin{enumprop}
+        \item \label{enum:0-neighbourhood-absorbing} Let $(r_i)_{i \in I}$ be an unbounded net in $\field$. Then
+        %
+        \begin{equation*}
+            X = \bigunion_{i \in I} r_i U.
+        \end{equation*}
+        %
+        In particular, $U$ is absorbing.
+
+        \item \label{enum:compact-implies-bounded} Every compact set $K$ in $X$ is bounded.
+
+        \item \label{enum:bounded-nhood-local-basis} Assume that $U$ is bounded, and let $(\delta_i)_{i \in I}$ be a net in $\field \setminus \{0\}$ with $0$ as a cluster point. Then the family $\set{\delta_i U}{i \in I}$ is a local basis for $X$.
+    \end{enumprop}
+\end{proposition}
+
+\begin{proof}
+    Let $x \in X$. Since scalar multiplication is continuous, the set $V = \set{\alpha \in \field}{\alpha x \in U}$ is a neighbourhood of $0 \in \field$, so there exists an $i \in I$ such that $1/r_i \in V$. That is, $(1/r_i)x \in U$, or $x \in r_i U$. To show that $U$ is absorbing, let $I = \naturals$ and $r_i = i$.
+
+    To prove that $K$ is bounded, let $W \subseteq U$ be a balanced neighbourhood of $0$. Then (i) implies that
+    %
+    \begin{equation*}
+        K \subseteq \bigunion_{i \in \naturals} i W,
+    \end{equation*}
+    %
+    and by compactness we have $K \subseteq \bigunion_{i=1}^t i W$ for some $t \in \naturals$. But then $K \subseteq tW$ since $W$ (and hence $tW$ by \cref{rem:transformation-of-balanced-set}) is balanced. It follows that $K \subseteq tU$, so $K$ is bounded.
+
+    Finally let $V$ be a neighbourhood of $0$. Since $U$ is bounded we may choose $t > 0$ as in \cref{enum:boundedness-equivalent-definition} (with $U$ in place of $A$ and $V$ in place of $U$). There exists an $i \in I$ such that $\delta_i \in \ball{0}{1/t}$, i.e. $\abs{1/\delta_i} > t$. Hence $U \subseteq (1/\delta_i) V$, i.e. $\delta_i U \subseteq V$ as desired.
+\end{proof}
+
+
+\begin{corollary}[Cauchy sequences are bounded]
+    \label{thm:Cauchy-sequence-bounded}
+    Let $(x_n)_{n \in \naturals}$ be a Cauchy sequence in a topological vector space $X$. Then the set $\set{x_n}{n \in \naturals}$ is bounded. In particular, convergent sequences are bounded.
+\end{corollary}
+%
+More generally, we say that a net $(x_i)_{i \in I}$ is bounded if the set $\set{x_i}{i \in I}$ is bounded. This result, however, does not hold for general nets.
+
+\begin{proof}
+    Let $U$ be a neighbourhood of $0$. By \cref{enum:balanced-local-basis} we may assume that $U$ is balanced. There exists a neighbourhood $V$ of $0$ such that $V + V \subseteq U$, by \cref{thm:symmetric_nhood_of_e}. Since $(x_n)$ is Cauchy, there is an $N \in \naturals$ such that $m,n \geq N$ implies that $x_m - x_n \in V$. In particular, $x_n \in x_N + V \subseteq V + V \subseteq U$.
+
+    Now let $n < N$. Then since $U$ is absorbing by \cref{enum:0-neighbourhood-absorbing}, there is a $t_n > 0$ such that $x_n \in t_n U$. Letting $t = \max\{1, t_1, \ldots, t_{N-1}\}$ we thus have $x_n \in tU$ for all $n \in \naturals$ since $U$ is balanced.
+\end{proof}
+
+
+\section{Locally convex spaces}
+
+Let $X$ be a topological vector space. To each $A \subseteq X$ we associate the \emph{Minkowski functional} $\mu_A$ of $A$, given by
+%
+\begin{equation*}
+    \mu_A(x)
+        = \inf \set{t > 0}{t\inv x \in A}
+\end{equation*}
+%
+for $x \in X$. We shall only be interested in $\mu_A$ in the case where $A$ is absorbing (and in fact also convex). In this case $A$ is nonempty (since it contains $0$) and we have $\mu_A(x) < \infty$ for all $x \in X$.
+
+\begin{lemma}
+    Let $X$ be a topological vector space, and let $A \subseteq X$ be a convex, absorbing set. For all $x, y \in X$ we then have
+    %
+    \begin{enumlem}
+        \item $\mu_A(x + y) \leq \mu_A(x) + \mu_A(y)$, and
+        \item $\mu_A(\alpha x) = \mu_{\alpha\inv A}(x)$ for $\alpha \in \field$, where $0\inv A \defn X$. If $t \geq 0$, then $\mu_A(tx) = t\mu_A(x)$.
+    \end{enumlem}
+    %
+    Assume furthermore that $A$ is balanced.
+    %
+    \begin{enumlem}[resume]
+        \item \label{enum:Minkowski-functional-seminorm} $\mu_A$ is a seminorm.
+        \item \label{enum:Minkowski-functional-balls} If $A$ is open, $x \in X$ and $r > 0$, then
+        %
+        \begin{equation*}
+            \ball[\mu_A]{x}{r}
+                = \set{y \in X}{\mu_A(y-x) < r}
+                = x + rA,
+        \end{equation*}
+    \end{enumlem}
+\end{lemma}
+
+\begin{proof}
+\begin{proofsec}
+    \item[(i)]
+    Let $\epsilon > 0$, and put $s = \mu_A(x) + \epsilon$ and $t = \mu_A(y) + \epsilon$. Since $A$ is convex and contains $0$, we have $s\inv x, t\inv y \in A$. But then
+    %
+    \begin{equation*}
+        \frac{x+y}{s+t}
+            = \frac{t}{s+t} \frac{x}{s} + \frac{s}{s+t} \frac{y}{t}
+            \in A
+    \end{equation*}
+    %
+    by convexity, which implies that
+    %
+    \begin{equation*}
+        \mu_A(x + y)
+            \leq s + t
+            = \mu_A(x) + \mu_A(y) + 2\epsilon.
+    \end{equation*}
+    %
+    Since $\epsilon$ was arbitrary, the claim follows.
+
+    \item[(ii)]
+    For $\alpha \neq 0$ we have
+    %
+    \begin{equation*}
+        \mu_A(\alpha x)
+            = \inf \set{s > 0}{s\inv \alpha x \in A}
+            = \inf \set{s > 0}{s\inv x \in \alpha\inv A},
+    \end{equation*}
+    %
+    and if $\alpha = 0$ then since $A$ contains $0$ we have
+    %
+    \begin{equation*}
+        \mu_A(0x) = 0 = \mu_{0\inv A}(x),
+    \end{equation*}
+    %
+    with the convention that $0\inv A = X$. For $t > 0$ we have
+    %
+    \begin{equation*}
+        \mu_A(t x)
+            = \inf \set{s > 0}{s\inv t x \in A}
+            = \inf \set{tr}{r > 0, r\inv x \in A}
+            = t \mu_A(x),
+    \end{equation*}
+    %
+    where we have used the substitution $r = s/t$.
+    
+    \item[(iii)]
+    Let $\alpha \in \field$ and write $\alpha = \abs{\alpha} u$ with $\abs{u} = 1$. Then
+    %
+    \begin{align*}
+        \mu_A(\alpha x)
+            = \mu_A(\abs{\alpha}ux)
+            = \abs{\alpha} \mu_{u\inv A}(x)
+            = \abs{\alpha} \mu_A(x),
+    \end{align*}
+    %
+    where we use that $u\inv A = A$ since $A$ is balanced.
+    
+    \item[(iv)]
+    First assume that $r = 1$ and $x = 0$. If $y \in A$, then there exists a $t \in (0,1)$ such that $t\inv y \in A$ since $A$ is open. Hence $\mu_A(y) < 1$. If instead $y \not\in A$, then if $t\inv y \in A$ for some $t > 0$, then we must have $t \geq 1$ since $A$ is balanced.
+    
+    For general $r > 0$ notice that
+    %
+    \begin{equation*}
+        rA
+            = \set{y \in X}{\mu_{rA}(y) < 1}
+            = \set{y \in X}{r\inv \mu_A(y) < 1}
+            = \set{y \in X}{\mu_A(y) < r}
+    \end{equation*}
+    %
+    by (ii). The claim for general $x \in X$ is obvious.
+\end{proofsec}
+\end{proof}
+
+
+% \begin{theorem}
+%     \label{thm:locally-convex-Minkowski-functionals}
+%     Let $X$ be a locally convex space, and let $\calB$ be a local basis in $X$ of convex, balanced sets. For each $B \in \calB$ the Minkowski functional $\mu_B$ is continuous. If $X$ is Hausdorff, then $\set{\mu_B}{B \in \calB}$ separates points in $X$.
+% \end{theorem}
+% %
+% The existence of such a local basis is guaranteed by \cref{enum:convex-balanced-local-basis}. [TODO: Move continuity, it might be relevant in a non-locally convex space.]
+
+% \begin{proof}
+%     \cref{enum:0-neighbourhood-absorbing} shows that each $B$ is absorbing, so we may consider the Minkowski functional $\mu_B$. \cref{enum:Minkowski-functional-seminorm} shows that each $\mu_B$ is a seminorm. Let $\epsilon > 0$. For $x,y \in X$ with $x-y \in \epsilon B$ it follows from [TODO Lemma] and the reverse triangle inequality that
+%     %
+%     \begin{equation*}
+%         \abs{ \mu_B(x) - \mu_B(y) }
+%             \leq \mu_B(x - y)
+%             < \epsilon.
+%     \end{equation*}
+%     %
+%     Hence $\mu_B$ is continuous.
+
+%     Now assume that $X$ is Hausdorff. If $x \in X \setminus \{0\}$, then there is a $B \in \calB$ with $x \not\in B$. Then $\mu_B(x) \geq 1$ by \cref{enum:Minkowski-functional-balls}, so the family $\set{\mu_B}{B \in \calB}$ separates points in $X$.
+% \end{proof}
+
+
+\begin{theorem}
+    \label{thm:seminorm-topology}
+    Let $X$ be a $\field$-vector space, and let $\calP$ be a family of seminorms on $X$. Let $\calT$ denote the topology induced by $\calP$, i.e. induced by all open balls $\ball[p]{x}{\epsilon}$ for $p \in \calP$, $x \in X$, and $\epsilon > 0$.
+
+    \begin{enumthm}
+        \item For each $x \in X$, the finite intersections of the sets $\ball[p]{x}{\epsilon}$, for $p \in \calP$ and $\epsilon > 0$, form a neighbourhood basis at $x$.
+
+        \item If $(x_i)_{i \in I}$ is a net in $X$ and $x \in X$, then $x_i \to x$ iff $p(x_i - x) \to 0$ for all $p \in \calP$.
+
+        \item $(X,\calT)$ is a locally convex topological vector space.
+    \end{enumthm}
+\end{theorem}
+
+\begin{proof}
+\begin{proofsec}
+    \item[(i)]
+    Let $U$ be a neighbourhood of $x$. By definition of $\calT$,
+    %
+    \begin{equation*}
+        x
+            \in \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k}
+            \subseteq U
+    \end{equation*}
+    %
+    for appropriate $x_k \in X$, $p_k \in \calP$ and $\epsilon_k > 0$. Letting $\delta_k = \epsilon_k - p_k(x - x_k)$ the triangle inequality implies that
+    %
+    \begin{equation*}
+        x
+            \in \bigintersect_{k=1}^n \ball[p_k]{x}{\delta_k}
+            \subseteq \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k},
+    \end{equation*}
+    %
+    proving the claim.
+
+    \item[(ii)]
+    This is obvious from (i).
+
+    \item[(iii)]
+    Let $(x_i)_{i \in I}$ and $(y_i)_{i \in I}$ be nets in $X$, and let $(\alpha_i)_{i \in I}$ be a net in $\field$, and assume that $x_i \to x$, $y_i \to y$ and $\alpha_i \to \alpha$. Then eventually $\abs{\alpha_i} \leq \abs{\alpha} + 1$, so eventually
+    %
+    \begin{align*}
+        p\bigl( (\alpha_i x_i + y_i) - (\alpha x + y) \bigr)
+            &= p\bigl( (\alpha_i x_i - \alpha_i x) + (\alpha_i x - \alpha x) + (y_i - y) \bigr) \\
+            &\leq p(\alpha_i x_i - \alpha_i x) + p(\alpha_i x - \alpha x) + p(y_i - y) \\
+            &\leq (\abs{\alpha} + 1) p(x_i - x) + \abs{\alpha_i - \alpha} p(x) + p(y_i - y),
+    \end{align*}
+    %
+    which goes to zero. Hence the vector operations are continuous. Furthermore, the usual proof that balls are convex also works for balls defined by seminorms, so the balls $\ball[p]{x}{\epsilon}$ are convex. Hence (finite) intersections of balls are convex, so $\calT$ has a basis of convex sets.
+\end{proofsec}
+\end{proof}
+
+
+\begin{remark}
+    Let $(X,\calT)$ be a locally convex topological vector space, and let $\calB$ be a local basis of convex balanced open sets, in accordance with \cref{enum:convex-balanced-local-basis}. By \cref{thm:seminorm-topology}, the corresponding family $\calM = \set{\mu_B}{B \in \calB}$ of Minkowski functionals generates a vector space topology $\calT'$ on $X$. We claim that $\calT = \calT'$.
+
+    The inclusion $\calT' \subseteq \calT$ follows since each Minkowski functional is $\calT$-continuous (since seminorms are continuous), so the sets $\ball[\mu]{0}{\epsilon} = \mu\preim(\ball{0}{\epsilon})$ are $\calT$-open for all $\mu \in \calM$. Hence the sets $\ball[\mu]{x}{\epsilon} = x + \ball[\mu]{0}{\epsilon}$ for general $x \in X$ are also $\calT$-open by homogeneity.
+
+    Conversely, for $B \in \calB$ we have $B = \ball[\mu_B]{0}{1}$ by \cref{enum:Minkowski-functional-balls}, so $B \in \calT'$. Hence $\calT \subseteq \calT'$ since the latter is a vector space topology, and the former is generated by translates of sets in $\calB$.
+\end{remark}
+%
+This remark in particular implies the following result:
+%
+\begin{corollary}
+    A topological vector space $X$ is locally convex if and only if its topology is generated by a family of seminorms.
+\end{corollary}
+
+
+\begin{theorem}
+    A topological vector space $X$ is seminormable if and only if $0$ has a convex bounded neighbourhood.
+\end{theorem} % [TODO: Where does this result belong?]
+
+\begin{proof}
+    The \enquote{only if} part if obvious, so we prove the converse.
+
+    Let $U$ be a convex bounded neighbourhood of $0$. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is also balanced, so \cref{enum:Minkowski-functional-seminorm} implies that the Minkowski functional $\mu_U$ is a seminorm. It suffices to show that $\mu_U$ generates the topology on $X$.
+
+    By \cref{enum:bounded-nhood-local-basis}, the collection $\set{rU}{r > 0}$ is a local basis. But \cref{enum:Minkowski-functional-balls} says that $rU = \ball[\mu_U]{0}{r}$, so the topology on $X$ coincides with the $\mu_U$-topology.
+\end{proof}
+
+
+\section{Quotient spaces}
+
+\begin{theorem}[Topological quotient vector spaces]
+    If $M$ is a subspace of a topological $\field$-vector space $X$, then $X/M$ is a topological vector space.
+\end{theorem}
+
+\begin{proof}
+    \Cref{thm:topological-quotient-group} already shows that $X/M$ is a topological group, so it suffices to show that the scalar multiplication on $X/M$ is continuous. To this end, let $\rho \colon \field \prod X \to X$ be the scalar multiplication on $X$, $R \colon \field \prod X/M \to X/M$ the scalar multiplication on $X/M$, $q \colon X \to X/M$ the quotient map, and define $Q \colon \field \prod X \to \field \prod X/M$ by $Q = \id_\field \prod q$. Continuity of $R$ then follows by noticing that $Q$ is open and surjective, and that the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}
+            \field \prod X
+                \ar[r, "\rho"]
+                \ar[d, "Q", swap]
+            & X
+                \ar[d, "q"]
+            \\
+            \field \prod X/M
+                \ar[r, "R", swap]
+            & X/M
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes.
+\end{proof}
+
+
+\begin{proposition}[Factorisation through quotient spaces]
+    \label{thm:quotient-space-factorisation}
+    Let $T \colon X \to Y$ be a continuous linear map between topological vector spaces, and let $M$ be a subspace of $X$. If $M \subseteq \ker T$, then there exists a unique set function $\tilde{T} \colon X/M \to Y$ such that the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}[column sep=small]
+            X
+                \ar[rr, "T"]
+                \ar[dr, "q", swap]
+            && Y
+            \\
+            & X/M
+                \ar[ur, "\tilde{T}", swap]
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes. Furthermore, $\tilde{T}$ is a continuous linear map.
+\end{proposition}
+
+\begin{proof}
+    Existence and uniqueness of $\tilde{T}$ follows from the universal property of quotients in the category of sets. Continuity follows from the same property in the category of topological spaces, linearity by the same property in the category of $\field$-vector spaces.
+\end{proof}
+
+
+\section{Continuous linear maps}
+
+A linear map $T \colon X \to Y$ between topological vector spaces is \emph{bounded} if $T(A)$ is bounded for every bounded set $A \subseteq X$. If $X$ and $Y$ are normed spaces, this agrees with the usual definition of boundedness: If there is a $C \geq 0$ such that $\norm{Tx} \leq C\norm{x}$ for all $x \in X$, then $T$ clearly sends bounded sets to bounded sets. Conversely, the closed ball $\cball{0}{1}$ is bounded so $T(\cball{0}{1}) \subseteq \cball{0}{C}$ for some $C \geq 0$, i.e. $\norm{Tx} \leq C$ whenever $\norm{x} \leq 1$. Boundedness with respect to $\norm{\,\cdot\,}$ then follows by linearity.
+
+Continuity and boundedness are equivalent for operators between normed spaces. We begin by exploring the relationship between continuity and boundedness for maps between general topological vector spaces:
+
+\begin{proposition}[Continuity and boundedness]
+    Let $T \colon X \to Y$ be a linear map between topological vector spaces. If $T$ is continuous then it is bounded. The converse also holds if $X$ is first countable.
+\end{proposition}
+
+\begin{proof}
+    Assume that $T$ is continuous, let $A \subseteq X$ be bounded, and let $V \subseteq Y$ be a neighbourhood of $0$. Letting $U = T\preim(V)$ there exists a $t > 0$ such that $A \subseteq tU$. It follows that $T(A) \subseteq tT(U) = tV$ as desired.
+
+    Conversely, assume that $X$ is first countable and that $T$ is bounded but \emph{not} continuous. Let $(U_n)_{n \in \naturals}$ be a decreasing sequence of sets in $X$ such that $\set{U_n}{n \in \naturals}$ is a local basis. Since $T$ is not continuous, there is a balanced neighbourhood $V$ of $0$ in $Y$ such that $T\preim(V)$ is not a neighbourhood of $0$ in $X$. Hence there exists for every $n \in \naturals$ an $x_n \in \frac{1}{n} U_n$ such that $Tx_n \not\in V$. Then $nx_n \to 0$ as $n \to \infty$, so $(nx_n)_{n \in \naturals}$ is bounded by \cref{thm:Cauchy-sequence-bounded}. Hence the sequence $(nTx_n)_{n \in \naturals}$ is also bounded, so there is a $t > 0$ such that $(nTx_n) \subseteq tV$. Since $V$ is balanced, for $n > t$ we have
+    %
+    \begin{equation*}
+        Tx_n
+            \in \frac{t}{n} V
+            \subseteq V,
+    \end{equation*}
+    %
+    contradicting the definition of $(x_n)$. Hence $T$ is in fact continuous.
+\end{proof}
+
+It turns out that linearity and continuity are closely related. In fact, it will turn out that a linear map is continuous if either its domain or codomain is finite-dimensional, at least in the Hausdorff case. Before proving this we note the following result:
+
+\begin{lemma}
+    \label{thm:bounded-around-0-implies-continuous}
+    Let $T \colon X \to Y$ be a linear map between topological vector spaces. If there is a neighbourhood $U$ of $0$ in $X$ such that $T(U)$ is bounded, then $T$ is continuous.
+\end{lemma}
+
+\begin{proof}
+    For any neighbourhood $V$ of $0$ in $Y$ there is an $r > 0$ such that $T(rU) = rT(U) \subseteq V$. Since $rU$ is a neighbourhood of $0$, $T$ is continuous at $0$ and thus continuous by \cref{thm:group-homomorphism-continuity}.
+\end{proof}
+
+
+\begin{theorem}[Finite-dimensional domain]
+    \label{thm:domain-finite-dimensional-continuity}
+    Let $T \colon X \to Y$ be a linear map between topological $\field$-vector spaces. If $X$ is Hausdorff and finite-dimensional, then $T$ is continuous. If $Y$ is also Hausdorff, then $T$ is a homeomorphism onto its image.
+\end{theorem}
+%
+This implies that there exists exactly one Hausdorff topology on a finite-dimensional vector space $X$ that makes $X$ into a topological vector space. Since any finite-dimensional vector space $X$ can be equipped with a norm, all Hausdorff topologies on $X$ are norm topologies. Furthermore, all norms on $X$ are topologically equivalent; in fact all norms are Lipschitz equivalent, though this does not readily follow from the above.
+
+The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\,\cdot\,})$ is a normed space and $\calT$ is the trivial topology on $X$, then the identity map $\id_X \colon (X, \calT) \to (X, \norm{\,\cdot\,})$ is usually not continuous.
+
+\begin{proof}
+\begin{proofsec}
+    \item[$X = \field^d$ $\implies$ $T$ continuous]
+    Let $(e_1, \ldots, e_d)$ be the standard basis for $\field^d$. Then
+    %
+    \begin{equation*}
+        Tx = \sum_{i=1}^d \pi_i(x) Te_i
+    \end{equation*}
+    %
+    for $x \in X$, where $\pi_i \colon \field^d \to \field$ is the $i$th projection. Since each $\pi_i$ is continuous, and since addition and scalar multiplication are continuous in $Y$, it follows that $T$ is continuous.
+
+    \item[$X = \field^d$, $Y$ Hausdorff $\implies$ $T$ homeomorphism]
+    We may assume that $T$ is surjective. Consider the unit sphere $S^1$ in $\field^d$. Then $T(S^1)$ is compact (hence closed since $Y$ is Hausdorff) and $0 \not\in T(S^1)$, so $0$ has a balanced neighbourhood $U$ disjoint from $T(S^1)$. Then $T\inv(U)$ is balanced, hence (path-)connected by \cref{enum:balanced-implies-connected}, and disjoint from $S^1$. Since $T\inv(U)$ contains $0$ it must lie in $\ball{0}{1}$ and is thus bounded. Hence $T\inv$ is continuous by \cref{thm:bounded-around-0-implies-continuous}, so $T$ is a homeomorphism.
+    
+    \item[$X$ Hausdorff, $\dim X < \infty$ $\implies$ $T$ continuous]
+    Let $S \colon \field^d \to X$ be a linear isomorphism, where $d = \dim X$. The above then shows $S$ is a homeomorphism and that $TS$ is continuous. But then $T = (TS)S\inv$ is continuous.
+
+    \item[$X,Y$ Hausdorff, $\dim X < \infty$ $\implies$ $T$ homeomorphism]
+    Under these assumptions the map $TS \colon \field^d \to Y$ is a homeomorphism, so $T$ is as well.
+\end{proofsec}
+\end{proof}
+
+
+\begin{theorem}[Finite-dimensional codomain]
+    Let $T \colon X \to Y$ be a linear map between topological vector spaces. Assume that $Y$ is finite-dimensional. If $\ker T$ is closed, then $T$ is continuous. The converse also holds if $Y$ is Hausdorff.
+\end{theorem}
+
+\begin{proof}
+    Let $\pi \colon X \to X/\ker T$ be the quotient map. Then there is (cf. \cref{thm:quotient-space-factorisation}) a map $\tilde{T} \colon X/\ker T \to Y$ such that $T = \tilde{T} \circ \pi$, and $\tilde{T}$ is a linear isomorphism onto a subspace of $Y$, so $X/\ker T$ is a finite-dimensional subspace of $X$. If $\ker T$ is closed, then by \cref{enum:coset_space_T1} $X/\ker T$ is a Hausdorff topological vector space, so \cref{thm:domain-finite-dimensional-continuity} implies that $\tilde{T}$ is continuous. Thus $T$ is also continuous.
+
+    Conversely assume that $Y$ is Hausdorff and $T$ is continuous. Then $\{0\}$ is closed in $Y$, so $\ker T = T\preim(\{0\})$ is also closed.
+\end{proof}
+
+
+% \begin{theorem}
+%     \label{thm:linear-functional-continuity}
+%     Let $\phi \colon X \to \field$ be a nonzero linear functional on a topological $\field$-vector space $X$. Then the following are equivalent:
+%     %
+%     \begin{enumthm}
+%         \item $\phi$ is continuous,
+%         \item $\ker\phi$ is closed,
+%         \item $\ker\phi$ is not dense in $X$, and
+%         \item $\phi$ is bounded in some neighbourhood of $0$.
+%     \end{enumthm}
+% \end{theorem}
+
+% \begin{proof}
+% \begin{proofsec}
+%     \item[(i) $\implies$ (ii)]
+%     This is clear since $\{0\}$ is closed in $\field$.
+
+%     \item[(ii) $\implies$ (iii)]
+%     Since $\ker\phi$ is closed, it suffices to show that $\ker\phi$ is a proper subset of $X$. But this is obvious since $\phi$ is nonzero.
+
+%     \item[(iii) $\implies$ (iv)]
+%     There exists an $x \in X$ and a neighbourhood $U$ of $0$ such that $(x + U) \intersect \ker\phi = \emptyset$. By \cref{enum:balanced-local-basis} we may assume that $U$ is balanced, and $\phi(U)$ is then also balanced by \cref{rem:transformation-of-balanced-set}. If $\phi(U)$ is bounded then we are done, so suppose not. Then we must have $\phi(U) = \field$ since the set is unbounded and balanced, so there exists a $y \in U$ such that $\phi(y) = -\phi(x)$. But then $\phi(x+y) = 0$, a contradiction.
+
+%     \item[(iv) $\implies$ (i)]
+%     Let $U$ be such a neighbourhood and choose $R > 0$ such that $R \geq \sup_{x \in U} \abs{\phi(x)}$. Let $\epsilon > 0$ and let $U' = (\epsilon/R) U$. Then
+%     %
+%     \begin{equation*}
+%         \phi(U')
+%             = \frac{\epsilon}{R} \phi(U)
+%             \subseteq \frac{\epsilon}{R} \ball{0}{R}
+%             = \ball{0}{\epsilon},
+%     \end{equation*}
+%     %
+%     showing that $\phi$ is continuous at $0$. Continuity everywhere then follows from \cref{thm:group-homomorphism-continuity}.
+% \end{proofsec}
+% \end{proof}
+
+
+\section{Finite-dimensional spaces}
+
+% \begin{theorem}
+%     \label{thm:linear-implies-continuous-finite-dimension}
+%     Let $X$ and $Y$ be Hausdorff topological $\field$-vector spaces with $X$ finite-dimensional, and let $T \colon X \to Y$ be a linear map. Then $T$ is continuous, and if $T$ is a linear isomorphism then it is a homeomorphism.
+% \end{theorem}
+% %
+% [TODO: Hausdorff might be necessary? At least the trivial topology is always a vector topology, but does "not T0" imply trivial topology in finite dimension?]
+
+% This implies that there exists exactly one Hausdorff topology on a finite-dimensional vector space $X$ that makes $X$ into a topological vector space. In particular, all norms on $X$ are topologically equivalent; in fact all norms are Lipschitz equivalent, though this does not readily follow from the above.
+
+% \begin{proof}
+%     First assume that $X = \field^d$ for some $d \in \naturals$, and that $\field^d$ is equipped with the standard topology.
+%     %
+%     \begin{proofsec}
+%         \item[$T$ is continuous]
+%         Let $(e_1, \ldots, e_d)$ be the standard basis for $\field^d$. Then
+%         %
+%         \begin{equation*}
+%             Tx = \sum_{i=1}^d \pi_i(x) Te_i
+%         \end{equation*}
+%         %
+%         for $x \in X$, where $\pi_i \colon \field^d \to \field$ is the $i$th projection. Since each $\pi_i$ is continuous, and since addition and scalar multiplication are continuous in $Y$, it follows that $T$ is continuous.
+
+%         \item[$T\inv$ is continuous]
+%         Now assume that $T$ is bijective, i.e. a linear isomorphism. Let $S$ be the unit sphere in $\field^d$. Then $K = T(S)$ is compact (hence closed) and $0 \not\in K$, so $0$ has a balanced neighbourhood $U$ disjoint from $K$. Then $E = T\inv(U)$ is balanced, hence (path-)connected by \cref{enum:balanced-implies-connected}, and disjoint from $S$. Since $E$ contains $0$ it must lie in $\ball{0}{1}$. Thus each coordinate function $\pi_i \circ T\inv$ is bounded in a neighbourhood of $0 \in Y$, hence continuous by \cref{thm:linear-functional-continuity}. Thus $T\inv$ is continuous.
+%     \end{proofsec}
+%     %
+%     This argument of course also shows that any linear isomorphism $Y \to \field^d$ is a homeomorphism.
+    
+%     For general $X$ let $R \colon X \to \field^d$ be a linear isomorphism, hence a homeomorphism, and notice that $T = (TR\inv)R$. But $TR\inv$ is a linear isomorphism $\field^d \to Y$ so it is also a homeomorphism. Thus $T$ is a homeomorphism.
+% \end{proof}
+
+
+\begin{corollary}
+    \label{thm:finite-dimensional-subspace-closed}
+    If $M$ is a finite-dimensional subspace of a Hausdorff topological $\field$-vector space $X$, then $M$ is closed in $X$.
+\end{corollary}
+
+\begin{proof}
+    Let $d = \dim M$, and let $T \colon \field^d \to M$ be a linear isomorphism, hence a homeomorphism. Then since $\field^d$ is complete as a normed space, hence as a topological vector space, $M$ is also complete by \cref{thm:completeness-preserved-by-unimorphism}. But then it is closed by \cref{thm:complete-implies-closed}.
+\end{proof}
+
+\newcommand{\Span}{\operatorname{span}}
+
+\begin{theorem}[F. Riesz's Theorem]
+    Let $X$ be a Hausdorff topological $\field$-vector space. Then $X$ is locally compact if and only if it is finite-dimensional.
+\end{theorem}
+
+\begin{proof}
+    If $X$ is finite-dimensional of dimension $d$, then $X$ isomorphic to $\field^d$ as a vector space, hence as a topological space by \cref{thm:domain-finite-dimensional-continuity}, and so it is locally compact.
+
+    Conversely, if $X$ is locally compact then $0$ has a precompact open neighbourhood $U$. By \cref{enum:compact-implies-bounded}, $\closure{U}$ (and hence $U$) is also bounded, so the collection $\calU = \set{2^{-n}U}{n \in \naturals}$ is a local basis by \cref{enum:bounded-nhood-local-basis}.
+
+    By compactness of $\closure{U}$ there exists a finite set $\calB \subseteq X$ such that $U \subseteq \closure{U} \subseteq \calB + \frac{1}{2} U$. Hence if $S = \Span\calB$, then $U \subseteq S + \frac{1}{2} U$. Since $S$ is a subspace, it follows that $\frac{1}{2} U \subseteq S + \frac{1}{4} U$. Hence
+    %
+    \begin{equation*}
+        U
+            \subseteq S + \tfrac{1}{2} U
+            \subseteq S + (S + \tfrac{1}{4} U)
+            = S + \tfrac{1}{4} U.
+    \end{equation*}
+    %
+    By induction we thus find that
+    %
+    \begin{equation*}
+        U
+            \subseteq \bigintersect_{n \in \naturals} (S + 2^{-n}U)
+            = \closure{S}
+            = S,
+    \end{equation*}
+    %
+    where the first equality follows from \cref{enum:closure-intersection-of-open-sets} since $\calU$ is a local basis, and the second follows by \cref{thm:finite-dimensional-subspace-closed}.  Since $U$ is absorbing so is $S$, but $S$ is a subspace so $X = S$. Hence $X$ is finite-dimensional.
+\end{proof}
+
+
+% \section{Quotient spaces}
+
+% We begin by reviewing the basic construction and properties of quotients of general \emph{algebraic} vector spaces. So let $X$ be a vector space over a field $k$, and let $S$ be a subspace of $X$. Then $X$ is in particular an abelian group under addition, and $S$ is a subgroup. We may then construct the quotient \emph{group} $X/S$ whose elements are the cosets $x + S$ for $x \in X$. Let $\pi \colon X \to X/S$, so that $\pi(x) = x + S$.
+
+% The equivalence relation defining the group is also compatible with the scalar multiplication on $X$: For if $x,y \in X$ and $x - y \in S$, then for $r \in k$ we have
+% %
+% \begin{equation*}
+%     rx - ry
+%         = r(x - y) \in S,
+% \end{equation*}
+% %
+% since $S$ is a subspace. Thus $\pi(rx) = \pi(ry)$, and we may define multiplication by $r \in k$ in $X/S$ by $r \pi(x) = \pi(rx)$. It is routine to check that this makes $X/S$ into a $k$-vector space, called the \emph{quotient space} of $X$ by $S$. It is easy to see that $\pi$ is linear, and that $\ker \pi = S$.
+
+% \newcommand{\setF}{\mathbb{F}}
+
+% We now specialise to topological vector spaces. Let $X$ be a topological vector space over the field $\setF$. If $S$ is a subspace of $X$, then recall that we give $X/S$ the quotient topology coinduced by the quotient map $\pi$, and that $\pi$ is open.
+
+
+% \begin{theorem}[Topological quotient spaces]
+%     Let $X$ be a topological vector space, and let $S$ be a subspace. Then $X/S$ is a topological vector space.
+% \end{theorem}
+
+% \begin{proof}
+%     By \cref{thm:topological-quotient-group} it suffices to show that scalar multiplication is continuous. Let $x \in X$ and $\alpha \in \setF$, and let $U$ be a neighbourhood of $\pi(\alpha x)$ in $X/S$. Continuity of scalar multiplication in $S$ at $(\alpha, x)$ implies the existence of neighbourhoods $V \subseteq \setF$ and $W \subseteq X$ of $\alpha$ and $x$ respectively, such that $VW \subseteq \pi\preim(U)$. Since $\pi$ is surjective and linear, it follows that $V \pi(W) \subseteq U$, and since $\pi$ is also open $\pi(W)$ is a neighbourhood of $\pi(x)$. Hence scalar multiplication in $X/S$ is continuous.
+% \end{proof}
+% %
+% Notice that the second part of the proof of \cref{thm:topological-quotient-group} is redundant for topological vector spaces. One may thus omit this part if one is only interested in vector spaces and not in groups in their own right.
+
+% We have already considered quotient metrics on arbitrary topological groups. Here is an important example of a quotient metric:
+
+% \newcommand{\calL}{\mathcal{L}}
+% \newcommand{\calE}{\mathcal{E}}
+
+% \begin{example}[$\calL^p(\mu)$- and $L^p(\mu)$-spaces]
+%     Let $(X, \calE, \mu)$ be a measure space, and consider the Lebesgue space $\calL^p(\mu)$ of $p$-integrable functions for some $p \in (0,\infty)$. This is given the metric topology induced by the pseudo-metric
+%     %
+%     \begin{equation*}
+%         \rho(f,g)
+%             = \int_X \abs{f-g}^p \dif\mu.
+%     \end{equation*}
+%     %
+%     Since $\calL^p(\mu)$ is not $T_0$, we wish to consider its $T_0$-identification. By \cref{thm:quotient-group-T0-identification} we can find this by computing the closure $N$ of the zero function. This is easily seen to be precisely the space of functions that are zero $\mu$-a.e. We denote the quotient space by $L^p(\mu) = \calL^p(\mu)/N$. We easily see that the quotient metric is simply given by $\rho_N([f],[g]) = \rho(f,g)$, which is the same metric as in the metric identification.
+% \end{example}
+
+% Next we consider norms: Let $\norm{\,\cdot\,}$ be a semi-norm on $X$. We define a map $\norm{\,\cdot\,}_S \colon X/S \to [0, \infty)$ by
+% %
+% \begin{equation*}
+%     \norm{\pi(x)}_S
+%         = \inf_{s \in S} \norm{x - s}.
+% \end{equation*}
+
+% \begin{proposition}[Quotient norm]
+%     The map $\norm{\,\cdot\,}_S$ is a semi-norm on $X/S$. If $\rho$ is the pseudo-metric induced by the semi-norm on $X$ and $\rho_S$ is the corresponding quotient metric on $X/S$, then
+%     %
+%     \begin{equation*}
+%         \norm{\pi(x)}_S = \rho_S(\pi(x), 0).
+%     \end{equation*}
+%     %
+%     In particular, $\rho_S$ is the pseudo-metric induced by $\norm{\,\cdot\,}_S$, and $\norm{\,\cdot\,}_S$ is compatible with the quotient topology. Furthermore, it is a norm if and only if $S$ is closed.
+% \end{proposition}
+
+% \begin{proof}
+%     It is clear that $\norm{\,\cdot\,}_S$ is positive and absolutely homogeneous. We next prove the triangle inequality:
+    
+%     Let $\rho$ be the metric induced by the semi-norm on $X$, i.e. $\rho(y,z) = \norm{y - z}$ for $y,z \in X$. Notice that since $\rho$ is invariant, for $x \in X$,
+%     %
+%     \begin{align*}
+%         \norm{\pi(x)}_S
+%             &= \inf_{s \in S} \norm{x - s}
+%              = \inf_{s \in S} \rho(x - s, 0) \\
+%             &= \inf_{s \in S} \rho(x - 0, s)
+%              = \rho_S(\pi(x), 0).
+%     \end{align*}
+%     %
+%     If also $y \in X$, then it follows that
+%     %
+%     \begin{align*}
+%         \norm{\pi(x) + \pi(y)}_S
+%             &= \rho_S(\pi(x) + \pi(y), 0)
+%              = \rho_S(\pi(x), \pi(-y)) \\
+%             &\leq \rho_S(\pi(x), 0) + \rho_S(0, \pi(-y))
+%              = \norm{\pi(x)}_S + \norm{\pi(y)}_S,
+%     \end{align*}
+%     %
+%     so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:coset-space-metric}.
+% \end{proof}
 
 
 \nocite{*}
