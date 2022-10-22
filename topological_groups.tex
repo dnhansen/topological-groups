@@ -5,7 +5,7 @@
 \usepackage[UKenglish]{babel}
 
 % Document info
-\newcommand\doctitle{Topological Groups}
+\newcommand\doctitle{Topological Groups and Vector Spaces}
 \newcommand\docauthor{Danny Nygård Hansen}
 
 % Formatting and layout
@@ -30,13 +30,13 @@
 \usepackage{hyperref}
 \definecolor{linkcolor}{HTML}{4f4fa3}
 \hypersetup{%
-	pdftitle=\doctitle,
-	pdfauthor=\docauthor,
-	colorlinks,
-	linkcolor=linkcolor,
-	citecolor=linkcolor,
-	urlcolor=linkcolor,
-	bookmarksnumbered=true
+    pdftitle=\doctitle,
+    pdfauthor=\docauthor,
+    colorlinks,
+    linkcolor=linkcolor,
+    citecolor=linkcolor,
+    urlcolor=linkcolor,
+    bookmarksnumbered=true
 }
 
 % Equation numbering
@@ -50,6 +50,7 @@
 \usepackage{latex-sty/framedtheorems}
 \usepackage{latex-sty/topologycommands}
 \usepackage{tikz-cd}
+\tikzcdset{arrow style=math font} % https://tex.stackexchange.com/questions/300352/equalities-look-broken-with-tikz-cd-and-math-font
 \usetikzlibrary{babel}
 
 % Lists
@@ -73,6 +74,10 @@
 \newcommand{\calP}{\mathcal{P}}
 \newcommand{\calM}{\mathcal{M}}
 \newcommand{\calU}{\mathcal{U}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calE}{\mathcal{E}}
 
 
 % Section style -- add to section style .sty?
@@ -85,7 +90,9 @@
 
 \chapter{Introduction}
 
-The purpose of these notes is to clarify some of the basic properties of topological groups. We in particular hope to shed light on the reasonability of the common assumption that topological groups be Hausdorff.
+The purpose of these notes is twofold: First of all to clarify some of the basic properties of topological groups. We in particular hope to shed light on the reasonability of the common assumption that topological groups be Hausdorff.
+
+Secondly, we provide an overview of basic results about topological vector spaces. These are in particular topological groups, so we rely on the theory developed in the first part of these notes.
 
 Most of the results below can be found in various forms in a variety of books or articles (see the references), but I have not come across a resource that develops this theory in precisely this way. One example is the $T_0$-identification of a topological group, as we will see below.
 
@@ -199,11 +206,37 @@ Recall that a topological space $X$ is \emph{regular} if it is possible to separ
 
 \begin{proposition}[Regularity of topological groups]
     \label{thm:topological_group_regular}
-    If $G$ is a topological group, $g \in G$, $A \subseteq G$ is closed and $g \not\in A$, then there exists a symmetric neighbourhood $V$ of $e$ such that $Vg$ and $VA$ are disjoint. In particular every topological group is regular, and every $T_0$ topological group is $T_3$.
+    If $G$ is a topological group, $g \in G$, $C \subseteq G$ is closed and $g \not\in C$, then there exists a symmetric open neighbourhood $V$ of $e$ such that $Vg$ and $VC$ are disjoint. In particular every topological group is regular, and every $T_0$ topological group is $T_3$.
 \end{proposition}
 
 \begin{proof}
-    Since $g \not\in A$ we also have $e \not\in Ag\inv$. But $Ag\inv$ is closed, so by \cref{thm:symmetric_nhood_of_e} there is a symmetric neighbourhood $V$ of $e$ such that $VV \intersect Ag\inv = \emptyset$. It follows that $Vg \intersect VA = \emptyset$ as desired. This shows that $G$ is regular, and the final claim follows since a regular $T_0$-space is Hausdorff.
+    Since $g \not\in C$ we also have $e \not\in Cg\inv$. But $Cg\inv$ is closed, so by \cref{thm:symmetric_nhood_of_e} there is a symmetric open neighbourhood $V$ of $e$ such that $VV \intersect Cg\inv = \emptyset$. It follows that $Vg \intersect VC = \emptyset$ as desired. This shows that $G$ is regular, and the final claim follows since a regular $T_0$-space is Hausdorff.
+\end{proof}
+
+As usual, regularity implies that we can separate a compact set $K$ from a closed set $C$ by disjoint open sets. The proposition above raises the question whether there exists a neighbourhood $V$ of $e$ such that $VK$ and $VC$ are disjoint. This is in fact true as we will see below, but the obvious proof does not work. We will use the fact that this is possible in our proof of the Hahn--Banach separation theorem (cf. \cref{thm:Hahn-Banach-separation}).
+
+\begin{corollary}
+    \label{thm:separating-compact-closed}
+    Let $G$ be a topological group, $K \subseteq G$ a compact and $C \subseteq G$ a closed set. Then there exists a symmetric open neighbourhood $V$ of $e$ such that $VK$ and $VC$ are disjoint.
+\end{corollary}
+
+\begin{proof}
+    Let $g \in K$. By \cref{thm:topological_group_regular} there exists a symmetric open neighbourhood $U_g$ of $e$ such that $U_g g$ and $U_g C$ are disjoint. By \cref{thm:symmetric_nhood_of_e} there exists further a symmetric open neighbourhood $V_g$ such that $V_g V_g \subseteq U_g$. Clearly the sets $V_g V_g g$ and $V_g C$ are then disjoint. Since $K$ is compact, there are finitely many points $g_1, \ldots g_n \in K$ such that
+    %
+    \begin{equation*}
+        K
+            \subseteq V_{g_1} g_1 \intersect \cdots \intersect V_{g_n} g_n.
+    \end{equation*}
+    %
+    Let $V = V_{g_1} \intersect \cdots \intersect V_{g_n}$. Then
+    %
+    \begin{equation*}
+        VK
+            \subseteq \bigunion_{i=1}^n V V_{g_i} g_i
+            \subseteq \bigunion_{i=1}^n V_{g_i} V_{g_i} g_i,
+    \end{equation*}
+    %
+    which is disjoint from $VC$, as desired.
 \end{proof}
 
 
@@ -264,9 +297,7 @@ If $G$ is a topological group and $H$ is a subgroup of $G$, then $H$ is equipped
         \closure{H} \closure{H} \subseteq \closure{HH} = \closure{H},
     \end{equation*}
     %
-    so $\closure{H}$ is closed under multiplication. It is also closed under taking inverses, since the inverse map $\iota$ is a homeomorphism. Hence it is a subgroup. Alternatively, this claim is an easy consequence of basic properties of nets.
-
-    Clearly $\closure{H}$ is the smallest closed subgroup that contains $H$. Hence if $H$ is normal and $\closure{H}$ is not, then intersecting $\closure{H}$ with one of its conjugates yields a strictly smaller closed subgroup containing $H$.
+    so $\closure{H}$ is closed under multiplication. It is also closed under taking inverses, since the inverse map $\iota$ is a homeomorphism. Hence it is a subgroup. Clearly $\closure{H}$ is the smallest closed subgroup that contains $H$. So if $H$ is normal and $\closure{H}$ is not, then intersecting $\closure{H}$ with one of its conjugates yields a strictly smaller closed subgroup containing $H$, a contradiction.
 
     If $G$ is $T_0$ and $H$ is abelian, then it follows from \cref{enum:elements-of-closure-commute} with $A = B = H$ that $\closure{H}$ is abelian. This proves \subcref{enum:closure_of_subgroup}.
 
@@ -334,9 +365,7 @@ We in fact only need $f$ to be continuous and to have a uniformly continuous rig
 \end{proof}
 
 
-\chapter{Coset spaces and quotient groups}
-
-\section{General properties of coset spaces}
+\section{Coset spaces and quotient groups}
 
 If $H$ is a subgroup of a topological group $G$, we denote by $G/H$ the set of left cosets of $H$. Let $q \colon G \to G/H$ be the quotient map and equip $G/H$ with the quotient topology. We call $G/H$ a \emph{(left) coset space} of $G$ by $H$.
 
@@ -349,11 +378,11 @@ Notice that $q$ is in fact open: If $U \subseteq G$ is open, then $q\preim(q(U))
     \begin{enumprop}
         \item \label{enum:coset_space_regular} The coset space $G/H$ is regular.
 
-        \item The topology on $G/H$ is homogeneous.
+        \item \label{enum:coset-space-homogeneous} The topology on $G/H$ is homogeneous.
         
         \item \label{enum:coset_space_T1} $G/H$ is $T_1$ (and hence $T_3$) if and only if $H$ is closed.
 
-        \item $G/H$ is discrete if and only if $H$ is open.
+        \item \label{enum:coset-space-discrete} $G/H$ is discrete if and only if $H$ is open.
     \end{enumprop}
 \end{proposition}
 %
@@ -362,7 +391,9 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
 % (The claim \subcref{enum:coset_space_regular} is the content of supplementary exercise 7(d) of \textcite[Chapter~2]{munkres}, except that in the exercise $H$ is assumed to be closed. I do not see where this assumption is used.)
 
 \begin{proof}
-    We first show that $G/H$ is regular. Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, so $Vx \intersect VAHH = \emptyset$. Since $H$ is symmetric, it follows that
+\begin{proofsec}
+    \item[Proof of \subcref{enum:coset_space_regular}]
+    Let $q(x) \in G/H$, and let $B \subseteq G/H$ be a closed set. Then $A = q\preim(B)$ is closed, so by \cref{thm:topological_group_regular} there is a symmetric neighbourhood $V$ of $e$ in $G$ such that $Vx \intersect VA = \emptyset$. Since $A$ is a union of left cosets of $H$ we have $A = AH$, so $Vx \intersect VAHH = \emptyset$. Since $H$ is symmetric, it follows that
     %
     \begin{equation*}
         q(Vx) \intersect q(VA)
@@ -372,7 +403,8 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
     %
     Since $q$ is open the sets $q(Vx)$ and $q(VA)$ are neighbourhoods of $q(x)$ and $q(A) = B$ respectively.
 
-    Next we show that $G/H$ is homogeneous. For $g \in G$ define a map $\theta_g \colon G/H \to G/H$ by $\theta(q(x)) = q(gx)$. This is well-defined, since if $xH = yH$, then $gxH = gyH$. Furthermore, the diagram
+    \item[Proof of \subcref{enum:coset-space-homogeneous}]
+    For $g \in G$ define a map $\theta_g \colon G/H \to G/H$ by $\theta(q(x)) = q(gx)$. This is well-defined, since if $xH = yH$, then $gxH = gyH$. Furthermore, the diagram
     %
     \begin{equation*}
         \begin{tikzcd}
@@ -389,11 +421,12 @@ Notice that \subcref{enum:coset_space_T1} does not assume any separation propert
     %
     commutes, so $\theta_g \circ q$ is continuous. But by the characteristic property of the quotient topology on $G/H$, $\theta_g$ is also continuous. Since $\theta_g\inv = \theta_{g\inv}$ it is in fact a homeomorphism, and $\theta_{yx\inv}$ takes $q(x)$ to $q(y)$, which shows homogeneity.
 
-    Next we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$. Similarly, $H$ (and hence $gH$) is \emph{open} in $G$ if and only if $\{gH\}$ is open in $G/H$, i.e. if and only if $G/H$ is discrete.
+    \item[Proof of \subcref{enum:coset_space_T1} and \subcref{enum:coset-space-discrete}]
+    First we show that $G/H$ is $T_1$ if and only if $H$ is closed. Note that fibres of $q$ are cosets of $H$, and a coset $gH = \leftmult_g(H)$ is closed if and only if $H$ is. But since $G/H$ carries the quotient topology, $gH$ is closed in $G$ if and only if $\{gH\}$ is closed in $G/H$.
+    
+    Similarly, $H$ (and hence $gH$) is \emph{open} in $G$ if and only if $\{gH\}$ is open in $G/H$, i.e. if and only if $G/H$ is discrete.
+\end{proofsec}
 \end{proof}
-
-
-\section{Topological quotient groups}
 
 If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual group structure on the (algebraic) quotient group $G/N$ is compatible with the quotient topology. This is indeed the case:
 
@@ -445,7 +478,7 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
     Let $\phi \colon G \to H$ be a continuous group homomorphism between topological groups, and let $N$ be a normal subgroup of $G$. If $N \subseteq \ker\phi$, then there exists a unique set function $\tilde{\phi} \colon G/N \to H$ such that the diagram
     %
     \begin{equation*}
-        \begin{tikzcd}[column sep=small]
+        \begin{tikzcd}[column sep=tiny]
             G
                 \ar[rr, "\phi"]
                 \ar[dr, "q", swap]
@@ -465,7 +498,7 @@ If a subgroup $N$ of a topological group $G$ is normal, we expect that the usual
 
 We now explore how a topological group $G$ that is \emph{not} $T_0$ can be made so by quotienting out by a particular subgroup. To do this justice we first recall the \emph{$T_0$-identification} of a topological space $X$: The ordering $x \leq y$ defined by $x \in \closure{\{y\}}$ is called the \emph{specialisation preorder}, and it is easy to show that $x \leq y$ is equivalent to $\nhoodfilter{x} \subseteq \nhoodfilter{y}$. This order gives rise to an equivalence relation $\equiv$, and we say that two points $x,y \in X$ are \emph{topologically indistinguishable} if $x \equiv y$.
 
-It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, and it is not difficult to show that the quotient space $X/{\equiv}$, called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, is indeed $T_0$. In fact, $\equiv$ is the most conservative equivalence relation $\sim$ such that $X/{\sim}$ is $T_0$, though we shall not need this fact. [TODO: reference to separation axiom notes]
+It is clear that $X$ is $T_0$ if and only if the relation $\equiv$ is trivial, and it is not difficult to show that the quotient space $X/{\equiv}$, called the \emph{$T_0$-identification} or the \emph{Kolmogorov quotient} of $X$, is indeed $T_0$. In fact, $\equiv$ is the most conservative equivalence relation $\sim$ such that $X/{\sim}$ is $T_0$, though we shall not need this fact.
 
 When we apply this construction to the theory of topological groups, we see that the $T_0$-identification can be understood in terms of quotient groups:
 
@@ -486,7 +519,7 @@ On the other hand, a \emph{group} structure on a set $G$ certainly respects the 
 
 Thus if the topology and group structure on a topological group are to be truly compatible, then the topology must respect the underlying set structure, i.e. be $T_0$. In the sequel we shall, however, resist assuming that topological groups are $T_0$ as far as possible.
 
-There is more to say about the $T_0$-identification that is not pertinent to this discussion. We refer to \textcite[Exercise~13C]{willard} and \textcite{pirttimäki2019}. [TODO: And my own notes]
+There is more to say about the $T_0$-identification that is not pertinent to this discussion.\footnote{See \href{https://github.com/dnhansen/topology-separation-axioms}{my notes on separation axioms in topology} for more on the $T_0$-identification and related topics.}
 
 
 % \section{Metrics}
@@ -559,7 +592,7 @@ There is more to say about the $T_0$-identification that is not pertinent to thi
 % [Metric identification]
 
 
-\chapter{Metrisation}
+\section{Metrisation}
 
 \newcommand{\cat}[1]{\mathcal{#1}}
 \newcommand{\scat}[1]{\mathbf{#1}} % category supposed to be small
@@ -584,10 +617,8 @@ If $X$ is a topological space, then we denote by $C(X)$ the space of continuous 
         \item \label{enum:birkhoff-kakutani-lemma-uniform-continuity} For every $\epsilon > 0$ there exists an open neighbourhood $U$ of $e$ such that $\abs{f(gx) - f(x)} \leq \epsilon$ for all $g \in U$ and $x \in G$.
     \end{enumlem}
 \end{lemma}
-
-\begin{proof}
-    .[TODO] \href{https://terrytao.wordpress.com/2011/05/17/the-birkhoff-kakutani-theorem/}{See here.}
-\end{proof}
+%
+We omit a proof of this result (for now) at refer to \href{https://terrytao.wordpress.com/2011/05/17/the-birkhoff-kakutani-theorem/}{this blog post by Terence Tao}.
 
 
 \begin{theorem}[The Birkhoff--Kakutani Theorem]
@@ -660,7 +691,7 @@ If $X$ is a topological space, then we denote by $C(X)$ the space of continuous 
 
 Below we let $\field$ denote either field of real numbers or the field of complex numbers.
 
-Let $X$ be an $\field$-vector space. For $x,y \in X$ we denote by $[x,y]$ the line segment between $x$ and $y$, i.e. the set $\set{tx + (1-t)y}{t \in [0,1]}$. A subset $C \subseteq X$ is \emph{convex} if $[x,y] \subseteq C$ for all $x,y \in X$, or equivalently if $tC + (1-t)C \subseteq C$ for all $t \in [0,1]$. The intersection of all convex sets in $X$ containing a subset $A \subseteq X$ is called the \emph{convex hull} of $A$ and is denoted $\conv(A)$. This is clearly the smallest convex set containing $A$. Notice that $[x,y] = \conv(\{x,y\})$.
+Let $X$ be a $\field$-vector space. For $x,y \in X$ we denote by $[x,y]$ the line segment between $x$ and $y$, i.e. the set $\set{tx + (1-t)y}{t \in [0,1]}$. A subset $C \subseteq X$ is \emph{convex} if $[x,y] \subseteq C$ for all $x,y \in X$, or equivalently if $tC + (1-t)C \subseteq C$ for all $t \in [0,1]$. The intersection of all convex sets in $X$ containing a subset $A \subseteq X$ is called the \emph{convex hull} of $A$ and is denoted $\conv(A)$. This is clearly the smallest convex set containing $A$. Notice that $[x,y] = \conv(\{x,y\})$.
 
 Furthermore, a subset $S$ of $X$ is called \emph{star-shaped at $x \in S$} if $[x,y] \subseteq S$ for all $y \in S$. If there exists an $x \in S$ such that $S$ is star-shaped at $x$, then $S$ is simply called \emph{star-shaped}. Clearly every non-empty convex set is star-shaped.
 
@@ -668,7 +699,7 @@ Furthermore, a subset $S$ of $X$ is called \emph{star-shaped at $x \in S$} if $[
     Let $X$ and $Y$ be $\field$-vector spaces, let $A, C \subseteq X$ with $C$ convex, and let $T \colon X \to Y$ be a linear map.
     %
     \begin{enumlem}
-        \item The image $T(C)$ is convex.
+        \item \label{enum:image-of-convex-set} The image $T(C)$ is convex.
         \item \label{enum:convex-hull-isomorphism} If $T$ is an isomorphism, then
         %
         \begin{equation*}
@@ -679,7 +710,7 @@ Furthermore, a subset $S$ of $X$ is called \emph{star-shaped at $x \in S$} if $[
 
 \begin{proof}
 \begin{proofsec}
-    \item[(i)]
+    \item[Proof of \subcref{enum:image-of-convex-set}]
     This follows easily since
     %
     \begin{equation*}
@@ -690,7 +721,7 @@ Furthermore, a subset $S$ of $X$ is called \emph{star-shaped at $x \in S$} if $[
     %
     by linearity.
 
-    \item[(ii)]
+    \item[Proof of \subcref{enum:convex-hull-isomorphism}]
     Clearly $T(A) \subseteq T(\conv(A))$, so by (i) and the minimality of the convex hull we have $\conv(T(A)) \subseteq T(\conv(A))$. Replacing $A$ by $T(A)$ and $T$ by $T\inv$ we get $\conv(A) \subseteq T\inv(\conv(T(A)))$, and applying $T$ to both sides yields the opposite inclusion.
 \end{proofsec}
 \end{proof}
@@ -767,21 +798,21 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
     Let $X$ be a topological vector space, and let $A \subseteq X$.
     %
     \begin{enumlem}
-        \item If $A$ is a subspace, then so is $\closure{A}$.
+        \item \label{enum:closure-of-subspace} If $A$ is a subspace, then so is $\closure{A}$.
         
         \item \label{enum:convex-closure-interior} If $A$ is convex, then so are $\closure{A}$ and $\interior{A}$. In particular, the convex hull of an open set is open.
         
-        \item If $A$ is balanced, then so is $\closure{A}$. If $0 \in A$, then $\interior{A}$ is also balanced.
+        \item \label{enum:balanced-closure-interior} If $A$ is balanced, then so is $\closure{A}$. If $0 \in A$, then $\interior{A}$ is also balanced.
 
-        \item \label{enum:balanced-implies-connected} If $A$ is balanced, then it is also star-shaped at $0$, and hence path-connected.
+        \item \label{enum:balanced-implies-connected} If $A$ is nonempty and balanced, then it is also star-shaped at $0$, and hence path-connected.
         
-        \item If $A$ is bounded, then so are $\closure{A}$ and $\interior{A}$.
+        \item \label{enum:bounded-closure-interior} If $A$ is bounded, then so are $\closure{A}$ and $\interior{A}$.
     \end{enumlem}
 \end{lemma}
 
 \begin{proof}
 \begin{proofsec}
-    \item[(i)]
+    \item[Proof of \subcref{enum:closure-of-subspace}]
     Assume that $A$ is a subspace, and let $\alpha \in \field$. Then
     %
     \begin{equation*}
@@ -791,7 +822,7 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
             \subseteq \closure{A}.
     \end{equation*}
     
-    \item[(ii)]
+    \item[Proof of \subcref{enum:convex-closure-interior}]
     Assume that $A$ is convex, and let $t \in [0,1]$. Then
     %
     \begin{equation*}
@@ -810,7 +841,7 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
     %
     and the set on the left-hand side is open by \cref{enum:product_open_set} (since both $t$ and $1-t$ are nonzero), hence contained in $\interior{A}$. The final claim follows since if $A$ is open, then $\interior{\conv(A)}$ is an open convex set containing $A$.
 
-    \item[(iii)]
+    \item[Proof of \subcref{enum:balanced-closure-interior}]
     Assume that $A$ is balanced, and let $\alpha \in \field$ with $\abs{A} \leq 1$. Then
     %
     \begin{equation*}
@@ -830,10 +861,10 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
     %
     The set of the left-hand side is open, so it is contained in $\interior{A}$. If $A$ contains $0$, then this also holds when $\alpha = 0$.
 
-    \item[(iv)]
+    \item[Proof of \subcref{enum:balanced-implies-connected}]
     This is obvious if $A$ is empty, so let $x \in A$. For $t \in [0,1]$ we have $tx \in tA \subseteq A$ since $A$ is balanced, so $[0,x] \subseteq A$. Hence $A$ is star-shaped at $0$.
     
-    \item[(v)]
+    \item[Proof of \subcref{enum:bounded-closure-interior}]
     Assume that $A$ is bounded. Every subset of $A$ is also bounded, so in particular $\interior{A}$ is bounded. Let $U$ be a neighbourhood of $0$. By regularity of $X$ (cf. \cref{thm:topological_group_regular}) there is a neighbourhood $V$ of $0$ such that $\closure{V} \subseteq U$. Since $A$ is bounded there exists a $t > 0$ such that $A \subseteq tV$. We thus have
     %
     \begin{equation*}
@@ -860,7 +891,7 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
 
 \begin{proof}
 \begin{proofsec}
-    \item[(i)]
+    \item[Proof of \subcref{enum:balanced-local-basis}]
     Let $U$ be an open neighbourhood of $0$. Since scalar multiplication is continuous at $(0,0) \in \field \prod X$, there exists a $\delta > 0$ and an open neighbourhood $V \subseteq X$ of $0$ such that $\ball{0}{\delta} V \subseteq U$. The set $\ball{0}{\delta} V$ is clearly balanced and contains $0$, and since
     %
     \begin{equation*}
@@ -871,25 +902,28 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
     %
     it is a union of open sets and hence itself open. The last claim follows from \cref{enum:balanced-implies-connected}.
 
-    \item[(ii)]
-    Let $U$ be an open convex neighbourhood of $0$. Part (i) furnishes a balanced open neighbourhood $V$ of $0$ contained in $U$. Its convex hull $\conv(V)$ is then balanced by \cref{enum:convex-hull-balanced} and open by \cref{enum:convex-closure-interior}. By minimality it is also contained in $U$, as desired.
+    \item[Proof of \subcref{enum:convex-balanced-local-basis}]
+    Let $U$ be an open convex neighbourhood of $0$. Part \subcref{enum:balanced-local-basis} furnishes a balanced open neighbourhood $V$ of $0$ contained in $U$. Its convex hull $\conv(V)$ is then balanced by \cref{enum:convex-hull-balanced} and open by \cref{enum:convex-closure-interior}. By minimality it is also contained in $U$, as desired.
 \end{proofsec}
 \end{proof}
 
+
+\section{Boundedness}
 
 \begin{corollary}[Alternative characterisation of boundedness]
     \label{thm:boundedness-equivalent-definitions}
     Let $X$ be a topological vector space, and let $A \subseteq X$. Then the following are equivalent:
     %
     \begin{enumcor}
-        \item $A$ is bounded, i.e. for every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq tU$.
+        \item \label{enum:boundedness-definition-restatement} $A$ is bounded, i.e. for every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq tU$.
         \item \label{enum:boundedness-equivalent-definition} For every neighbourhood $U$ of $0$ there exists a $t > 0$ such that $A \subseteq \alpha U$ for all $\alpha \in \field$ with $\abs{\alpha} \geq t$.
     \end{enumcor}
 \end{corollary}
 
 \begin{proof}
 \begin{proofsec}
-    \item[(i) $\implies$ (ii)]
+    It is obvious that \subcref{enum:boundedness-equivalent-definition} implies \subcref{enum:boundedness-definition-restatement}, so we prove the converse.
+
     By \cref{enum:balanced-local-basis} $U$ contains a balanced neighbourhood $V$ of $0$. If $A$ is bounded, then there is a $t > 0$ such that $A \subseteq tV$. Let $\alpha \in \field$ with $\abs{\alpha} \geq t$. Then $\alpha V$ is also balanced by \cref{rem:transformation-of-balanced-set}, so since $\abs{t/\alpha} \leq 1$ we have
     %
     \begin{equation*}
@@ -899,9 +933,6 @@ Notice that the inversion map $\iota \colon X \to X$ given by $\iota(x) = -x$ ca
     \end{equation*}
     %
     implying that $A \subseteq \alpha V \subseteq \alpha U$ as desired.
-
-    \item[(ii) $\implies$ (i)]
-    This is obvious.
 \end{proofsec}
 \end{proof}
 
@@ -937,9 +968,12 @@ If $X$ carries the trivial topology, then $X$ is bounded. Hence the Hausdorff as
 \end{proposition}
 
 \begin{proof}
+\begin{proofsec}
+    \item[Proof of \subcref{enum:0-neighbourhood-absorbing}]
     Let $x \in X$. Since scalar multiplication is continuous, the set $V = \set{\alpha \in \field}{\alpha x \in U}$ is a neighbourhood of $0 \in \field$, so there exists an $i \in I$ such that $1/r_i \in V$. That is, $(1/r_i)x \in U$, or $x \in r_i U$. To show that $U$ is absorbing, let $I = \naturals$ and $r_i = i$.
 
-    To prove that $K$ is bounded, let $W \subseteq U$ be a balanced neighbourhood of $0$. Then (i) implies that
+    \item[Proof of \subcref{enum:compact-implies-bounded}]
+    To prove that $K$ is bounded, let $W \subseteq U$ be a balanced neighbourhood of $0$. Then \subcref{enum:0-neighbourhood-absorbing} implies that
     %
     \begin{equation*}
         K \subseteq \bigunion_{i \in \naturals} i W,
@@ -947,7 +981,9 @@ If $X$ carries the trivial topology, then $X$ is bounded. Hence the Hausdorff as
     %
     and by compactness we have $K \subseteq \bigunion_{i=1}^t i W$ for some $t \in \naturals$. But then $K \subseteq tW$ since $W$ (and hence $tW$ by \cref{rem:transformation-of-balanced-set}) is balanced. It follows that $K \subseteq tU$, so $K$ is bounded.
 
+    \item[Proof of \subcref{enum:bounded-nhood-local-basis}]
     Finally let $V$ be a neighbourhood of $0$. Since $U$ is bounded we may choose $t > 0$ as in \cref{enum:boundedness-equivalent-definition} (with $U$ in place of $A$ and $V$ in place of $U$). There exists an $i \in I$ such that $\delta_i \in \ball{0}{1/t}$, i.e. $\abs{1/\delta_i} > t$. Hence $U \subseteq (1/\delta_i) V$, i.e. $\delta_i U \subseteq V$ as desired.
+\end{proofsec}
 \end{proof}
 
 
@@ -965,217 +1001,6 @@ More generally, we say that a net $(x_i)_{i \in I}$ is bounded if the set $\set{
 \end{proof}
 
 
-\section{Locally convex spaces}
-
-Let $X$ be a topological vector space. To each $A \subseteq X$ we associate the \emph{Minkowski functional} $\mu_A$ of $A$, given by
-%
-\begin{equation*}
-    \mu_A(x)
-        = \inf \set{t > 0}{t\inv x \in A}
-\end{equation*}
-%
-for $x \in X$. We shall only be interested in $\mu_A$ in the case where $A$ is absorbing (and in fact also convex). In this case $A$ is nonempty (since it contains $0$) and we have $\mu_A(x) < \infty$ for all $x \in X$.
-
-\begin{lemma}
-    Let $X$ be a topological vector space, and let $A \subseteq X$ be a convex, absorbing set. For all $x, y \in X$ we then have
-    %
-    \begin{enumlem}
-        \item $\mu_A(x + y) \leq \mu_A(x) + \mu_A(y)$, and
-        \item $\mu_A(\alpha x) = \mu_{\alpha\inv A}(x)$ for $\alpha \in \field$, where $0\inv A \defn X$. If $t \geq 0$, then $\mu_A(tx) = t\mu_A(x)$.
-    \end{enumlem}
-    %
-    Assume furthermore that $A$ is balanced.
-    %
-    \begin{enumlem}[resume]
-        \item \label{enum:Minkowski-functional-seminorm} $\mu_A$ is a seminorm.
-        \item \label{enum:Minkowski-functional-balls} If $A$ is open, $x \in X$ and $r > 0$, then
-        %
-        \begin{equation*}
-            \ball[\mu_A]{x}{r}
-                = \set{y \in X}{\mu_A(y-x) < r}
-                = x + rA,
-        \end{equation*}
-    \end{enumlem}
-\end{lemma}
-
-\begin{proof}
-\begin{proofsec}
-    \item[(i)]
-    Let $\epsilon > 0$, and put $s = \mu_A(x) + \epsilon$ and $t = \mu_A(y) + \epsilon$. Since $A$ is convex and contains $0$, we have $s\inv x, t\inv y \in A$. But then
-    %
-    \begin{equation*}
-        \frac{x+y}{s+t}
-            = \frac{t}{s+t} \frac{x}{s} + \frac{s}{s+t} \frac{y}{t}
-            \in A
-    \end{equation*}
-    %
-    by convexity, which implies that
-    %
-    \begin{equation*}
-        \mu_A(x + y)
-            \leq s + t
-            = \mu_A(x) + \mu_A(y) + 2\epsilon.
-    \end{equation*}
-    %
-    Since $\epsilon$ was arbitrary, the claim follows.
-
-    \item[(ii)]
-    For $\alpha \neq 0$ we have
-    %
-    \begin{equation*}
-        \mu_A(\alpha x)
-            = \inf \set{s > 0}{s\inv \alpha x \in A}
-            = \inf \set{s > 0}{s\inv x \in \alpha\inv A},
-    \end{equation*}
-    %
-    and if $\alpha = 0$ then since $A$ contains $0$ we have
-    %
-    \begin{equation*}
-        \mu_A(0x) = 0 = \mu_{0\inv A}(x),
-    \end{equation*}
-    %
-    with the convention that $0\inv A = X$. For $t > 0$ we have
-    %
-    \begin{equation*}
-        \mu_A(t x)
-            = \inf \set{s > 0}{s\inv t x \in A}
-            = \inf \set{tr}{r > 0, r\inv x \in A}
-            = t \mu_A(x),
-    \end{equation*}
-    %
-    where we have used the substitution $r = s/t$.
-    
-    \item[(iii)]
-    Let $\alpha \in \field$ and write $\alpha = \abs{\alpha} u$ with $\abs{u} = 1$. Then
-    %
-    \begin{align*}
-        \mu_A(\alpha x)
-            = \mu_A(\abs{\alpha}ux)
-            = \abs{\alpha} \mu_{u\inv A}(x)
-            = \abs{\alpha} \mu_A(x),
-    \end{align*}
-    %
-    where we use that $u\inv A = A$ since $A$ is balanced.
-    
-    \item[(iv)]
-    First assume that $r = 1$ and $x = 0$. If $y \in A$, then there exists a $t \in (0,1)$ such that $t\inv y \in A$ since $A$ is open. Hence $\mu_A(y) < 1$. If instead $y \not\in A$, then if $t\inv y \in A$ for some $t > 0$, then we must have $t \geq 1$ since $A$ is balanced.
-    
-    For general $r > 0$ notice that
-    %
-    \begin{equation*}
-        rA
-            = \set{y \in X}{\mu_{rA}(y) < 1}
-            = \set{y \in X}{r\inv \mu_A(y) < 1}
-            = \set{y \in X}{\mu_A(y) < r}
-    \end{equation*}
-    %
-    by (ii). The claim for general $x \in X$ is obvious.
-\end{proofsec}
-\end{proof}
-
-
-% \begin{theorem}
-%     \label{thm:locally-convex-Minkowski-functionals}
-%     Let $X$ be a locally convex space, and let $\calB$ be a local basis in $X$ of convex, balanced sets. For each $B \in \calB$ the Minkowski functional $\mu_B$ is continuous. If $X$ is Hausdorff, then $\set{\mu_B}{B \in \calB}$ separates points in $X$.
-% \end{theorem}
-% %
-% The existence of such a local basis is guaranteed by \cref{enum:convex-balanced-local-basis}. [TODO: Move continuity, it might be relevant in a non-locally convex space.]
-
-% \begin{proof}
-%     \cref{enum:0-neighbourhood-absorbing} shows that each $B$ is absorbing, so we may consider the Minkowski functional $\mu_B$. \cref{enum:Minkowski-functional-seminorm} shows that each $\mu_B$ is a seminorm. Let $\epsilon > 0$. For $x,y \in X$ with $x-y \in \epsilon B$ it follows from [TODO Lemma] and the reverse triangle inequality that
-%     %
-%     \begin{equation*}
-%         \abs{ \mu_B(x) - \mu_B(y) }
-%             \leq \mu_B(x - y)
-%             < \epsilon.
-%     \end{equation*}
-%     %
-%     Hence $\mu_B$ is continuous.
-
-%     Now assume that $X$ is Hausdorff. If $x \in X \setminus \{0\}$, then there is a $B \in \calB$ with $x \not\in B$. Then $\mu_B(x) \geq 1$ by \cref{enum:Minkowski-functional-balls}, so the family $\set{\mu_B}{B \in \calB}$ separates points in $X$.
-% \end{proof}
-
-
-\begin{theorem}
-    \label{thm:seminorm-topology}
-    Let $X$ be a $\field$-vector space, and let $\calP$ be a family of seminorms on $X$. Let $\calT$ denote the topology induced by $\calP$, i.e. induced by all open balls $\ball[p]{x}{\epsilon}$ for $p \in \calP$, $x \in X$, and $\epsilon > 0$.
-
-    \begin{enumthm}
-        \item For each $x \in X$, the finite intersections of the sets $\ball[p]{x}{\epsilon}$, for $p \in \calP$ and $\epsilon > 0$, form a neighbourhood basis at $x$.
-
-        \item If $(x_i)_{i \in I}$ is a net in $X$ and $x \in X$, then $x_i \to x$ iff $p(x_i - x) \to 0$ for all $p \in \calP$.
-
-        \item $(X,\calT)$ is a locally convex topological vector space.
-    \end{enumthm}
-\end{theorem}
-
-\begin{proof}
-\begin{proofsec}
-    \item[(i)]
-    Let $U$ be a neighbourhood of $x$. By definition of $\calT$,
-    %
-    \begin{equation*}
-        x
-            \in \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k}
-            \subseteq U
-    \end{equation*}
-    %
-    for appropriate $x_k \in X$, $p_k \in \calP$ and $\epsilon_k > 0$. Letting $\delta_k = \epsilon_k - p_k(x - x_k)$ the triangle inequality implies that
-    %
-    \begin{equation*}
-        x
-            \in \bigintersect_{k=1}^n \ball[p_k]{x}{\delta_k}
-            \subseteq \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k},
-    \end{equation*}
-    %
-    proving the claim.
-
-    \item[(ii)]
-    This is obvious from (i).
-
-    \item[(iii)]
-    Let $(x_i)_{i \in I}$ and $(y_i)_{i \in I}$ be nets in $X$, and let $(\alpha_i)_{i \in I}$ be a net in $\field$, and assume that $x_i \to x$, $y_i \to y$ and $\alpha_i \to \alpha$. Then eventually $\abs{\alpha_i} \leq \abs{\alpha} + 1$, so eventually
-    %
-    \begin{align*}
-        p\bigl( (\alpha_i x_i + y_i) - (\alpha x + y) \bigr)
-            &= p\bigl( (\alpha_i x_i - \alpha_i x) + (\alpha_i x - \alpha x) + (y_i - y) \bigr) \\
-            &\leq p(\alpha_i x_i - \alpha_i x) + p(\alpha_i x - \alpha x) + p(y_i - y) \\
-            &\leq (\abs{\alpha} + 1) p(x_i - x) + \abs{\alpha_i - \alpha} p(x) + p(y_i - y),
-    \end{align*}
-    %
-    which goes to zero. Hence the vector operations are continuous. Furthermore, the usual proof that balls are convex also works for balls defined by seminorms, so the balls $\ball[p]{x}{\epsilon}$ are convex. Hence (finite) intersections of balls are convex, so $\calT$ has a basis of convex sets.
-\end{proofsec}
-\end{proof}
-
-
-\begin{remark}
-    Let $(X,\calT)$ be a locally convex topological vector space, and let $\calB$ be a local basis of convex balanced open sets, in accordance with \cref{enum:convex-balanced-local-basis}. By \cref{thm:seminorm-topology}, the corresponding family $\calM = \set{\mu_B}{B \in \calB}$ of Minkowski functionals generates a vector space topology $\calT'$ on $X$. We claim that $\calT = \calT'$.
-
-    The inclusion $\calT' \subseteq \calT$ follows since each Minkowski functional is $\calT$-continuous (since seminorms are continuous), so the sets $\ball[\mu]{0}{\epsilon} = \mu\preim(\ball{0}{\epsilon})$ are $\calT$-open for all $\mu \in \calM$. Hence the sets $\ball[\mu]{x}{\epsilon} = x + \ball[\mu]{0}{\epsilon}$ for general $x \in X$ are also $\calT$-open by homogeneity.
-
-    Conversely, for $B \in \calB$ we have $B = \ball[\mu_B]{0}{1}$ by \cref{enum:Minkowski-functional-balls}, so $B \in \calT'$. Hence $\calT \subseteq \calT'$ since the latter is a vector space topology, and the former is generated by translates of sets in $\calB$.
-\end{remark}
-%
-This remark in particular implies the following result:
-%
-\begin{corollary}
-    A topological vector space $X$ is locally convex if and only if its topology is generated by a family of seminorms.
-\end{corollary}
-
-
-\begin{theorem}
-    A topological vector space $X$ is seminormable if and only if $0$ has a convex bounded neighbourhood.
-\end{theorem} % [TODO: Where does this result belong?]
-
-\begin{proof}
-    The \enquote{only if} part if obvious, so we prove the converse.
-
-    Let $U$ be a convex bounded neighbourhood of $0$. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is also balanced, so \cref{enum:Minkowski-functional-seminorm} implies that the Minkowski functional $\mu_U$ is a seminorm. It suffices to show that $\mu_U$ generates the topology on $X$.
-
-    By \cref{enum:bounded-nhood-local-basis}, the collection $\set{rU}{r > 0}$ is a local basis. But \cref{enum:Minkowski-functional-balls} says that $rU = \ball[\mu_U]{0}{r}$, so the topology on $X$ coincides with the $\mu_U$-topology.
-\end{proof}
-
-
 \section{Quotient spaces}
 
 \begin{theorem}[Topological quotient vector spaces]
@@ -1183,7 +1008,7 @@ This remark in particular implies the following result:
 \end{theorem}
 
 \begin{proof}
-    \Cref{thm:topological-quotient-group} already shows that $X/M$ is a topological group, so it suffices to show that the scalar multiplication on $X/M$ is continuous. To this end, let $\rho \colon \field \prod X \to X$ be the scalar multiplication on $X$, $R \colon \field \prod X/M \to X/M$ the scalar multiplication on $X/M$, $q \colon X \to X/M$ the quotient map, and define $Q \colon \field \prod X \to \field \prod X/M$ by $Q = \id_\field \prod q$. Continuity of $R$ then follows by noticing that $Q$ is open and surjective, and that the diagram
+    \Cref{thm:topological-quotient-group} already shows that $X/M$ is a topological group, so it suffices to show that the scalar multiplication on $X/M$ is continuous. To this end, let $\rho \colon \field \prod X \to X$ be the scalar multiplication on $X$, let $R \colon \field \prod X/M \to X/M$ be the scalar multiplication on $X/M$, let $q \colon X \to X/M$ be the quotient map, and define $Q \colon \field \prod X \to \field \prod X/M$ by $Q = \id_\field \prod q$. Continuity of $R$ then follows by noticing that $Q$ is open and surjective, and that the diagram
     %
     \begin{equation*}
         \begin{tikzcd}
@@ -1208,7 +1033,7 @@ This remark in particular implies the following result:
     Let $T \colon X \to Y$ be a continuous linear map between topological vector spaces, and let $M$ be a subspace of $X$. If $M \subseteq \ker T$, then there exists a unique set function $\tilde{T} \colon X/M \to Y$ such that the diagram
     %
     \begin{equation*}
-        \begin{tikzcd}[column sep=small]
+        \begin{tikzcd}[column sep=tiny]
             X
                 \ar[rr, "T"]
                 \ar[dr, "q", swap]
@@ -1234,6 +1059,7 @@ A linear map $T \colon X \to Y$ between topological vector spaces is \emph{bound
 Continuity and boundedness are equivalent for operators between normed spaces. We begin by exploring the relationship between continuity and boundedness for maps between general topological vector spaces:
 
 \begin{proposition}[Continuity and boundedness]
+    \label{thm:continuity-boundedness-equivalent}
     Let $T \colon X \to Y$ be a linear map between topological vector spaces. If $T$ is continuous then it is bounded. The converse also holds if $X$ is first countable.
 \end{proposition}
 
@@ -1250,6 +1076,9 @@ Continuity and boundedness are equivalent for operators between normed spaces. W
     %
     contradicting the definition of $(x_n)$. Hence $T$ is in fact continuous.
 \end{proof}
+
+
+\section{Finite-dimensional spaces}
 
 It turns out that linearity and continuity are closely related. In fact, it will turn out that a linear map is continuous if either its domain or codomain is finite-dimensional, at least in the Hausdorff case. Before proving this we note the following result:
 
@@ -1344,7 +1173,7 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
 % \end{proof}
 
 
-\section{Finite-dimensional spaces}
+
 
 % \begin{theorem}
 %     \label{thm:linear-implies-continuous-finite-dimension}
@@ -1384,7 +1213,7 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
 \end{corollary}
 
 \begin{proof}
-    Let $d = \dim M$, and let $T \colon \field^d \to M$ be a linear isomorphism, hence a homeomorphism. Then since $\field^d$ is complete as a normed space, hence as a topological vector space, $M$ is also complete by \cref{thm:completeness-preserved-by-unimorphism}. But then it is closed by \cref{thm:complete-implies-closed}.
+    Let $d = \dim M$, and let $T \colon \field^d \to M$ be a linear isomorphism, hence a homeomorphism. Then since $\field^d$ is complete as a normed space, hence as a topological vector space by \cref{thm:domain-finite-dimensional-continuity}, $M$ is also complete by \cref{thm:completeness-preserved-by-unimorphism}. But then it is closed by \cref{thm:complete-implies-closed}.
 \end{proof}
 
 \newcommand{\Span}{\operatorname{span}}
@@ -1398,25 +1227,25 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
 
     Conversely, if $X$ is locally compact then $0$ has a precompact open neighbourhood $U$. By \cref{enum:compact-implies-bounded}, $\closure{U}$ (and hence $U$) is also bounded, so the collection $\calU = \set{2^{-n}U}{n \in \naturals}$ is a local basis by \cref{enum:bounded-nhood-local-basis}.
 
-    By compactness of $\closure{U}$ there exists a finite set $\calB \subseteq X$ such that $U \subseteq \closure{U} \subseteq \calB + \frac{1}{2} U$. Hence if $S = \Span\calB$, then $U \subseteq S + \frac{1}{2} U$. Since $S$ is a subspace, it follows that $\frac{1}{2} U \subseteq S + \frac{1}{4} U$. Hence
+    By compactness of $\closure{U}$ there exists a finite set $\calB \subseteq X$ such that $U \subseteq \closure{U} \subseteq \calB + \frac{1}{2} U$. Hence if $M = \Span\calB$, then $U \subseteq M + \frac{1}{2} U$. Since $M$ is a subspace, it follows that $\frac{1}{2} U \subseteq M + \frac{1}{4} U$. Hence
     %
     \begin{equation*}
         U
-            \subseteq S + \tfrac{1}{2} U
-            \subseteq S + (S + \tfrac{1}{4} U)
-            = S + \tfrac{1}{4} U.
+            \subseteq M + \tfrac{1}{2} U
+            \subseteq M + (M + \tfrac{1}{4} U)
+            = M + \tfrac{1}{4} U.
     \end{equation*}
     %
     By induction we thus find that
     %
     \begin{equation*}
         U
-            \subseteq \bigintersect_{n \in \naturals} (S + 2^{-n}U)
-            = \closure{S}
-            = S,
+            \subseteq \bigintersect_{n \in \naturals} (M + 2^{-n}U)
+            = \closure{M}
+            = M,
     \end{equation*}
     %
-    where the first equality follows from \cref{enum:closure-intersection-of-open-sets} since $\calU$ is a local basis, and the second follows by \cref{thm:finite-dimensional-subspace-closed}.  Since $U$ is absorbing so is $S$, but $S$ is a subspace so $X = S$. Hence $X$ is finite-dimensional.
+    where the first equality follows from \cref{enum:closure-intersection-of-open-sets} since $\calU$ is a local basis, and the second follows by \cref{thm:finite-dimensional-subspace-closed}.  Since $U$ is absorbing so is $M$, but $M$ is a subspace so $X = M$. Hence $X$ is finite-dimensional.
 \end{proof}
 
 
@@ -1506,6 +1335,595 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
 %     %
 %     so $\norm{\,\cdot\,}_S$ is a semi-norm. The rest of the claims follow by \cref{thm:coset-space-metric}.
 % \end{proof}
+
+
+\chapter{Locally convex spaces}
+
+\section{Seminorm topologies}
+
+Let $X$ be a $\field$-vector space. A \emph{seminorm} on $X$ is a sublinear, absolutely homogeneous map $X \to \reals$. A collection $\calP$ of seminorms on $X$ is said to \emph{separate points} or is \emph{separating} if there for every $x \in X \setminus \{0\}$ is a $p \in \calP$ such that $p(x) \neq 0$. Or equivalently if, for $x,y \in X$, $x \neq y$ implies the existence of a $p \in \calP$ with $p(x-y) \neq 0$.
+
+A single seminorm gives rise to a topology in the usual. But often the topology on a vector space is generated by a family of many seminorms:
+
+\begin{theorem}[Generating seminorm topologies]
+    \label{thm:seminorm-topology}
+    Let $X$ be a $\field$-vector space, and let $\calP$ be a family of seminorms on $X$. Let $\calT$ denote the topology induced by $\calP$, i.e. generated by all open balls $\ball[p]{x}{\epsilon}$ for $p \in \calP$, $x \in X$, and $\epsilon > 0$.
+
+    \begin{enumthm}
+        \item \label{enum:LCS-nhood-basis} For each $x \in X$, the finite intersections of the sets $\ball[p]{x}{\epsilon}$, for $p \in \calP$ and $\epsilon > 0$, form a neighbourhood basis at $x$.
+
+        \item \label{enum:LCS-net-convergence} If $(x_i)_{i \in I}$ is a net in $X$ and $x \in X$, then $x_i \to x$ iff $p(x_i - x) \to 0$ for all $p \in \calP$.
+
+        \item \label{enum:seminorm-topology-is-LCS} $(X,\calT)$ is a locally convex topological vector space.
+
+        \item \label{enum:seminorm-topology-separating} $\calT$ is $T_0$ (and hence regular) if and only if $\calP$ separates points in $X$.
+    \end{enumthm}
+\end{theorem}
+
+\begin{proof}
+\begin{proofsec}
+    \item[Proof of \subcref{enum:LCS-nhood-basis}]
+    Let $U$ be a neighbourhood of $x$. By definition of $\calT$,
+    %
+    \begin{equation*}
+        x
+            \in \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k}
+            \subseteq U
+    \end{equation*}
+    %
+    for appropriate $x_k \in X$, $p_k \in \calP$ and $\epsilon_k > 0$. Letting $\delta_k = \epsilon_k - p_k(x - x_k)$ the triangle inequality implies that
+    %
+    \begin{equation*}
+        x
+            \in \bigintersect_{k=1}^n \ball[p_k]{x}{\delta_k}
+            \subseteq \bigintersect_{k=1}^n \ball[p_k]{x_k}{\epsilon_k},
+    \end{equation*}
+    %
+    proving the claim.
+
+    \item[Proof of \subcref{enum:LCS-net-convergence}]
+    This is obvious from \subcref{enum:LCS-nhood-basis}.
+
+    \item[Proof of \subcref{enum:seminorm-topology-is-LCS}]
+    Let $(x_i)_{i \in I}$ and $(y_i)_{i \in I}$ be nets in $X$, and let $(\alpha_i)_{i \in I}$ be a net in $\field$, and assume that $x_i \to x$, $y_i \to y$ and $\alpha_i \to \alpha$. Then eventually $\abs{\alpha_i} \leq \abs{\alpha} + 1$, so eventually
+    %
+    \begin{align*}
+        p\bigl( (\alpha_i x_i + y_i) - (\alpha x + y) \bigr)
+            &= p\bigl( (\alpha_i x_i - \alpha_i x) + (\alpha_i x - \alpha x) + (y_i - y) \bigr) \\
+            &\leq p(\alpha_i x_i - \alpha_i x) + p(\alpha_i x - \alpha x) + p(y_i - y) \\
+            &\leq (\abs{\alpha} + 1) p(x_i - x) + \abs{\alpha_i - \alpha} p(x) + p(y_i - y),
+    \end{align*}
+    %
+    which goes to zero. Hence the vector operations are continuous. Furthermore, the usual proof that balls are convex also works for balls defined by seminorms, so the balls $\ball[p]{x}{\epsilon}$ are convex. Hence (finite) intersections of balls are convex, so $\calT$ has a basis of convex sets.
+
+    \item[Proof of \subcref{enum:seminorm-topology-separating}]
+    Let $x,y \in X$ with $x \neq y$. By \subcref{enum:LCS-nhood-basis}, $x$ has a neighbourhood not containing $y$ if and only if there is a ball $\ball[p]{x}{\epsilon}$ for some $p \in \calP$ and $\epsilon > 0$ that does not contain $y$. But $y \not\in \ball[p]{x}{\epsilon}$ if and only if $p(x-y) > 0$.
+\end{proofsec}
+\end{proof}
+
+\newcommand{\ev}{\mathrm{ev}}
+
+Next we consider a vector space $X$ that has already been equipped with a vector space topology, and we try to equip $X$ with a family of seminorms. Of course such a family can only induce the topology on $X$ if $X$ is locally convex, but the constructions below will be relevant in a more general setting (in particular in the proof of \cref{thm:Hahn-Banach-separation}).
+
+To each $A \subseteq X$ we associate the \emph{Minkowski functional} $\mu_A$ of $A$, given by
+%
+\begin{equation*}
+    \mu_A(x)
+        = \inf \set{t > 0}{t\inv x \in A}
+\end{equation*}
+%
+for $x \in X$. We shall only be interested in $\mu_A$ in the case where $A$ is absorbing (and in fact also convex). In this case $A$ is nonempty (since it contains $0$) and we have $\mu_A(x) < \infty$ for all $x \in X$.
+
+\begin{lemma}
+    Let $X$ be a topological vector space, and let $A \subseteq X$ be a convex, absorbing set. For all $x, y \in X$ we then have
+    %
+    \begin{enumlem}
+        \item \label{enum:Minkowski-functional-sublinear} $\mu_A(x + y) \leq \mu_A(x) + \mu_A(y)$, and
+        
+        \item \label{enum:Minkowski-functional-homogeneous} $\mu_A(\alpha x) = \mu_{\alpha\inv A}(x)$ for $\alpha \in \field$, where $0\inv A \defn X$. If $t \geq 0$, then $\mu_A(tx) = t\mu_A(x)$.
+    \end{enumlem}
+    %
+    Assume furthermore that $A$ is balanced.
+    %
+    \begin{enumlem}[resume]
+        \item \label{enum:Minkowski-functional-seminorm} $\mu_A$ is a seminorm.
+        
+        \item \label{enum:Minkowski-functional-balls} If $A$ is open, $x \in X$ and $r > 0$, then
+        %
+        \begin{equation*}
+            \ball[\mu_A]{x}{r}
+                = \set{y \in X}{\mu_A(y-x) < r}
+                = x + rA.
+        \end{equation*}
+    \end{enumlem}
+\end{lemma}
+
+\begin{proof}
+\begin{proofsec}
+    \item[Proof of \subcref{enum:Minkowski-functional-sublinear}]
+    Let $\epsilon > 0$, and put $s = \mu_A(x) + \epsilon$ and $t = \mu_A(y) + \epsilon$. Since $A$ is convex and contains $0$, we have $s\inv x, t\inv y \in A$. But then
+    %
+    \begin{equation*}
+        \frac{x+y}{s+t}
+            = \frac{t}{s+t} \frac{x}{s} + \frac{s}{s+t} \frac{y}{t}
+            \in A
+    \end{equation*}
+    %
+    by convexity, which implies that
+    %
+    \begin{equation*}
+        \mu_A(x + y)
+            \leq s + t
+            = \mu_A(x) + \mu_A(y) + 2\epsilon.
+    \end{equation*}
+    %
+    Since $\epsilon$ was arbitrary, the claim follows.
+
+    \item[Proof of \subcref{enum:Minkowski-functional-homogeneous}]
+    For $\alpha \neq 0$ we have
+    %
+    \begin{equation*}
+        \mu_A(\alpha x)
+            = \inf \set{s > 0}{s\inv \alpha x \in A}
+            = \inf \set{s > 0}{s\inv x \in \alpha\inv A},
+    \end{equation*}
+    %
+    and if $\alpha = 0$ then since $A$ contains $0$ we have
+    %
+    \begin{equation*}
+        \mu_A(0x) = 0 = \mu_{0\inv A}(x),
+    \end{equation*}
+    %
+    with the convention that $0\inv A = X$. For $t > 0$ we have
+    %
+    \begin{equation*}
+        \mu_A(t x)
+            = \inf \set{s > 0}{s\inv t x \in A}
+            = \inf \set{tr}{r > 0, r\inv x \in A}
+            = t \mu_A(x),
+    \end{equation*}
+    %
+    where we have used the substitution $r = s/t$.
+    
+    \item[Proof of \subcref{enum:Minkowski-functional-seminorm}]
+    Let $\alpha \in \field$ and write $\alpha = \abs{\alpha} u$ with $\abs{u} = 1$. Then
+    %
+    \begin{align*}
+        \mu_A(\alpha x)
+            = \mu_A(\abs{\alpha}ux)
+            = \abs{\alpha} \mu_{u\inv A}(x)
+            = \abs{\alpha} \mu_A(x),
+    \end{align*}
+    %
+    where we use that $u\inv A = A$ since $A$ is balanced.
+    
+    \item[Proof of \subcref{enum:Minkowski-functional-balls}]
+    First assume that $r = 1$ and $x = 0$. If $y \in A$, then there exists a $t \in (0,1)$ such that $t\inv y \in A$ since $A$ is open. Hence $\mu_A(y) < 1$. If instead $y \not\in A$, then if $t\inv y \in A$ for some $t > 0$, then we must have $t \geq 1$ since $A$ is balanced.
+    
+    For general $r > 0$ notice that
+    %
+    \begin{equation*}
+        rA
+            = \set{y \in X}{\mu_{rA}(y) < 1}
+            = \set{y \in X}{r\inv \mu_A(y) < 1}
+            = \set{y \in X}{\mu_A(y) < r}
+    \end{equation*}
+    %
+    by \subcref{enum:Minkowski-functional-homogeneous}. The claim for general $x \in X$ is obvious.
+\end{proofsec}
+\end{proof}
+
+
+% \begin{theorem}
+%     \label{thm:locally-convex-Minkowski-functionals}
+%     Let $X$ be a locally convex space, and let $\calB$ be a local basis in $X$ of convex, balanced sets. For each $B \in \calB$ the Minkowski functional $\mu_B$ is continuous. If $X$ is Hausdorff, then $\set{\mu_B}{B \in \calB}$ separates points in $X$.
+% \end{theorem}
+% %
+% The existence of such a local basis is guaranteed by \cref{enum:convex-balanced-local-basis}. [TODO: Move continuity, it might be relevant in a non-locally convex space.]
+
+% \begin{proof}
+%     \cref{enum:0-neighbourhood-absorbing} shows that each $B$ is absorbing, so we may consider the Minkowski functional $\mu_B$. \cref{enum:Minkowski-functional-seminorm} shows that each $\mu_B$ is a seminorm. Let $\epsilon > 0$. For $x,y \in X$ with $x-y \in \epsilon B$ it follows from [TODO Lemma] and the reverse triangle inequality that
+%     %
+%     \begin{equation*}
+%         \abs{ \mu_B(x) - \mu_B(y) }
+%             \leq \mu_B(x - y)
+%             < \epsilon.
+%     \end{equation*}
+%     %
+%     Hence $\mu_B$ is continuous.
+
+%     Now assume that $X$ is Hausdorff. If $x \in X \setminus \{0\}$, then there is a $B \in \calB$ with $x \not\in B$. Then $\mu_B(x) \geq 1$ by \cref{enum:Minkowski-functional-balls}, so the family $\set{\mu_B}{B \in \calB}$ separates points in $X$.
+% \end{proof}
+
+
+\begin{remark}
+    Let $(X,\calT)$ be a locally convex topological vector space, and let $\calB$ be a local basis of convex balanced open sets, in accordance with \cref{enum:convex-balanced-local-basis}. By \cref{thm:seminorm-topology}, the corresponding family $\calM = \set{\mu_B}{B \in \calB}$ of Minkowski functionals generates a vector space topology $\calT'$ on $X$. We claim that $\calT = \calT'$.
+
+    The inclusion $\calT' \subseteq \calT$ follows since each Minkowski functional is $\calT$-continuous (since seminorms are continuous), so the sets $\ball[\mu]{0}{\epsilon} = \mu\preim(\ball{0}{\epsilon})$ are $\calT$-open for all $\mu \in \calM$. Hence the sets $\ball[\mu]{x}{\epsilon} = x + \ball[\mu]{0}{\epsilon}$ for general $x \in X$ are also $\calT$-open by homogeneity.
+
+    Conversely, for $B \in \calB$ we have $B = \ball[\mu_B]{0}{1}$ by \cref{enum:Minkowski-functional-balls}, so $B \in \calT'$. Hence $\calT \subseteq \calT'$ since the latter is a vector space topology, and the former is generated by translates of sets in $\calB$.
+\end{remark}
+%
+This remark in particular implies the following result:
+%
+\begin{theorem}
+    \label{thm:locally-convex-iff-seminorms}
+    A topological vector space $X$ is locally convex if and only if its topology is generated by a family of seminorms.
+\end{theorem}
+
+
+\begin{theorem}
+    A topological vector space $X$ is seminormable if and only if $0$ has a convex bounded neighbourhood.
+\end{theorem} % [TODO: Where does this result belong?]
+
+\begin{proof}
+    The \enquote{only if} part if obvious, so we prove the converse.
+
+    Let $U$ be a convex bounded neighbourhood of $0$. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is also balanced, so \cref{enum:Minkowski-functional-seminorm} implies that the Minkowski functional $\mu_U$ is a seminorm. It suffices to show that $\mu_U$ generates the topology on $X$.
+
+    By \cref{enum:bounded-nhood-local-basis}, the collection $\set{rU}{r > 0}$ is a local basis. But \cref{enum:Minkowski-functional-balls} says that $rU = \ball[\mu_U]{0}{r}$, so the topology on $X$ coincides with the $\mu_U$-topology.
+\end{proof}
+
+
+\section{The Hahn--Banach theorems}
+
+[TODO find a better place for this stuff about seminorms?]
+
+Note that if $p$ and $q$ are seminorms on a vector space $X$, then $p \leq q$ if and only if $\ball[q]{0}{1} \subseteq \ball[p]{0}{1}$. The \enquote{only if} part is obvious, and the \enquote{if} part follows [TODO?]
+
+
+\begin{proposition}[Continuity of seminorms]
+    Let $X$ be a topological vector space, and let $p$ be a seminorm on $X$. Then the following are equivalent:
+    %
+    \begin{enumprop}
+        \item \label{enum:seminorm-uniformly-continuous} $p$ is uniformly continuous.
+        \item \label{enum:seminorm-open-ball} $\ball[p]{0}{1}$ is open in $X$.
+        \item \label{enum:seminorm-closed-ball} $\cball[p]{0}{1}$ is a neighbourhood of $X$.
+        \item \label{enum:seminorm-continuous-at-0} $p$ is continuous at $0$.
+        \item \label{enum:seminorm-continuity-domination} There is a continuous seminorm $q$ on $X$ such that $p \leq q$.
+    \end{enumprop}
+\end{proposition}
+
+\begin{proof}
+    We first establish the equivalence of the first four properties, and then prove equivalence with the final property. Clearly \subcref{enum:seminorm-uniformly-continuous} implies \subcref{enum:seminorm-open-ball}, and \subcref{enum:seminorm-open-ball} implies \subcref{enum:seminorm-closed-ball}.
+    %
+    \begin{proofsec}
+        \item[\subcref{enum:seminorm-closed-ball} $\implies$ \subcref{enum:seminorm-continuous-at-0}]
+        If $\cball[p]{0}{1}$ is a neighbourhood of $0$, then so is $\epsilon \cball[p]{0}{1} = \cball[p]{0}{\epsilon}$ for all $\epsilon > 0$. If $(x_i)_{i \in I}$ is a net in $X$ converging to $0$, then eventually $x_i \in \ball[p]{0}{\epsilon}$, so eventually $p(x_i) < \epsilon$. It follows that $p(x_i) \to 0$, so $p$ is continuous at $0$.
+
+        \item[\subcref{enum:seminorm-continuous-at-0} $\implies$ \subcref{enum:seminorm-uniformly-continuous}]
+        Let $\epsilon > 0$. By continuity of $p$ at $0$ there is a neighbourhood $U$ of $0$ in $X$ such that $p(U) \subseteq [0,\epsilon)$. By \cref{thm:symmetric_nhood_of_e} there is a symmetric neighbourhood $V$ of $0$ with $V + V \subseteq U$. If $x,y \in V$ then $x-y \in U$, implying that
+        %
+        \begin{equation*}
+            \abs{p(x) - p(y)}
+                \leq p(x-y)
+                < \epsilon,
+        \end{equation*}
+        %
+        so $p$ is absolutely continuous.
+
+        \item[\subcref{enum:seminorm-uniformly-continuous} $\implies$ \subcref{enum:seminorm-continuity-domination}]
+        If $p$ is (uniformly) continuous, then $q = p$ works.
+
+        \item[\subcref{enum:seminorm-continuity-domination} $\implies$ \subcref{enum:seminorm-closed-ball}]
+        Note that $p \leq q$ if and only if $\cball[q]{0}{1} \subseteq \cball[p]{0}{1}$. Hence if $q$ is continuous, then $\cball[q]{0}{1}$ is a neighbourhood of $0$ and so is $\cball[p]{0}{1}$.
+    \end{proofsec}
+\end{proof}
+
+
+\begin{proposition}
+    \label{thm:continuity-by-seminorm-domination}
+    Let $X$ and $Y$ be topological $\field$-vector spaces, and assume that $Y$ is locally convex. A linear map $T \colon X \to Y$ is continuous if and only if for each continuous seminorm $q$ on $Y$ there exists a continuous seminorm $p$ on $X$ such that $q \circ T \leq p$.
+
+    In particular, a linear functional $f \colon X \to \field$ is continuous if and only if there is a continuous seminorm $p$ on $X$ such that $\abs{f} \leq p$.
+\end{proposition}
+
+\begin{proof}
+    If $T$ is continuous and $q$ is a continuous seminorm on $Y$, then $p = q \circ T$ works.
+
+    Conversely, let $q$ be a continuous seminorm on $Y$ and $p$ a continuous seminorm on $X$ such that $q \circ T \leq p$. Since $q \circ T$ itself is a seminorm, \cref{enum:seminorm-continuity-domination} implies that $q \circ T$ is continuous. Now let $(x_i)_{i \in I}$ be a net in $X$ converging to $0$. Then $p(x_i) \to 0$ by continuity, so also $q(Tx_i) \to 0$. Thus $Tx_i \to 0$ by \cref{enum:LCS-net-convergence}, so $T$ is continuous at $0$. Hence it is continuous by \cref{thm:group-homomorphism-continuity}.
+
+    The final claim follows since $\abs{\,\cdot\,}$ is the only seminorm on $\field$ up to multiplication by a non-negative number.
+\end{proof}
+
+
+\begin{lemma}
+    \label{thm:real-complex-functionals}
+    Let $X$ be a complex vector space over. If $f$ is a complex linear functional on $X$ and $u = \Re f$, then $u$ is a real linear functional, and $f(x) = u(x) - \iu u(\iu x)$ for all $x \in X$. Conversely,  if $u$ is a real linear functional on $X$ and $f \colon X \to \complex$ is defined by $f(x) = u(x) - \iu u(\iu x)$, then $f$ is complex linear. If $X$ is normed, then $\norm{u} = \norm{f}$.
+\end{lemma}
+
+\begin{proof}
+    See \textcite[Proposition~5.5]{folland2007}.
+\end{proof}
+
+
+\begin{theorem}[The Hahn--Banach Dominated Extension Theorem]
+    \label{thm:Hahn-Banach-extension}
+    \begin{enumthm}
+        \item \label{enum:Hahn-Banach-extension-real} Let $X$ be a real vector space, $p$ a sublinear functional on $X$, $M$ a subspace of $X$, and $f$ a linear functional on $M$ with $f(x) \leq p(x)$ for all $x \in M$. Then there exists a linear functional $F$ on $X$ such that $F(x) < p(x)$ for all $x \in X$ and $F|_M = f$.
+        
+        \item Let $X$ be a complex vector space, $p$ a seminorm on $X$, $M$ a subspace of $X$, and $f$ a complex linear functional on $M$ with $\abs{f(x)} \leq p(x)$ for all $x \in M$. Then there exists a complex linear functional $F$ on $X$ such that $\abs{F(x)} < p(x)$ for all $x \in X$ and $F|_M = f$.
+    \end{enumthm}
+\end{theorem}
+
+\begin{proof}
+    See \textcite[Theorem~5.6]{folland2007}.
+\end{proof}
+
+
+\begin{corollary}[Continuous extensions]
+    Let $X$ be a locally convex topological $\field$-vector space, let $M$ be a subspace of $X$, and let $f \colon M \to \field$ be a continuous linear functional on $M$. Then $f$ has a continuous extension $\phi \colon X \to \field$.
+\end{corollary}
+
+\begin{proof}
+    Clearly $M$ is locally convex in the subspace topology. Hence if $\calP$ is the collection of continuous seminorms on $X$, the topology on $M$ is generated by the family $\calP|_M = \set{p_M}{p \in \calP}$ of continuous seminorms on $X$ by \cref{thm:locally-convex-iff-seminorms}. \Cref{thm:continuity-by-seminorm-domination} then yields a $p \in \calP$ such that $\abs{f} \leq p$ on $M$, so \cref{thm:Hahn-Banach-extension} implies that $f$ has a linear extension $\phi \colon X \to \field$ with $\abs{\phi} \leq p$. Another application of \cref{thm:continuity-by-seminorm-domination} then yields continuity of $\phi$.
+\end{proof}
+
+
+\begin{lemma}
+    \label{thm:functionals-are-open}
+    Let $X$ be a topological $\field$-vector space, and let $\phi \colon X \to \field$ be a nonzero linear functional. Then $\phi$ is open.
+\end{lemma}
+
+\begin{proof}
+    Since $\phi$ is nonzero, there is an $x_0 \in X$ such that $\phi(x_0) = 1$. Let $U \subseteq X$ be an open set, and let $y \in \phi(U)$. Then there is some $x \in U$ such that $\phi(x) = y$. By continuity of scalar multiplication there is a $\delta > 0$ such that $\abs{r} < \delta$ implies that $x + rx_0 \in U$. But then
+    %
+    \begin{equation*}
+        y + r
+            = \phi(x + rx_0)
+            \in \phi(U)
+    \end{equation*}
+    %
+    for $\abs{r} < \delta$. Thus $\phi(U)$ is open as desired.
+\end{proof}
+
+
+\begin{theorem}[The Hahn--Banach Separation Theorem]
+    \label{thm:Hahn-Banach-separation}
+    Let $X$ be a topological $\field$-vector space, and let $A,B \subseteq X$ be disjoint, nonempty, convex sets.
+    %
+    \begin{enumthm}
+        \item \label{enum:Hahn-Banach-separation-open} If $A$ is open, then there is a $\phi \in X^*$ and an $\alpha \in \reals$ such that
+        %
+        \begin{equation*}
+            \Re \phi(a)
+                < \alpha
+                \leq \Re \phi(b)
+        \end{equation*}
+        %
+        for all $a \in A$ and $b \in B$.
+
+        \item \label{enum:Hahn-Banach-separation-compact-closed} If $X$ is locally convex, $A$ is compact, and $B$ is closed, then there exist $\phi \in X^*$ and $\alpha,\beta \in \reals$ such that
+        %
+        \begin{equation*}
+            \Re \phi(a)
+                < \alpha
+                < \beta
+                < \Re \phi(b)
+        \end{equation*}
+        %
+        for all $a \in A$ and $b \in B$.
+    \end{enumthm}
+\end{theorem}
+
+\begin{proof}
+\begin{proofsec}
+    \item[Proof of \subcref{enum:Hahn-Banach-separation-open}]
+    First assume that $\field = \reals$. Choose points $a_0 \in A$ and $b_0 \in B$, and then let $x_0 = b_0 - a_0$ and $C = A - B + x_0$. Since $A$ is open, \cref{enum:product_open_set} implies that $C$ is an open neighbourhood of $0$. Notice also that $C$ is convex since both $A$ and $B$ are convex.
+    
+    Consider the Minkowski functional $\mu_C$ of $C$, and notice that $\mu_C(x_0) \geq 1$ by \cref{enum:Minkowski-functional-balls} since $x_0 \not\in C$. Define a linear functional $f \colon \reals x_0 \to \reals$ by $f(tx_0) = t$. For $t \geq 0$ we have
+    %
+    \begin{equation*}
+        f(tx_0)
+            = t
+            \leq t\mu_C(x_0)
+            = \mu_C(tx_0),
+    \end{equation*}
+    %
+    and if $t < 0$ then $f(tx_0) < 0 \leq \mu_C(tx_0)$. Thus $f \leq \mu_C$ on $\reals x_0$, so \cref{enum:Hahn-Banach-extension-real} yields a linear extension $\phi \colon X \to \reals$ of $f$ with $\phi \leq \mu_C$ on $X$. In particular we have $\phi \leq 1$ on $C$, so $\phi \geq -1$ on $-C$ by linearity, which implies that $\abs{\phi} \leq 1$ on the neighbourhood $C \intersect (-C)$ of $0$. It thus follows from \cref{thm:bounded-around-0-implies-continuous} that $\phi$ is continuous.
+
+    Now consider $a \in A$ and $b \in B$, and notice that
+    %
+    \begin{equation*}
+        \phi(a) - \phi(b) + 1
+            = \phi(a - b + x_0)
+            \leq \mu_C(a - b + x_0)
+            < 1,
+    \end{equation*}
+    %
+    since $a - b + x_0 \in C$. Thus $\phi(a) < \phi(b)$ for all $a \in A$ and $b \in B$. It follows that $\alpha \defn \sup \phi(A) \leq \inf \phi(B)$. But $\phi(A)$ is open by \cref{thm:functionals-are-open}, so $\alpha \not\in \phi(A)$. This proves the claim in the case $\field = \reals$.
+
+    Now assume that $\field = \complex$. Then the above yields a continuous real-linear functional $u \colon X \to \reals$ and an $\alpha \in \reals$ such that
+    %
+    \begin{equation*}
+        u(a)
+            < \alpha
+            \leq u(b)
+    \end{equation*}
+    %
+    for all $a \in A$ and $b \in B$. Define $\phi \colon X \to \complex$ by $\phi(x) = u(x) - \iu u(\iu x)$, so that $u = \Re \phi$. Then $\phi$ is continuous, and \cref{thm:real-complex-functionals} implies that it is complex linear, so $\phi \in X^*$ as desired.
+
+    \item[Proof of \subcref{enum:Hahn-Banach-separation-compact-closed}]
+    By \cref{thm:separating-compact-closed} there is an open neighbourhood $U$ of $0$ such that $A + U$ and $B$ are disjoint. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is convex; since $A$ is also convex, so is their sum $A + U$. Part \subcref{enum:Hahn-Banach-separation-open} then yields a $\phi \in X^*$ such that $\Re\phi(A+U)$ and $\Re\phi(B)$ are disjoint subsets of $\reals$. Notice that $\Re\phi(A+U)$ is open by \cref{thm:functionals-are-open} (since $\Re\phi \colon X \to \reals$ is a linear functional), and $\Re\phi(A)$ is a compact subset of $\Re\phi(A+U)$. Hence
+    %
+    \begin{equation*}
+        \sup \Re\phi(A)
+            < \sup \Re\phi(A+U)
+            \leq \inf \Re\phi(B),
+    \end{equation*}
+    %
+    so the existence of $\alpha, \beta \in \reals$ as in the statement of the theorem is obvious.
+\end{proofsec}
+\end{proof}
+
+
+\begin{corollary}
+    Let $M$ be a closed subspace of a locally convex topological $\field$-vector space $X$, and let $x_0 \in X \setminus M$. Then there exists a $\phi \in X^*$ with $\phi(x_0) \neq 0$ that vanishes on $M$.
+\end{corollary}
+
+\begin{proof}
+    \cref{enum:Hahn-Banach-separation-compact-closed} yields a $\phi \in X^*$ such that $\Re \phi(x_0) < \Re \phi(m)$ for all $m \in M$. Since $0 \in M$ we must have $\phi(x_0) \neq 0$. Furthermore, $\phi(M)$ is a proper subspace of $\field$, so $\phi(M) = \{0\}$.
+\end{proof}
+
+\begin{corollary}
+    \label{thm:X*-separating-points-Hausdorff}
+    Let $X$ be a locally convex topological vector space. Then $X$ is Hausdorff if and only if $X^*$ separates points in $X$.
+\end{corollary}
+
+\begin{proof}
+    Let $x,y \in X$ with $x \neq y$. If $X$ is Hausdorff then singletons are closed, so \cref{enum:Hahn-Banach-separation-compact-closed} yields a $\phi \in X^*$ with $\phi(x) \neq \phi(y)$.
+
+    Conversely, if $X^*$ separates points then there exists a $\phi \in X^*$ with $\phi(x) \neq \phi(y)$. If $U$ and $V$ are disjoint open neighbourhoods of $\phi(x)$ and $\phi(y)$ respectively, then $\phi\preim(U)$ and $\phi\preim(V)$ are disjoint open neighbourhoods of $x$ and $y$ in $X$.
+\end{proof}
+
+
+\chapter{A survey of topologies}
+
+\section{Topologies induced by linear maps}
+
+Let $X$ be a $\field$-vector space and $\set{Y_\alpha}{\alpha \in A}$ a collection of normed vector spaces over $\field$. For each $\alpha \in A$ consider a linear map $T_\alpha \in \calL(X,Y_\alpha)$, and let $\calF = \set{T_\alpha}{\alpha \in A}$. Then $\calF$ of course induces an initial topology on $X$. On the other hand, for each $\alpha \in A$ the map $T_\alpha$ defines a seminorm $p_\alpha$ on $X$ by $p_\alpha(x) = \norm{T_\alpha x}$. We claim that the initial topology on $X$ induced by $\calF$ is the same as the seminorm topology induced by the family $\calP = \set{p_\alpha}{\alpha \in A}$ of seminorms as in \cref{thm:seminorm-topology}.
+
+To see this notice that, for $\alpha \in A$, $x_0 \in X$ and $\epsilon > 0$,
+%
+\begin{align*}
+    \ball[p_\alpha]{x_0}{\epsilon}
+        &= \set{ x \in X }{ p_\alpha(x-x_0) < \epsilon } \\
+        &= \set[\big]{ x \in X }{ \norm{T_\alpha x-T_\alpha x_0} < \epsilon } \\
+        &= T_\alpha\preim \bigl( \ball{T_\alpha x_0}{\epsilon} \bigr).
+\end{align*}
+%
+The initial topology on $X$ induced by $\calF$ is generated by the sets on the right-hand side.\footnote{This is clear if each $T_\alpha$ is surjective. But $T_\alpha \colon X \to Y_\alpha$ is continuous iff the corresponding map with codomain $T_\alpha(X)$ is continuous, so it suffices to consider balls in $Y_\alpha$ with centres in $T(X)$.} On the other hand, the seminorm topology induced by $\calP$ is generated by the sets on the left-hand side. Hence the two topologies agree. In particular, the resulting topology makes $X$ into a locally convex topological vector space.
+
+An important application of the above is when $M$ is a subspace of $\calL(X,Y)$ and $\calF$ is the set of evaluation maps $\ev_x \colon M \to Y$ given by $\ev_x(T) = Tx$ for $x \in X$. It is easy to show that the evaluation maps are in fact linear, and that $\calF$ is even a subspace of $\calL(X,Y)$. We will call the $\calF$-topology on $M$ the \emph{evaluation topology} on $M$.\footnote{This is not standard terminology, but it seems useful to have a word for it.} Since the evaluation maps obviously separate points in $M$, the evaluation topology is Hausdorff (hence $T_3$ by \cref{thm:topological_group_regular}). Notice also that the product topology on $Y^X$ is precisely induced by the evaluation maps, so $M \subseteq Y^X$ in fact carries the subspace topology and is thus a topology of pointwise convergence.
+
+
+\section{Weak topologies}
+
+Let $X$ be a $\field$-vector space, and let $\calF$ be a collection of linear functionals $X \to \field$. The initial topology on $X$ induced by $\calF$ is called the \emph{$\calF$-topology} on $X$. The above discussion shows that the $\calF$-topology makes $X$ into a locally convex topological vector space. Being an initial topology, the $\calF$-topology is Hausdorff if and only if $\calF$ separates points in $X$.
+
+If $X$ is a topological vector space, then the $\calF$-topology is known as a \emph{weak topology}. The special case where $\calF = X^*$ is simply known as \emph{the} weak topology on $X$, and when equipped with this topology $X$ is sometimes denoted $X_w$. In the case where $X$ is locally convex, \emph{the} weak topology, being an initial topology, is Hausdorff if and only if $X^*$ separates points in $X$, but by \cref{thm:X*-separating-points-Hausdorff} this is the case if and only if the original topology on $X$ is Hausdorff.
+
+In the case where $\calF$ is a subspace of $X^*$ we can say even more. First a lemma:
+
+\begin{lemma}
+    \label{thm:linear-functional-span-lemma}
+    Let $X$ be a $\field$-vector space, and let $\phi, \phi_1, \ldots, \phi_n$ be linear functionals on $X$. Then the following are equivalent:
+    %
+    \begin{enumlem}
+        \item \label{enum:linear-functional-span-lemma-span} $\phi \in \Span(\phi_1, \ldots, \phi_n)$.
+        
+        \item \label{enum:linear-functional-span-lemma-bounded} There exists an $\alpha \in \reals$ such that
+        %
+        \begin{equation*}
+            \abs{\phi(x)}
+                \leq \alpha \max_{1 \leq i \leq n} \abs{\phi_i(x)}
+        \end{equation*}
+        %
+        for all $x \in X$.
+
+        \item \label{enum:linear-functional-span-lemma-kernel} $\bigintersect_{i=1}^n \ker\phi_i \subseteq \ker\phi$.
+    \end{enumlem}
+\end{lemma}
+
+\begin{proof}
+    It is clear that \subcref{enum:linear-functional-span-lemma-span} implies \subcref{enum:linear-functional-span-lemma-bounded}, and that \subcref{enum:linear-functional-span-lemma-bounded} implies \subcref{enum:linear-functional-span-lemma-kernel}. Assume that \subcref{enum:linear-functional-span-lemma-kernel} holds, and define $\pi \colon X \to \field^n$ by $\pi = \langle \phi_1, \ldots, \phi_n \rangle$, i.e. $\pi(x) = (\phi_1(x), \ldots, \phi_n(x))$ for $x \in X$. Then by assumption $\ker\pi \subseteq \ker\phi$, so there exists a linear functional $f \colon \phi(X) \to \field$ such that $f \circ \pi = \phi$. Extending $f$ to a linear functional $F$ on $\field^n$, there exist $\alpha_1, \ldots, \alpha_n \in \field$ such that
+    %
+    \begin{equation*}
+        F(u_1, \ldots, u_n)
+            = \sum_{i=1}^n \alpha_i u_i
+    \end{equation*}
+    %
+    for all $(u_1, \ldots, u_n) \in \field^n$. But then
+    %
+    \begin{equation*}
+        \phi(x)
+            = F \circ \pi(x)
+            = F(\phi_1(x), \ldots, \phi_n(x))
+            = \sum_{i=1}^n \alpha_i \phi_i(x),
+    \end{equation*}
+    %
+    which proves \subcref{enum:linear-functional-span-lemma-span}
+\end{proof}
+
+
+\begin{theorem}
+    \label{thm:linear-functionals-create-LCS}
+    Let $X$ be a $\field$-vector space, and let $M$ be a vector space of linear functionals on $X$. Then the $M$-topology makes $X$ into a locally convex topological vector space with $X^* = M$.
+\end{theorem}
+
+\begin{proof}
+    The above discussion shows that $X$ is a locally convex topological vector space, so it suffices to establish the final claim. Clearly $M \subseteq X^*$, so let $\phi \in X^*$ and put $U = \phi\preim(\ball{0}{1})$. This is a neighbourhood of $0$, so it contains a set on the form
+    %
+    \begin{equation*}
+        \ball[\phi_1]{0}{\epsilon}
+            \intersect \cdots
+            \intersect \ball[\phi_n]{0}{\epsilon}
+    \end{equation*}
+    %
+    for some $\epsilon > 0$ and appropriate $\phi_1, \ldots, \phi_n \in M$. But then property \subcref{enum:linear-functional-span-lemma-bounded} of \cref{thm:linear-functional-span-lemma} holds, implying that $\phi \in \Span(\phi_1, \ldots, \phi_n) \subseteq M$.
+\end{proof}
+
+
+\section[The weak*-topology][The weak$^*$-topology]{The weak$^*$-topology}
+
+Let $X$ be a topological vector space. The evaluation topology on $X^*$ is called the \emph{weak$^*$-topology} on $X^*$. Since the evaluation maps constitute a vector space, \cref{thm:linear-functionals-create-LCS} implies that $X^*$ with the weak$^*$-topology is a locally convex Hausdorff topological vector space, and that every weak$^*$-continuous linear functional on $X^*$ is on the form $\ev_x$ for some $x \in X$.
+
+The most important property of the weak$^*$-topology is the following:
+
+\begin{theorem}[The Banach--Alaoglu Theorem]
+    If $X$ is a normed vector space, then the closed unit ball $B^* = \set{\phi \in X^*}{\norm{\phi} \leq 1}$ in $X^*$ is compact in the weak$^*$-topology.
+\end{theorem}
+
+\begin{proof}
+    For $x \in X$ let $D_x = \set{z \in \field}{\abs{z} \leq \norm{x}}$. Then $D = \bigprod_{x \in X} D_x$ consists of those $\phi \in \field^X$ with $\abs{\phi(x)} \leq \norm{x}$ for all $x \in X$, and $B^*$ is the subset of $D$ of linear maps. Since $D$ is compact by Tychonoff's theorem, it suffices to show that $B^*$ is closed in $D$. If $(\phi_i)_{i \in I}$ is a net in $B^*$ that converges to some $\phi \in D$, then for $x,y \in X$ and $\alpha \in \field$ we have
+    %
+    \begin{equation*}
+        \phi(\alpha x + y)
+            = \lim_{i \in I} \phi_i(\alpha x + y)
+            = \lim_{i \in I} \bigl( \alpha \phi_i(x) + \phi_i(y) \bigr)
+            = \alpha \phi(x) + \phi(y),
+    \end{equation*}
+    %
+    since $D$ has the topology of pointwise convergence. Hence $\phi \in B^*$ as desired.
+\end{proof}
+
+
+\section{The strong operator topology}
+
+Now let $X$ and $Y$ be normed vector spaces, and let $\calB(X,Y)$ be the space of bounded linear maps $X \to Y$. The evaluation topology on $\calB(X,Y)$ is called the \emph{strong operator topology} (or simply \enquote{SOT}). More concretely, the topology is induced by evaluation maps
+%
+\begin{equation*}
+    \ev_x \colon \calB(X,Y) \to Y
+\end{equation*}
+%
+for $x \in X$. Hence it is generated by seminorms $T \mapsto \norm{Tx}$, so a net $(T_i)_{i \in I}$ in $\calB(X,Y)$ converges to $T$ iff $\norm{T_i x - Tx} \to 0$ for all $x \in X$ (of course this only verifies that evaluation topologies are topologies of pointwise convergence).
+    
+Notice that the SOT is coarser than the norm topology, since if $T_i \to T$ in the norm topology, then
+%
+\begin{equation*}
+    \norm{T_i x - Tx}
+        \leq \norm{T_i - T} \, \norm{x}
+        \to 0,
+\end{equation*}
+%
+so $T_i \to T$ in the SOT.
+
+
+\section{The weak operator topology}
+
+Again let $X$ and $Y$ be normed vector spaces. The \emph{weak operator topology} (or simply \enquote{WOT}) on $\calB(X,Y)$ is a variant of the strong operator topology, where $Y$ is given the weak topology. More precisely, the weak operator topology is induced by evaluation maps
+%
+\begin{equation*}
+    \ev_x \colon \calB(X,Y) \to Y_w
+\end{equation*}
+%
+for $x \in X$. Thus the WOT is not strictly speaking an evaluation topology as defined above. Since $Y_w$ itself has the initial topology induced by $Y^*$, the WOT is the initial topology induced by the linear maps $\phi \circ \ev_x$ for $x \in X$ and $\phi \in Y^*$, or equivalently by the seminorms $T \mapsto \phi(Tx)$. Hence a net $(T_i)_{i \in I}$ in $\calB(X,Y)$ converges to $T$ iff $\phi(T_i x) \to \phi(Tx)$ for all $x \in X$ and $\phi \in Y^*$.
+
+Clearly the WOT is coarser than the SOT, since if $\ev_x$ is continuous then so is $\phi \circ \ev_x$.
+
+We claim that the WOT is also Hausdorff. This is not immediate from the above since the generating functions are not evaluation maps. But notice that $Y^*$ separates points in $Y$ by \cref{thm:X*-separating-points-Hausdorff}. For distinct $T,S \in \calL(X,Y)$ there is a $x \in X$ with $Tx \neq Sx$, and then a $\phi \in Y^*$ with $\phi(Tx) \neq \phi(Sx)$. Hence the functions $\phi \circ \ev_x$ separate points in $\calB(X,Y)$.
+
+If $\calH$ is a Hilbert space, then the weak operator topology on $\calB(X,\calH)$ is also induced by maps $T \mapsto \inner{Tx}{y}$ by the Riesz--Fréchet theorem. In this case a net $(T_i)$ converges to $T$ iff $\inner{T_i x}{y} \to \inner{Tx}{y}$ for all $x \in X$ and $y \in \calH$.
 
 
 \nocite{*}
