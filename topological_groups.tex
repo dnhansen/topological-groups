@@ -137,6 +137,8 @@ We begin by collecting some basic properties of topological groups:
 
         \item \label{enum:product_open_set} If $U \subseteq G$ is open, then $AU$ and $UA$ are open.
 
+        \item \label{enum:product-compact-closed} If $K \subseteq G$ is compact and $F \subseteq G$ is closed, then $KF$ and $FK$ are closed.
+
         \item \label{enum:closure-intersection-of-open-sets} $\closure{A} = \bigintersect_{U \in \nhoodfilter{0}} AU$.
         
         \item \label{enum:elements-of-closure-commute} Assume that $G$ is Hausdorff. If $ab = ba$ for all $a \in A$, $b \in B$, then $ab = ba$ for all $a \in \closure{A}$, $b \in \closure{B}$.
@@ -166,6 +168,8 @@ As we will see in \cref{thm:topological_group_regular}, the Hausdorff assumption
     \end{equation*}
     %
     so $AU$ is a union of open sets.
+
+    For \subcref{enum:product-compact-closed}, consider the map $\phi \colon K \times G \to G$ given by $\phi(x,y) = x\inv y$. If $g \not\in KF$, then $K \times \{g\} \subseteq \phi\preim(F^c)$. The tube lemma then furnishes an open neighbourhood $U$ of $g$ such that $K \times U \subseteq \phi\preim(F^c)$, which implies that $U \intersect KF = \emptyset$. That $FK$ is closed is proved similarly.
 
     To prove \subcref{enum:closure-intersection-of-open-sets}, notice that $g \in \closure{A}$ if and only if $A \intersect V \neq \emptyset$ for all $V \in \nhoodfilter{g}$, if and only if $A \intersect gU \neq \emptyset$ for all $U \in \nhoodfilter{0}$. Since $\nhoodfilter{0}$ is symmetric, this is the case just when $g \in AU$ for all $U \in \nhoodfilter{0}$.
 
@@ -204,40 +208,62 @@ Recall that a topological space $X$ is \emph{regular} if it is possible to separ
 \end{proof}
 
 
-\begin{proposition}[Regularity of topological groups]
-    \label{thm:topological_group_regular}
-    If $G$ is a topological group, $g \in G$, $C \subseteq G$ is closed and $g \not\in C$, then there exists a symmetric open neighbourhood $V$ of $e$ such that $Vg$ and $VC$ are disjoint. In particular every topological group is regular, and every $T_0$ topological group is $T_3$.
+
+\begin{proposition}[Regularity]
+    If $G$ is a topological group, $K \subseteq G$ is compact and $F \subseteq G$ is closed, then there exists a symmetric open neighbourhood of $e$ such that $VK$ and $VF$ are disjoint. In particular, $G$ is regular.
 \end{proposition}
 
 \begin{proof}
-    Since $g \not\in C$ we also have $e \not\in Cg\inv$. But $Cg\inv$ is closed, so by \cref{thm:symmetric_nhood_of_e} there is a symmetric open neighbourhood $V$ of $e$ such that $VV \intersect Cg\inv = \emptyset$. It follows that $Vg \intersect VC = \emptyset$ as desired. This shows that $G$ is regular, and the final claim follows since a regular $T_0$-space is Hausdorff.
+    Since $K$ and $F$ are disjoint, we have $e \not\in KF\inv$. But $KF\inv$ is closed by \cref{enum:product-compact-closed}, so \cref{thm:symmetric_nhood_of_e} yields a symmetric open neighbourhood $V$ of $e$ such that $VV \intersect KF\inv = \emptyset$. This implies that $VK$ and $VF$ are disjoint as desired.
 \end{proof}
 
-As usual, regularity implies that we can separate a compact set $K$ from a closed set $C$ by disjoint open sets. The proposition above raises the question whether there exists a neighbourhood $V$ of $e$ such that $VK$ and $VC$ are disjoint. This is in fact true as we will see below, but the obvious proof does not work. We will use the fact that this is possible in our proof of the Hahn--Banach separation theorem (cf. \cref{thm:Hahn-Banach-separation}).
 
-\begin{corollary}
-    \label{thm:separating-compact-closed}
-    Let $G$ be a topological group, $K \subseteq G$ a compact and $C \subseteq G$ a closed set. Then there exists a symmetric open neighbourhood $V$ of $e$ such that $VK$ and $VC$ are disjoint.
-\end{corollary}
+
+\begin{lemma}
+    \label{lem:complete-regularity-lemma}
+    Let $G$ be a topological group. If $F \subseteq G$ is closed and $g \in G \setminus F$, then there exists a continuous function $f \colon G \to [0,1]$ such that $f(g) = 1$ and $f(F) = \{0\}$. Furthermore, given $\epsilon > 0$ there exists a neighbourhood $U$ of $e$ such that $\abs{f(gx) - f(x)} \leq \epsilon$ for all $g \in U$ and $x \in G$.
+
+    If $G$ is first countable, then the sets $\{f > 1 - \tfrac{1}{n}\}$ for $n \in \naturals$ form a neighbourhood basis at $g$.
+\end{lemma} % https://terrytao.wordpress.com/2011/05/17/the-birkhoff-kakutani-theorem/
 
 \begin{proof}
-    Let $g \in K$. By \cref{thm:topological_group_regular} there exists a symmetric open neighbourhood $U_g$ of $e$ such that $U_g g$ and $U_g C$ are disjoint. By \cref{thm:symmetric_nhood_of_e} there exists further a symmetric open neighbourhood $V_g$ such that $V_g V_g \subseteq U_g$. Clearly the sets $V_g V_g g$ and $V_g C$ are then disjoint. Since $K$ is compact, there are finitely many points $g_1, \ldots g_n \in K$ such that
+    By homogeneity we may assume that $g = e$. If $G$ is first countable, then we choose a decreasing sequence $(V_n)_{n \in \naturals}$ of open neighbourhoods of $e$ that constitute a local basis.
+
+    We recursively construct a decreasing sequence $(U_{1/2^n})_{n \in \naturals_0}$ of open neighbourhoods of $e$. First choose $U_1$ to be disjoint from $F$ and symmetric in accordance with \cref{thm:symmetric_nhood_of_e}. The same lemma is applied recursively such that each $U_{1/2^n}$ is symmetric and $U_{1/2^{n+1}} U_{1/2^{n+1}} \subseteq U_{1/2^n}$ for all $n \in \naturals_0$. If $G$ is first countable, we also choose the sets such that $U_{1/2^n} \subseteq V_n$, making the sequence into a local basis.
+
+    Next, for $a/2^n \in (0,1)$ let $a/2^n = 2^{-n_1} + \cdots + 2^{-n_k}$ be the binary expansion of $a/2^n$, with $1 \leq n_1 < \ldots < n_k$. We then let
     %
     \begin{equation*}
-        K
-            \subseteq V_{g_1} g_1 \intersect \cdots \intersect V_{g_n} g_n.
+        U_{a/2^n}
+            = U_{1/2^{n_k}} \cdots U_{1/2^{n_1}}.
     \end{equation*}
     %
-    Let $V = V_{g_1} \intersect \cdots \intersect V_{g_n}$. Then
+    It follows [TODO] that
     %
     \begin{equation*}
-        VK
-            \subseteq \bigunion_{i=1}^n V V_{g_i} g_i
-            \subseteq \bigunion_{i=1}^n V_{g_i} V_{g_i} g_i,
+        U_{1/2^n} U_{a/2^n}
+            \subseteq U_{(a+1)/2^n}
     \end{equation*}
     %
-    which is disjoint from $VC$, as desired.
+    for all $n \in \naturals_0$ and $a \in [1,2^n)$ (note that the case $n = 0$ is trivial, since then there is no such $a$). Finally define $f \colon G \to [0,1]$ by
+    %
+    \begin{equation*}
+        f(x)
+            = \sup \set{1 - \tfrac{a}{2^n}}{n \in \naturals_0, a \in [1,2^n), x \in U_{a/2^n}},
+    \end{equation*}
+    %
+    with the convention that $\sup \emptyset = 0$. Then $f$ is uniformly continuous in the sense described above, and the neighbourhood basis property follows. [TODO details]
 \end{proof}
+
+
+\begin{proposition}
+    Every topological group is completely regular.
+\end{proposition}
+
+\begin{proof}
+    This follows immediately from \cref{lem:complete-regularity-lemma}.
+\end{proof}
+
 
 
 \section{Continuous group homomorphisms}
@@ -513,6 +539,15 @@ When we apply this construction to the theory of topological groups, we see that
     It then suffices to show that, for $x,y \in G$, $x \equiv y$ if and only if $x \closure{\{e\}} = y \closure{\{e\}}$. But this is clear since e.g. $x \closure{\{e\}} = \closure{\{x\}}$ by continuity of multiplication on $G$.
 \end{proof}
 
+
+\begin{corollary}
+    \label{cor:closure-of-e-trivial-topology}
+    The subspace $\closure{\{e\}}$ carries the trivial topology.
+\end{corollary}
+
+TODO follows from specialisation preorder.
+
+
 It is results like the above that lead to the common assumption that topological groups are $T_1$, since if it is not then we just quotient out by $\closure{\{e\}}$. One might justify this by arguing as follows: If a topology on a set $X$ is to respect the set structure, then there must be a difference between two distinct points that is captured by the topology. But this difference must lie in which neighbourhoods each points has; the topology simply carries no further information than this. So if $x \neq y$, then it must be the case that $x \not\equiv y$, i.e. that $X$ is $T_0$.
 
 On the other hand, a \emph{group} structure on a set $G$ certainly respects the set structure, in that different elements may give rise to different actions: just let $G$ act on itself by multiplication.
@@ -594,64 +629,33 @@ There is more to say about the $T_0$-identification that is not pertinent to thi
 
 \section{Metrisation}
 
-\newcommand{\cat}[1]{\mathcal{#1}}
-\newcommand{\scat}[1]{\mathbf{#1}} % category supposed to be small
-\newcommand{\ncat}[1]{\mathbf{#1}} % named categories like Set, Top
-
-\newcommand{\scatC}{\scat{C}}
-
-\newcommand{\catNor}[1]{{#1\text{-}\scat{Nor}}}
-\newcommand{\catNorReal}{\catNor{\reals}}
-
 \newcommand{\field}{\mathbb{K}}
 
-If $X$ is a topological space, then we denote by $C(X)$ the space of continuous real-valued functions on $X$. Further denote by $C_b(X)$ the subspace of bounded functions. We equip $C_b(X)$ with the supremum norm. The category of normed spaces over the field $\field$ and linear maps with norm at most $1$ is denoted $\catNor{\field}_1$. The isomorphisms in $\catNor{\field}_1$ are precisely the surjective isometries.
+\newcommand{\GL}[1]{\mathrm{GL}(#1)}
 
-\begin{lemma}
-    \label{thm:birkhoff-kakutani-lemma}
-    Let $G$ be a Hausdorff topological group that is first countable. Then there exists a bounded continuous function $f \colon G \to [0,1]$ with the following properties:
-    %
-    \begin{enumlem}
-        \item \label{enum:birkhoff-kakutani-lemma-unique-maximum} $f(e) = 1$, and $f(x) < 1$ for all $x \neq e$.
-        \item \label{enum:birkhoff-kakutani-lemma-nhood-basis} The sets $V_n = \set{x \in G}{f(x) > 1-1/n}$ for $n \in \naturals$ form a local basis for $G$.
-        \item \label{enum:birkhoff-kakutani-lemma-uniform-continuity} For every $\epsilon > 0$ there exists an open neighbourhood $U$ of $e$ such that $\abs{f(gx) - f(x)} \leq \epsilon$ for all $g \in U$ and $x \in G$.
-    \end{enumlem}
-\end{lemma}
-%
-We omit a proof of this result (for now) at refer to \href{https://terrytao.wordpress.com/2011/05/17/the-birkhoff-kakutani-theorem/}{this blog post by Terence Tao}.
-
+If $X$ is a topological space, then we denote by $C(X)$ the space of continuous real-valued functions on $X$. Further denote by $C_b(X)$ the subspace of bounded functions, and equip this space with the supremum norm.
 
 \begin{theorem}[The Birkhoff--Kakutani Theorem]
-    Let $G$ be a topological group. Then $G$ is metrisable if and only if it is Hausdorff and first countable. In this case $G$ is metrisable by a left-invariant metric.
+    Let $G$ be a topological group. Then $G$ is pseudometrisable if and only if it first countable. In this case $G$ is pseudometrisable by a left-invariant pseudometric.
 \end{theorem}
 
 \begin{proof}
     The \enquote{only if} direction is obvious, so we prove the \enquote{if} direction.
 
-    Consider the map
+    Consider the (left) regular representation
     %
     \begin{align*}
-        \tau \colon G &\to \mathrm{Aut}_{\catNor{\reals}_1}(C_b(G)), \\
-        g &\mapsto \tau_g,
+        L \colon G &\to \GL{C_b(G)}, \\
+        g &\mapsto L_g,
     \end{align*}
     %
-    where $\tau_g f(x) = f(g\inv x)$ for $f \in C_b(G)$ and $x \in G$. The map is well-defined: If $f,f' \in C_b(G)$ and $\alpha \in \reals$, then
-    %
-    \begin{align*}
-        \tau_g(\alpha f + f')(x)
-            &= (\alpha f + f')(g\inv x)
-             = \alpha f(g\inv x) + f'(g\inv x) \\
-            &= \alpha \tau_g f(x) + \tau_g f'(x)
-             = (\alpha \tau_g f + \tau_g f')(x)
-    \end{align*}
-    %
-    for all $x \in G$, i.e. $\tau_g$ is linear as claimed. Furthermore, notice that $\norm{\tau_g f}_{\sup} = \norm{f}_{\sup}$, since acting on $f$ with $\tau_g$ simply permutes the domain $G$ of $f$, so $f$ and $\tau_g f$ have the same image. Hence $\tau_g$ is indeed an automorphism in $\reals\text{-}\mathbf{Nor}_1$. Finally, it is easy to show that $\tau$ is a group homomorphism, i.e. a representation of $G$ on $C_b(G)$.
+    where $L_g f(x) = f(g\inv x)$ for $f \in C_b(G)$ and $x \in G$. The map is easily seen to be well-defined and a representation of $G$. Furthermore, notice that $\norm{L_g f}_{\sup} = \norm{f}_{\sup}$, since acting on $f$ with $L_g$ simply permutes the domain $G$ of $f$, so $f$ and $L_g f$ have the same image.
     
-    Fixing a function $f \in C_b(G)$ yields a map $G \to C_b(G)$ given by $g \mapsto \tau_g f$, and this induces a pseudometric $\rho_f$ on $G$. This is more concretely given by
+    Fixing a function $f \in C_b(G)$ yields a map $G \to C_b(G)$ given by $g \mapsto L_g f$, and this induces a pseudometric $\rho_f$ on $G$. This is more concretely given by
     %
     \begin{equation*}
         \rho_f(g,h)
-            = \norm{\tau_g f - \tau_h f}_{\sup}
+            = \norm{L_g f - L_h f}_{\sup}
             = \sup_{x \in G} \abs[\big]{f(g\inv x) - f(h\inv x)}.
     \end{equation*}
     %
@@ -659,17 +663,15 @@ We omit a proof of this result (for now) at refer to \href{https://terrytao.word
     %
     \begin{align*}
         \rho_f(xg,xh)
-            &= \norm{\tau_{xg} f - \tau_{xh} f}_{\sup}
-             = \norm{\tau_x(\tau_g f - \tau_h f)}_{\sup} \\
-            &= \norm{\tau_g f - \tau_h f}_{\sup}
+            &= \norm{L_{xg} f - L_{xh} f}_{\sup}
+             = \norm{L_x(L_g f - L_h f)}_{\sup} \\
+            &= \norm{L_g f - L_h f}_{\sup}
              = \rho_f(g,h),
     \end{align*}
     %
     for all $x \in G$.
 
-    Now assume that $G$ is Hausdorff and first countable, and let $f$ be the function from \cref{thm:birkhoff-kakutani-lemma}. Since $f$ has a unique maximum, the map $g \mapsto \tau_g f$ is injective, so $\rho_f$ is a genuine metric. Furthermore notice that this map is continuous by \cref{enum:birkhoff-kakutani-lemma-uniform-continuity}.
-    
-    It remains to be shown that $\rho_f$ generates the topology on $G$. First notice that every $\rho_f$-ball is open in $G$ since it is the preimage of a ball under $g \mapsto \tau_g f$. Conversely, let $U$ be open in $G$, and let $g \in U$. There is an $n \in \naturals$ such that $g V_n \subseteq U$ by \cref{enum:birkhoff-kakutani-lemma-nhood-basis}. Now let $h \in G$ with $\rho_f(g,h) < 1/n$. Then
+    Now assume that $G$ is first countable, and let $f$ be the function from \cref{lem:complete-regularity-lemma}. Notice that the map $g \mapsto L_g f$ is continuous by uniform continuity of $f$. It remains to be shown that $\rho_f$ generates the topology on $G$. First notice that every $\rho_f$-ball is open in $G$ since it is the preimage of a ball under $g \mapsto L_g f$. Conversely, let $U$ be open in $G$, let $g \in U$, and let $V_n = \{f > 1 - \tfrac{1}{n}\}$. The $V_n$ constitute a local basis, so there is an $n \in \naturals$ such that $g V_n \subseteq U$. Now let $h \in G$ with $\rho_f(g,h) < 1/n$. Then
     %
     \begin{align*}
         \frac{1}{n}
@@ -1001,7 +1003,60 @@ More generally, we say that a net $(x_i)_{i \in I}$ is bounded if the set $\set{
 \end{proof}
 
 
-\section{Quotient spaces}
+\section{Product and quotient spaces}
+
+\begin{theorem}[Products]
+    
+\end{theorem}
+
+
+\begin{proposition}
+    \label{prop:vector-space-sum-of-Hausdorff-and-trivial}
+    Let $X$ be a topological $\field$-vector space. If $U$ is a complement of $\closure{\{0\}}$ in $X$, then $U$ is Hausdorff and
+    %
+    \begin{equation*}
+        X
+            \cong U \oplus \closure{\{0\}}.
+    \end{equation*}
+    %
+    In particular, $X$ is the sum of a Hausdorff space and a trivial space.
+\end{proposition}
+
+\begin{proof}
+    Since $U$ is a topological vector space, it suffices to show that it is $T_1$. But
+    %
+    \begin{equation*}
+        \closureop_U \{0\}
+            = U \intersect \closure{\{0\}}
+            = \{0\},
+    \end{equation*}
+    %
+    so this is clear. Next let $S \colon U \oplus \closure{\{0\}} \to V$ be the restriction of the addition map, so it is continuous. This is also easily seen to be a linear isomorphism (using that the sum is direct). If $F$ is a closed neighbourhood of $0$ in $X$, then
+    %
+    \begin{equation*}
+        F
+            = \closure{F}
+            = \closure{F + \{0\}}
+            \supseteq \closure{F} + \closure{\{0\}}
+            = F + \closure{\{0\}}
+    \end{equation*}
+    %
+    by TODO ref, so
+    %
+    \begin{equation*}
+        S \bigl( (F \intersect U) \prod \closure{\{0\}} \bigr)
+            = (F \intersect U) + \closure{\{0\}}
+            = F + \closure{\{0\}}
+            = F.
+    \end{equation*}
+    %
+    Since $X$ is regular (cf. TODO ref) it has a local basis of closed sets, so this shows that $S$ is also open, hence a homeomorphism.
+
+    The final claim follows from \cref{cor:closure-of-e-trivial-topology}.
+\end{proof}
+
+
+
 
 \begin{theorem}[Topological quotient vector spaces]
     If $M$ is a subspace of a topological $\field$-vector space $X$, then $X/M$ is a topological vector space.
@@ -1078,9 +1133,8 @@ Continuity and boundedness are equivalent for operators between normed spaces. W
 \end{proof}
 
 
-\section{Finite-dimensional spaces}
 
-It turns out that linearity and continuity are closely related. In fact, it will turn out that a linear map is continuous if either its domain or codomain is finite-dimensional, at least in the Hausdorff case. Before proving this we note the following result:
+TODO where? It turns out that linearity and continuity are closely related. In fact, it will turn out that a linear map is continuous if either its domain or codomain is finite-dimensional, at least in the Hausdorff case. Before proving this we note the following result:
 
 \begin{lemma}
     \label{thm:bounded-around-0-implies-continuous}
@@ -1092,18 +1146,19 @@ It turns out that linearity and continuity are closely related. In fact, it will
 \end{proof}
 
 
-\begin{theorem}[Finite-dimensional domain]
-    \label{thm:domain-finite-dimensional-continuity}
-    Let $T \colon X \to Y$ be a linear map between topological $\field$-vector spaces. If $X$ is Hausdorff and finite-dimensional, then $T$ is continuous. If $Y$ is also Hausdorff, then $T$ is a homeomorphism onto its image.
-\end{theorem}
-%
-This implies that there exists exactly one Hausdorff topology on a finite-dimensional vector space $X$ that makes $X$ into a topological vector space. Since any finite-dimensional vector space $X$ can be equipped with a norm, all Hausdorff topologies on $X$ are norm topologies. Furthermore, all norms on $X$ are topologically equivalent; in fact all norms are Lipschitz equivalent, though this does not readily follow from the above.
 
-The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\,\cdot\,})$ is a normed space and $\calT$ is the trivial topology on $X$, then the identity map $\id_X \colon (X, \calT) \to (X, \norm{\,\cdot\,})$ is usually not continuous.
+
+\section{Finite-dimensional spaces}
+
+\newcommand{\eu}{\mathrm{eu}}
+
+We begin by characterising the finite-dimensional Hausdorff spaces.
+
+\begin{lemma}
+    Let $Y$ be a topological $\field$-vector space. Then any linear map $T \colon \field^d \to Y$ is continuous.
+\end{lemma}
 
 \begin{proof}
-\begin{proofsec}
-    \item[$X = \field^d$ $\implies$ $T$ continuous]
     Let $(e_1, \ldots, e_d)$ be the standard basis for $\field^d$. Then
     %
     \begin{equation*}
@@ -1111,16 +1166,82 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
     \end{equation*}
     %
     for $x \in X$, where $\pi_i \colon \field^d \to \field$ is the $i$th projection. Since each $\pi_i$ is continuous, and since addition and scalar multiplication are continuous in $Y$, it follows that $T$ is continuous.
+\end{proof}
 
-    \item[$X = \field^d$, $Y$ Hausdorff $\implies$ $T$ homeomorphism]
-    We may assume that $T$ is surjective. Consider the unit sphere $S^1$ in $\field^d$. Then $T(S^1)$ is compact (hence closed since $Y$ is Hausdorff) and $0 \not\in T(S^1)$, so $0$ has a balanced neighbourhood $U$ disjoint from $T(S^1)$. Then $T\inv(U)$ is balanced, hence (path-)connected by \cref{enum:balanced-implies-connected}, and disjoint from $S^1$. Since $T\inv(U)$ contains $0$ it must lie in $\ball{0}{1}$ and is thus bounded. Hence $T\inv$ is continuous by \cref{thm:bounded-around-0-implies-continuous}, so $T$ is a homeomorphism.
-    
-    \item[$X$ Hausdorff, $\dim X < \infty$ $\implies$ $T$ continuous]
-    Let $S \colon \field^d \to X$ be a linear isomorphism, where $d = \dim X$. The above then shows $S$ is a homeomorphism and that $TS$ is continuous. But then $T = (TS)S\inv$ is continuous.
 
-    \item[$X,Y$ Hausdorff, $\dim X < \infty$ $\implies$ $T$ homeomorphism]
-    Under these assumptions the map $TS \colon \field^d \to Y$ is a homeomorphism, so $T$ is as well.
-\end{proofsec}
+\begin{theorem}
+    Let $V$ be a finite-dimensional $\field$-vector space. There exists a unique topology which makes $V$ into a Hausdorff topological vector space.
+\end{theorem}
+
+\begin{proof}
+    We first consider the case $V = \field^d$. Consider the identity map
+    %
+    \begin{align*}
+        \id_{\field^d} \colon (\field^d,\calT_{\eu,d}) &\to (\field^d,\calT), \\
+        x &\mapsto x.
+    \end{align*}
+    %
+    This is continuous by TODO ref, so $\calT \subseteq \calT_{\eu,d}$.
+
+    To prove the opposite inclusion, notice that it is sufficient to find a neighbourhood of zero $0$ from $\calT$ that is bounded with respect to $\norm{\,\cdot\,}_{\eu,d}$, since we may then translate and scale this neighbourhood to obtain a basis for $\calT_{\eu,d}$. The unit sphere $\sphere^{d-1} = \set{x \in \field^d}{\norm{x}_{\eu,d} = 1}$ is compact in $\calT_{\eu,d}$, so since $\id_{\field^d}$ is continuous it is also compact -- and hence closed -- in $\calT$. There is thus a neighbourhood $U \in \calT$ of $0$ which is disjoint from $\sphere^{d-1}$. Since scalar multiplication is continuous, there is an $\epsilon > 0$ and a neighbourhood $U' \in \calT$ of $0$ such that $(-\epsilon,\epsilon)U' \subseteq U$. For $x \in \field^d \setminus \{0\}$ the vector $x/\norm{x}_{\eu,d}$ lies in $\sphere^{d-1}$. But if $\norm{x}_{\eu,d} > \frac{1}{\epsilon}$, then $1/\norm{x}_{\eu,d} < \epsilon$, and thus $x$ cannot lie in $U'$, since otherwise $x/\norm{x}_{\eu,d}$ would lie in $U$. Hence $U$ is contained in the ball $\overline{B}_{\eu,d}(0,\frac{1}{\epsilon})$ and is thus in particular bounded.
+
+    Finally, if $V$ is any finite-dimensional topological vector space and $T \colon V \to \field^d$ is a linear isomorphism, then this induces a vector space topology on $\field^d$. This topology must equal $\calT_{\eu,d}$, so $T$ is a homeomorphism.
+\end{proof}
+
+
+\begin{corollary}
+    Let $V$ be a finite-dimensional $\field$-vector space. All norms on $V$ are then equivalent.
+\end{corollary}
+
+\begin{proof}
+    TODO
+\end{proof}
+
+
+\begin{corollary}
+    \label{thm:finite-dimensional-subspace-closed}
+    If $M$ is a finite-dimensional subspace of a Hausdorff topological $\field$-vector space $X$, then $M$ is complete and closed in $X$.
+\end{corollary}
+
+\begin{proof}
+    Let $d = \dim M$, and let $T \colon \field^d \to M$ be a linear isomorphism, hence a homeomorphism. Then since $\field^d$ is complete as a normed space, hence as a topological vector space by \cref{thm:domain-finite-dimensional-continuity}, $M$ is also complete by \cref{thm:completeness-preserved-by-unimorphism}. But then it is closed by \cref{thm:complete-implies-closed}.
+\end{proof}
+
+
+By \cref{prop:vector-space-sum-of-Hausdorff-and-trivial} it is thus easy to characterise all finite-dimensional topological vector spaces:
+
+\begin{corollary}
+    Let $X$ be a finite-dimensional topological $\field$-vector space. Then there is a space $W$ with the trivial topology such that
+    %
+    \begin{equation*}
+        X
+            \cong \field^d \oplus W.
+    \end{equation*}
+\end{corollary}
+
+\begin{proof}
+    By \cref{prop:vector-space-sum-of-Hausdorff-and-trivial} $X$ has a Hausdorff subspace $U$ such that $X \cong U \oplus \closure{\{0\}}$, and $U$ is isomorphic to $\field^d$ for some $d$.
+\end{proof}
+
+
+
+
+
+
+
+
+
+\newcommand{\im}{\operatorname{im}}
+
+\begin{theorem}[Finite-dimensional domain]
+    \label{thm:domain-finite-dimensional-continuity}
+    Let $T \colon X \to Y$ be a linear map between topological $\field$-vector spaces. If $X$ is Hausdorff and finite-dimensional, then $T$ is continuous. If $Y$ is also Hausdorff and $T$ is injective, then $T$ is a homeomorphism onto its image.
+\end{theorem}
+
+\begin{proof}
+    Let $q \colon X \to X/\ker T$ be the quotient map, and notice that since $\ker T$ is a finite-dimensional Hausdorff space, it is complete [TODO] and hence closed in $X$.\footnote{Note that we cannot appeal to continuity of $T$ to show that $\ker T$ is closed.} Thus TODO ref implies that $X/\ker T$ is a Hausdorff topological vector space, and since it is finite-dimensional it is isomorphic to $\field^d$ for some $d$. Hence the map $\tilde{T} \colon X/\ker T \to Y$ from TODO ref is continuous by TODO ref. But this implies that $T = \tilde{T} \circ q$ is also continuous.
+
+    If $Y$ is also Hausdorff and $T$ is injective, then $\im T$ is a finite-dimensional Hausdorff space, so the inverse of $T$ must also be continuous. Hence $T$ is a homeomorphism onto its image.
 \end{proof}
 
 
@@ -1129,7 +1250,7 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
 \end{theorem}
 
 \begin{proof}
-    Let $\pi \colon X \to X/\ker T$ be the quotient map. Then there is (cf. \cref{thm:quotient-space-factorisation}) a map $\tilde{T} \colon X/\ker T \to Y$ such that $T = \tilde{T} \circ \pi$, and $\tilde{T}$ is a linear isomorphism onto a subspace of $Y$, so $X/\ker T$ is a finite-dimensional subspace of $X$. If $\ker T$ is closed, then by \cref{enum:coset_space_T1} $X/\ker T$ is a Hausdorff topological vector space, so \cref{thm:domain-finite-dimensional-continuity} implies that $\tilde{T}$ is continuous. Thus $T$ is also continuous.
+    Let $q \colon X \to X/\ker T$ be the quotient map. Then there is (cf. \cref{thm:quotient-space-factorisation}) a map $\tilde{T} \colon X/\ker T \to Y$ such that $T = \tilde{T} \circ q$, and $\tilde{T}$ is a linear isomorphism onto a subspace of $Y$, so $X/\ker T$ is a finite-dimensional subspace of $X$. If $\ker T$ is closed, then by \cref{enum:coset_space_T1} $X/\ker T$ is a Hausdorff topological vector space, so \cref{thm:domain-finite-dimensional-continuity} implies that $\tilde{T}$ is continuous. Thus $T$ is also continuous.
 
     Conversely assume that $Y$ is Hausdorff and $T$ is continuous. Then $\{0\}$ is closed in $Y$, so $\ker T = T\preim(\{0\})$ is also closed.
 \end{proof}
@@ -1205,16 +1326,6 @@ The Hausdorff assumption cannot easily be removed. For instance, if $(X, \norm{\
     
 %     For general $X$ let $R \colon X \to \field^d$ be a linear isomorphism, hence a homeomorphism, and notice that $T = (TR\inv)R$. But $TR\inv$ is a linear isomorphism $\field^d \to Y$ so it is also a homeomorphism. Thus $T$ is a homeomorphism.
 % \end{proof}
-
-
-\begin{corollary}
-    \label{thm:finite-dimensional-subspace-closed}
-    If $M$ is a finite-dimensional subspace of a Hausdorff topological $\field$-vector space $X$, then $M$ is closed in $X$.
-\end{corollary}
-
-\begin{proof}
-    Let $d = \dim M$, and let $T \colon \field^d \to M$ be a linear isomorphism, hence a homeomorphism. Then since $\field^d$ is complete as a normed space, hence as a topological vector space by \cref{thm:domain-finite-dimensional-continuity}, $M$ is also complete by \cref{thm:completeness-preserved-by-unimorphism}. But then it is closed by \cref{thm:complete-implies-closed}.
-\end{proof}
 
 \newcommand{\Span}{\operatorname{span}}
 
@@ -1600,7 +1711,7 @@ Note that if $p$ and $q$ are seminorms on a vector space $X$, then $p \leq q$ if
                 < \epsilon,
         \end{equation*}
         %
-        so $p$ is absolutely continuous.
+        so $p$ is uniformly continuous.
 
         \item[\subcref{enum:seminorm-uniformly-continuous} $\implies$ \subcref{enum:seminorm-continuity-domination}]
         If $p$ is (uniformly) continuous, then $q = p$ works.
@@ -1744,7 +1855,7 @@ Note that if $p$ and $q$ are seminorms on a vector space $X$, then $p \leq q$ if
     for all $a \in A$ and $b \in B$. Define $\phi \colon X \to \complex$ by $\phi(x) = u(x) - \iu u(\iu x)$, so that $u = \Re \phi$. Then $\phi$ is continuous, and \cref{thm:real-complex-functionals} implies that it is complex linear, so $\phi \in X^*$ as desired.
 
     \item[Proof of \subcref{enum:Hahn-Banach-separation-compact-closed}]
-    By \cref{thm:separating-compact-closed} there is an open neighbourhood $U$ of $0$ such that $A + U$ and $B$ are disjoint. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is convex; since $A$ is also convex, so is their sum $A + U$. Part \subcref{enum:Hahn-Banach-separation-open} then yields a $\phi \in X^*$ such that $\Re\phi(A+U)$ and $\Re\phi(B)$ are disjoint subsets of $\reals$. Notice that $\Re\phi(A+U)$ is open by \cref{thm:functionals-are-open} (since $\Re\phi \colon X \to \reals$ is a linear functional), and $\Re\phi(A)$ is a compact subset of $\Re\phi(A+U)$. Hence
+    By \cref{thm:topological_group_regular} there is an open neighbourhood $U$ of $0$ such that $A + U$ and $B$ are disjoint. By \cref{enum:convex-balanced-local-basis} we may assume that $U$ is convex; since $A$ is also convex, so is their sum $A + U$. Part \subcref{enum:Hahn-Banach-separation-open} then yields a $\phi \in X^*$ such that $\Re\phi(A+U)$ and $\Re\phi(B)$ are disjoint subsets of $\reals$. Notice that $\Re\phi(A+U)$ is open by \cref{thm:functionals-are-open} (since $\Re\phi \colon X \to \reals$ is a linear functional), and $\Re\phi(A)$ is a compact subset of $\Re\phi(A+U)$. Hence
     %
     \begin{equation*}
         \sup \Re\phi(A)
@@ -1794,7 +1905,7 @@ To see this notice that, for $\alpha \in A$, $x_0 \in X$ and $\epsilon > 0$,
 %
 The initial topology on $X$ induced by $\calF$ is generated by the sets on the right-hand side.\footnote{This is clear if each $T_\alpha$ is surjective. But $T_\alpha \colon X \to Y_\alpha$ is continuous iff the corresponding map with codomain $T_\alpha(X)$ is continuous, so it suffices to consider balls in $Y_\alpha$ with centres in $T(X)$.} On the other hand, the seminorm topology induced by $\calP$ is generated by the sets on the left-hand side. Hence the two topologies agree. In particular, the resulting topology makes $X$ into a locally convex topological vector space.
 
-An important application of the above is when $M$ is a subspace of $\calL(X,Y)$ and $\calF$ is the set of evaluation maps $\ev_x \colon M \to Y$ given by $\ev_x(T) = Tx$ for $x \in X$. It is easy to show that the evaluation maps are in fact linear, and that $\calF$ is even a subspace of $\calL(X,Y)$. We will call the $\calF$-topology on $M$ the \emph{evaluation topology} on $M$.\footnote{This is not standard terminology, but it seems useful to have a word for it.} Since the evaluation maps obviously separate points in $M$, the evaluation topology is Hausdorff (hence $T_3$ by \cref{thm:topological_group_regular}). Notice also that the product topology on $Y^X$ is precisely induced by the evaluation maps, so $M \subseteq Y^X$ in fact carries the subspace topology and is thus a topology of pointwise convergence.
+An important application of the above is when $M$ is a subspace of $\calL(X,Y)$ and $\calF$ is the set of evaluation maps $\ev_x \colon M \to Y$ given by $\ev_x(T) = Tx$ for $x \in X$. It is easy to show that the evaluation maps are in fact linear, and that $\calF$ is even a subspace of $\calL(X,Y)$. We will call the $\calF$-topology on $M$ the \emph{evaluation topology} on $M$.\footnote{This is not standard terminology, but it seems useful to have a name for it.} Since the evaluation maps obviously separate points in $M$, the evaluation topology is Hausdorff (hence $T_3$ by \cref{thm:topological_group_regular}). Notice also that the product topology on $Y^X$ is precisely induced by the evaluation maps, so $M \subseteq Y^X$ in fact carries the subspace topology and is thus a topology of pointwise convergence.
 
 
 \section{Weak topologies}
@@ -1803,7 +1914,7 @@ Let $X$ be a $\field$-vector space, and let $\calF$ be a collection of linear fu
 
 If $X$ is a topological vector space, then the $\calF$-topology is known as a \emph{weak topology}. The special case where $\calF = X^*$ is simply known as \emph{the} weak topology on $X$, and when equipped with this topology $X$ is sometimes denoted $X_w$. In the case where $X$ is locally convex, \emph{the} weak topology, being an initial topology, is Hausdorff if and only if $X^*$ separates points in $X$, but by \cref{thm:X*-separating-points-Hausdorff} this is the case if and only if the original topology on $X$ is Hausdorff.
 
-In the case where $\calF$ is a subspace of $X^*$ we can say even more. First a lemma:
+In the case where $\calF$ is a vector space of linear functionals we can say even more. First of all, if $X$ is already a topological vector space, then $X$ and $X_w$ clearly have the same continuous linear functionals. That is, the $X^*$-topology on $X$ yields no more continuous functionals on $X$ than those already in $X^*$. This turns out to be a general phenomenon as long as $\calF$ is in fact a vector space. First a lemma:
 
 \begin{lemma}
     \label{thm:linear-functional-span-lemma}
@@ -1861,6 +1972,22 @@ In the case where $\calF$ is a subspace of $X^*$ we can say even more. First a l
     \end{equation*}
     %
     for some $\epsilon > 0$ and appropriate $\phi_1, \ldots, \phi_n \in M$. But then property \subcref{enum:linear-functional-span-lemma-bounded} of \cref{thm:linear-functional-span-lemma} holds, implying that $\phi \in \Span(\phi_1, \ldots, \phi_n) \subseteq M$.
+\end{proof}
+
+
+\begin{proposition}
+    Let $X$ be a locally convex topological vector space, and let $C \subseteq X$ be convex. Then $C$ is closed if and only if it is closed in the weak topology.
+\end{proposition}
+
+\begin{proof}
+    Since the weak topology is coarser than the original topology on $X$, a weakly closed set is also closed. So assume that $C$ is closed in the original topology, and let $a \in X \setminus C$. Since $\{a\}$ is convex and compact, \cref{enum:Hahn-Banach-separation-compact-closed} then furnishes a $\phi \in X^*$ such that
+    %
+    \begin{equation*}
+        \Re \phi(a)
+            < \inf_{c \in C} \Re \phi(c).
+    \end{equation*}
+    %
+    The map $x \mapsto \Re \phi(x)$ is weakly continuous at $a$, so $a$ has a weakly open neighbourhood disjoint from $C$. Hence $X \setminus C$ is weakly open, so $C$ is weakly closed.
 \end{proof}
 
 
